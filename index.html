@@ -442,6 +442,94 @@ a{color:var(--primary);text-decoration:none}
   .navbar-inner{padding:12px 16px}
 }
 
+/* ============ 新功能页面通用 ============ */
+.feature-page{padding:24px 0 60px}
+.feature-header{text-align:center;margin-bottom:32px}
+.feature-header h2{font-size:28px;font-weight:800;margin-bottom:8px}
+.feature-header p{color:var(--text-soft);font-size:15px}
+
+/* 兼容分析 */
+.compat-selector{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;max-width:500px;margin:0 auto 24px}
+.compat-type-pick{text-align:center;padding:24px;border-radius:var(--radius);background:var(--card);border:2px solid var(--border);cursor:pointer;transition:all .3s}
+.compat-type-pick:hover{border-color:var(--primary)}
+.compat-type-pick .pick-icon{font-size:36px;margin-bottom:8px}
+.compat-type-pick .pick-code{font-size:22px;font-weight:800;color:var(--primary)}
+.compat-type-pick .pick-name{font-size:13px;color:var(--text-soft)}
+.compat-heart{font-size:32px;text-align:center}
+.compat-results{max-width:600px;margin:0 auto}
+.compat-score-card{display:flex;align-items:center;gap:16px;padding:20px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border);margin-bottom:12px}
+.compat-score-icon{font-size:32px}
+.compat-score-bar{flex:1;height:8px;border-radius:4px;background:var(--bg-soft);overflow:hidden}
+.compat-score-fill{height:100%;border-radius:4px;transition:width 1s cubic-bezier(.16,1,.3,1)}
+.compat-score-val{font-size:24px;font-weight:800;min-width:50px;text-align:right}
+.compat-desc{text-align:center;padding:20px;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);font-size:15px;color:var(--text-soft);line-height:1.7;margin-top:16px}
+
+/* 成长追踪 */
+.growth-chart-wrap{max-width:700px;margin:0 auto;background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:24px}
+.growth-empty{text-align:center;padding:40px;color:var(--text-mute)}
+.growth-legend{display:flex;gap:16px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.growth-legend-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text-soft)}
+.growth-legend-dot{width:12px;height:12px;border-radius:3px}
+
+/* 名人墙 */
+.celeb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;max-width:900px;margin:0 auto}
+.celeb-card{padding:20px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border);transition:all .3s;cursor:pointer;text-align:center}
+.celeb-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.celeb-emoji{font-size:40px;margin-bottom:8px}
+.celeb-name{font-size:16px;font-weight:700;margin-bottom:2px}
+.celeb-title{font-size:12px;color:var(--text-soft);margin-bottom:8px}
+.celeb-type-tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700}
+
+/* 每日洞察 */
+.daily-card{max-width:500px;margin:0 auto;padding:32px;border-radius:var(--radius);background:linear-gradient(135deg,var(--card),var(--bg-soft));border:1px solid var(--border);text-align:center}
+.daily-date{font-size:13px;color:var(--text-mute);margin-bottom:8px}
+.daily-icon{font-size:48px;margin-bottom:12px}
+.daily-text{font-size:18px;font-weight:600;line-height:1.6;margin-bottom:16px}
+.daily-type-badge{display:inline-block;padding:6px 16px;border-radius:999px;font-size:14px;font-weight:600;color:#fff}
+
+/* 团队地图 */
+.team-create{max-width:500px;margin:0 auto 24px;text-align:center}
+.team-input{padding:12px 16px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--card);color:var(--text);font-size:15px;width:100%;max-width:300px;margin-right:8px}
+.team-share-code{padding:16px 24px;border-radius:var(--radius);background:var(--card);border:2px dashed var(--border);text-align:center;margin:16px 0}
+.team-share-code code{font-size:20px;font-weight:800;color:var(--primary);letter-spacing:2px}
+.team-dist{max-width:600px;margin:0 auto}
+.team-bar{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.team-bar-label{min-width:80px;font-size:13px;font-weight:600}
+.team-bar-track{flex:1;height:24px;border-radius:6px;background:var(--bg-soft);overflow:hidden}
+.team-bar-fill{height:100%;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:12px;color:#fff;font-weight:600;transition:width 1s}
+.team-insights{max-width:600px;margin:24px auto;padding:20px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border)}
+.team-insights h4{font-size:15px;margin-bottom:10px}
+.team-insight-item{padding:8px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-soft)}
+.team-insight-item:last-child{border:none}
+
+/* AI深度解读 */
+.ai-section{max-width:600px;margin:24px auto;padding:0}
+.ai-card{padding:24px;border-radius:var(--radius);background:linear-gradient(135deg,rgba(139,92,246,.08),rgba(16,185,129,.08));border:1px solid var(--border)}
+.ai-loading{display:flex;flex-direction:column;align-items:center;gap:12px;padding:40px}
+.ai-loading .spinner{width:32px;height:32px}
+.ai-content{font-size:14px;line-height:1.8;color:var(--text)}
+.ai-content p{margin-bottom:12px}
+.ai-content strong{color:var(--primary)}
+.ai-btn{display:flex;gap:12px;justify-content:center;margin-top:16px}
+
+/* 职业路径 */
+.career-path-card{max-width:600px;margin:0 auto;padding:24px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border)}
+.career-path-section{margin-bottom:20px}
+.career-path-section h4{font-size:15px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.career-skill-tag{display:inline-block;padding:6px 14px;border-radius:999px;background:var(--bg-soft);font-size:13px;margin:4px 4px 0 0}
+.career-info-row{display:flex;gap:16px;margin-top:12px}
+.career-info-item{flex:1;padding:12px;border-radius:var(--radius-sm);background:var(--bg-soft);text-align:center}
+.career-info-item .label{font-size:12px;color:var(--text-mute);margin-bottom:4px}
+.career-info-item .val{font-size:15px;font-weight:700}
+
+/* 功能导航卡片 */
+.feature-nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;max-width:800px;margin:32px auto}
+.feature-nav-card{padding:20px 16px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border);text-align:center;cursor:pointer;transition:all .3s}
+.feature-nav-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.feature-nav-card .fn-icon{font-size:32px;margin-bottom:8px}
+.feature-nav-card .fn-title{font-size:14px;font-weight:700;margin-bottom:2px}
+.feature-nav-card .fn-desc{font-size:12px;color:var(--text-soft)}
+
 /* ============ 加载动画 ============ */
 .spinner{
   width:48px;height:48px;border:4px solid var(--bg-soft);
@@ -529,6 +617,7 @@ a{color:var(--primary);text-decoration:none}
     </div>
     <div class="nav-actions">
       <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+      <button class="btn btn-ghost" onclick="go('explore')">🧭 探索</button>
       <button class="btn btn-ghost" id="navHistoryBtn" onclick="go('history')" style="display:none">📜 历史</button>
       <button class="btn btn-ghost" id="navProfileBtn" onclick="go('profile')" style="display:none">👤 我的</button>
       <button class="btn btn-outline" id="navLoginBtn" onclick="go('auth')">登录</button>
@@ -650,6 +739,117 @@ a{color:var(--primary);text-decoration:none}
     <h2 class="page-title">测试记录</h2>
     <p class="page-sub">点击任意记录查看详细结果</p>
     <div id="profileHistory"></div>
+  </div>
+</section>
+
+<!-- ========== 功能探索页 ========== -->
+<section class="page" id="page-explore">
+  <div class="container feature-page">
+    <div class="feature-header">
+      <h2>🧭 性格探索中心</h2>
+      <p>深入挖掘你的性格密码</p>
+    </div>
+    <div class="feature-nav">
+      <div class="feature-nav-card" onclick="go('compat')" style="--card-color:#ec4899">
+        <div class="fn-icon">💞</div><div class="fn-title">性格兼容</div><div class="fn-desc">测测你们的契合度</div>
+      </div>
+      <div class="feature-nav-card" onclick="go('growth')" style="--card-color:#3b82f6">
+        <div class="fn-icon">📈</div><div class="fn-title">成长追踪</div><div class="fn-desc">性格变化折线图</div>
+      </div>
+      <div class="feature-nav-card" onclick="go('celebs')" style="--card-color:#f59e0b">
+        <div class="fn-icon">⭐</div><div class="fn-title">名人墙</div><div class="fn-desc">同类型名人堂</div>
+      </div>
+      <div class="feature-nav-card" onclick="go('daily')" style="--card-color:#10b981">
+        <div class="fn-icon">💡</div><div class="fn-title">每日洞察</div><div class="fn-desc">今天给你的建议</div>
+      </div>
+      <div class="feature-nav-card" onclick="go('team')" style="--card-color:#8b5cf6">
+        <div class="fn-icon">🗺️</div><div class="fn-title">团队地图</div><div class="fn-desc">团队性格分布图</div>
+      </div>
+      <div class="feature-nav-card" onclick="go('careers')" style="--card-color:#ef4444">
+        <div class="fn-icon">🚀</div><div class="fn-title">职业路径</div><div class="fn-desc">技能薪资全解析</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 性格兼容分析页 ========== -->
+<section class="page" id="page-compat">
+  <div class="container feature-page">
+    <div class="feature-header"><h2>💞 性格兼容分析</h2><p>选择两个MBTI类型，分析恋爱·友情·职场契合度</p></div>
+    <div class="compat-selector">
+      <div class="compat-type-pick" id="compatPick1" onclick="openCompatPicker(1)">
+        <div class="pick-icon">❓</div><div class="pick-code">选择</div><div class="pick-name">类型一</div>
+      </div>
+      <div class="compat-heart">💕</div>
+      <div class="compat-type-pick" id="compatPick2" onclick="openCompatPicker(2)">
+        <div class="pick-icon">❓</div><div class="pick-code">选择</div><div class="pick-name">类型二</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-bottom:24px">
+      <button class="btn btn-primary btn-lg" onclick="calcCompatibility()" id="compatCalcBtn" disabled>分析兼容度</button>
+    </div>
+    <div class="compat-results" id="compatResults"></div>
+  </div>
+</section>
+
+<!-- ========== 成长追踪页 ========== -->
+<section class="page" id="page-growth">
+  <div class="container feature-page">
+    <div class="feature-header"><h2>📈 成长追踪</h2><p>你的性格维度随时间的变化趋势</p></div>
+    <div class="growth-chart-wrap">
+      <canvas id="growthChart" width="640" height="320"></canvas>
+      <div id="growthEmpty" class="growth-empty">
+        <div style="font-size:48px;margin-bottom:12px">📊</div>
+        <p>完成至少2次测试后，这里会显示你的性格维度变化折线图</p>
+        <button class="btn btn-primary" style="margin-top:16px" onclick="startTest()">去做测试</button>
+      </div>
+      <div class="growth-legend" id="growthLegend" style="display:none">
+        <div class="growth-legend-item"><div class="growth-legend-dot" style="background:#3b82f6"></div>E-I 外向/内向</div>
+        <div class="growth-legend-item"><div class="growth-legend-dot" style="background:#10b981"></div>S-N 实感/直觉</div>
+        <div class="growth-legend-item"><div class="growth-legend-dot" style="background:#f59e0b"></div>T-F 思考/情感</div>
+        <div class="growth-legend-item"><div class="growth-legend-dot" style="background:#ec4899"></div>J-P 判断/感知</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 名人墙页 ========== -->
+<section class="page" id="page-celebs">
+  <div class="container feature-page">
+    <div class="feature-header"><h2>⭐ 性格名人墙</h2><p>看看哪些名人和你是同一性格类型</p></div>
+    <div class="celeb-grid" id="celebGrid"></div>
+  </div>
+</section>
+
+<!-- ========== 每日洞察页 ========== -->
+<section class="page" id="page-daily">
+  <div class="container feature-page">
+    <div class="feature-header"><h2>💡 每日性格洞察</h2><p>今天，给你的专属建议</p></div>
+    <div class="daily-card" id="dailyCard">
+      <div style="font-size:48px;margin-bottom:12px">🔐</div>
+      <p>先完成一次MBTI测试，获取属于你的每日洞察</p>
+      <button class="btn btn-primary" style="margin-top:16px" onclick="startTest()">去做测试</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 团队性格地图页 ========== -->
+<section class="page" id="page-team">
+  <div class="container feature-page">
+    <div class="feature-header"><h2>🗺️ 团队性格地图</h2><p>创建团队，生成性格分布图和优势盲区分析</p></div>
+    <div class="team-create">
+      <input type="text" class="team-input" id="teamNameInput" placeholder="输入团队名称" maxlength="20">
+      <button class="btn btn-primary" onclick="createTeam()">创建团队</button>
+    </div>
+    <div id="teamArea"></div>
+  </div>
+</section>
+
+<!-- ========== 职业路径规划页 ========== -->
+<section class="page" id="page-careers">
+  <div class="container feature-page">
+    <div class="feature-header"><h2>🚀 职业路径规划</h2><p>从测试结果到职业行动指南</p></div>
+    <div id="careersArea"></div>
   </div>
 </section>
 
@@ -799,7 +999,26 @@ const TYPES = {
       {emoji:'💻',name:'系统架构师',desc:'设计复杂技术系统'},
       {emoji:'📊',name:'投资分析师',desc:'用数据洞察市场趋势'},
       {emoji:'🎯',name:'产品总监',desc:'规划产品长远方向'}],
-    advice:['有意识地发展人际关系，学会倾听和共情——再好的战略也需要团队来执行','允许自己犯错，完美主义会拖慢你的脚步，完成比完美更重要','关注当下的细节，宏大的愿景需要扎实的每一步来支撑','找到信任的伙伴分享想法，独立思考虽好，但碰撞能带来更好的灵感']
+    advice:['有意识地发展人际关系，学会倾听和共情——再好的战略也需要团队来执行','允许自己犯错，完美主义会拖慢你的脚步，完成比完美更重要','关注当下的细节，宏大的愿景需要扎实的每一步来支撑','找到信任的伙伴分享想法，独立思考虽好，但碰撞能带来更好的灵感'],
+    celebrities:[
+      {name:'马斯克',title:'特斯拉/SpaceX CEO',emoji:'🚀'},
+      {name:'牛顿',title:'物理学家',emoji:'🍎'},
+      {name:'尼采',title:'哲学家',emoji:'📖'},
+      {name:'居里夫人',title:'诺贝尔奖科学家',emoji:'⚛️'}],
+    dailyInsights:[
+      '今天作为INTJ，尝试主动向同事分享你的想法，被理解的感觉会超出你的预期',
+      '允许今天有"不完美"的时刻，完成比完美更重要',
+      '找一个信任的人讨论你的长远计划，碰撞会带来新视角',
+      '留15分钟与人闲聊，关系的建立不需要宏大场面',
+      '今天做一个小的让步，看看会发生什么——世界并没有崩塌',
+      '把宏大目标拆解成今天能完成的一个小步骤，去执行它',
+      '今晚回顾一周成就，给自己一些认可——你已经做得很好'],
+    careerPath:{
+      skills:['系统思维','数据分析','商业洞察','沟通表达'],
+      learning:'建议攻读MBA，从咨询公司分析师或大企业战略部入门',
+      salary:'25-80万/年',
+      growth:'咨询合伙人/企业战略高管/独立顾问'
+    }
   },
   INTP:{code:'INTP',name:'逻辑学家',tagline:'具有创造力的发明家，对知识有止境的渴望',group:'分析家',color:'#8b5cf6',icon:'🧩',
     summary:'你是天生的思想者和理论构建者。对世界充满好奇，热衷于探究事物背后的原理和规律。你思维活跃、逻辑严密，喜欢在概念的世界里自由驰骋。',
@@ -812,7 +1031,26 @@ const TYPES = {
       {emoji:'📐',name:'数学家/物理学家',desc:'探索世界的底层规律'},
       {emoji:'🤖',name:'AI研究员',desc:'推动人工智能发展'},
       {emoji:'✍️',name:'技术作家',desc:'将复杂知识清晰表达'}],
-    advice:['把想法转化为行动，再好的理论也需要落地验证才有价值','练习表达情感和与人沟通，人际连接是生活和职业的重要部分','学会区分主次，把精力集中在最重要的少数事情上','给自己设定deadline，避免无止境地钻研而错过机会']
+    advice:['把想法转化为行动，再好的理论也需要落地验证才有价值','练习表达情感和与人沟通，人际连接是生活和职业的重要部分','学会区分主次，把精力集中在最重要的少数事情上','给自己设定deadline，避免无止境地钻研而错过机会'],
+    celebrities:[
+      {name:'爱因斯坦',title:'物理学家',emoji:'🧠'},
+      {name:'比尔·盖茨',title:'微软创始人',emoji:'💻'},
+      {name:'笛卡尔',title:'哲学家/数学家',emoji:'📐'},
+      {name:'达尔文',title:'生物学家',emoji:'🔬'}],
+    dailyInsights:[
+      '今天作为INTP，把一个想法转化为具体行动，哪怕只是写下来',
+      '与朋友聊一个非学术话题，人际连接也是生活的养分',
+      '设定今天的"截止时间"，在限定内完成一件事',
+      '把今天遇到的有趣知识教给别人，教学是最好的内化',
+      '尝试一件你从未做过的小事，激活感官而非只是大脑',
+      '给自己一段"不思考"的时间，散步、运动或发呆都好',
+      '回顾本周学到的新东西，给自己一些鼓励'],
+    careerPath:{
+      skills:['逻辑思维','编程能力','系统设计','持续学习'],
+      learning:'建议主修计算机或数学，刷题+开源项目积累入门',
+      salary:'20-70万/年',
+      growth:'技术专家/架构师/技术总监'
+    }
   },
   ENTJ:{code:'ENTJ',name:'指挥官',tagline:'大胆、富有想象力且意志强大的领导者',group:'分析家',color:'#8b5cf6',icon:'🏗️',
     summary:'你是天生的领导者，拥有强大的意志力和决断力。你善于制定宏大目标，并高效组织资源去实现它。你果断、自信，天生具有号召力。',
@@ -825,7 +1063,26 @@ const TYPES = {
       {emoji:'⚖️',name:'律师',desc:'在法庭上运筹帷幄'},
       {emoji:'🏦',name:'投行经理',desc:'操盘重大项目'},
       {emoji:'🎯',name:'管理咨询师',desc:'帮企业解决战略问题'}],
-    advice:['学会倾听和放权，真正的领导力是赋能他人而非事必躬亲','关注团队成员的感受和成长，人心比效率更持久','允许自己有脆弱的时候，强势的外表下也需要情感出口','在追求目标的同时，不要忽略生活平衡和身边重要的人']
+    advice:['学会倾听和放权，真正的领导力是赋能他人而非事必躬亲','关注团队成员的感受和成长，人心比效率更持久','允许自己有脆弱的时候，强势的外表下也需要情感出口','在追求目标的同时，不要忽略生活平衡和身边重要的人'],
+    celebrities:[
+      {name:'拿破仑',title:'法兰西皇帝',emoji:'👑'},
+      {name:'撒切尔夫人',title:'英国前首相',emoji:'🇬🇧'},
+      {name:'雷军',title:'小米创始人',emoji:'📱'},
+      {name:'任正非',title:'华为创始人',emoji:'📡'}],
+    dailyInsights:[
+      '今天作为ENTJ，留出时��倾听团队的声音，不急于评判',
+      '把一个决定权交给信任的人，体验放权的轻松',
+      '今天关注一个团队成员的成长需求，而不只是结果',
+      '允许自己在人前展示脆弱，这是真正的强大',
+      '今天不安排任何"任务"，给自己一段纯粹休息的时光',
+      '对身边重要的人表达感谢，关系比成就更持久',
+      '回顾本周的高光时刻，也允许自己回顾低谷'],
+    careerPath:{
+      skills:['领导力','战略思维','决策能力','沟通协调'],
+      learning:'建议攻读MBA，从管培生或咨询起步积累综合能力',
+      salary:'40-200万/年',
+      growth:'CEO/事业部总经理/创业者'
+    }
   },
   ENTP:{code:'ENTP',name:'辩论家',tagline:'聪明好奇的思想者，无法抗拒思维挑战',group:'分析家',color:'#8b5cf6',icon:'⚡',
     summary:'你是充满活力的创新者和辩论高手。你热爱思想的碰撞，善于从不同角度看问题，总能提出令人耳目一新的观点。你机智、好奇，讨厌墨守成规。',
@@ -838,7 +1095,26 @@ const TYPES = {
       {emoji:'⚖️',name:'律师',desc:'用辩论维护公正'},
       {emoji:'💡',name:'产品经理',desc:'挖掘需求推动创新'},
       {emoji:'📈',name:'风险投资人',desc:'发现下一个风口'}],
-    advice:['学会区分辩论和沟通，不是每个观点都需要争出胜负','培养坚持和深耕的能力，广度需要深度来支撑才有价值','注重执行和落地，好想法只有变成行动才有意义','尊重他人的节奏和感受，不是每个人都享受思维的高速碰撞']
+    advice:['学会区分辩论和沟通，不是每个观点都需要争出胜负','培养坚持和深耕的能力，广度需要深度来支撑才有价值','注重执行和落地，好想法只有变成行动才有意义','尊重他人的节奏和感受，不是每个人都享受思维的高速碰撞'],
+    celebrities:[
+      {name:'爱迪生',title:'发明家',emoji:'💡'},
+      {name:'丘吉尔',title:'英国前首相',emoji:'✊'},
+      {name:'莱昂纳多',title:'演员',emoji:'🎬'},
+      {name:'马克·吐温',title:'作家',emoji:'✍️'}],
+    dailyInsights:[
+      '今天作为ENTP，忍住一次"反驳"的冲动，先理解对方',
+      '把一个想法坚持推进一天，看看深度能带来什么',
+      '与不同领域的人交流，但今天专注于倾听而非表达',
+      '完成一件你以前搁置的小事，体验落地的踏实感',
+      '今天用"是的，而且..."代替"但是..."',
+      '给自己一段不被打扰的专注时间，深入一件事',
+      '回顾本周的灵感，挑选一个最有潜力的去执行'],
+    careerPath:{
+      skills:['创新思维','沟通说服','资源整合','快速学习'],
+      learning:'建议先在创业公司或创新业务历练，积累人脉和经验',
+      salary:'30-100万/年(波动大)',
+      growth:'创业CEO/合伙人/风险投资人'
+    }
   },
   INFJ:{code:'INFJ',name:'提倡者',tagline:'安静而神秘，同时鼓舞人心的理想主义者',group:'外交官',color:'#10b981',icon:'🌸',
     summary:'你是稀有的理想主义者，拥有深刻的洞察力和强烈的使命感。你安静而坚定，善于看透人心，渴望让世界变得更好。你既有远见又有行动力。',
@@ -851,7 +1127,26 @@ const TYPES = {
       {emoji:'🎨',name:'设计师',desc:'用美传递理念'},
       {emoji:'🌍',name:'公益组织负责人',desc:'推动社会正向改变'},
       {emoji:'👨‍🏫',name:'教育工作者',desc:'点燃他人的成长'}],
-    advice:['学会保护自己的边界，帮助别人前先照顾好自己','接受世界的不完美，循序渐进的改变比一蹴而就更可持续','找到释放情绪的健康出口，不要把一切都藏在心里','允许自己享受当下，不必时刻背负改变世界的使命']
+    advice:['学会保护自己的边界，帮助别人前先照顾好自己','接受世界的不完美，循序渐进的改变比一蹴而就更可持续','找到释放情绪的健康出口，不要把一切都藏在心里','允许自己享受当下，不必时刻背负改变世界的使命'],
+    celebrities:[
+      {name:'甘地',title:'印度国父',emoji:'🕊️'},
+      {name:'特蕾莎修女',title:'诺贝尔和平奖得主',emoji:'🙏'},
+      {name:'摩根·弗里曼',title:'演员',emoji:'🎬'},
+      {name:'柏拉图',title:'哲学家',emoji:'📜'}],
+    dailyInsights:[
+      '今天作为INFJ，给自己独处的时光，那是你充电的方式',
+      '把一个洞察写下来，不必立刻行动，留待时机成熟',
+      '今天对一件事说"不"，保护你的边界和能量',
+      '找一个信任的人分享你的感受，不必独自承受',
+      '允许世界不完美，你能做的只是你那部分，已足够',
+      '今天享受当下的小确幸，不必时刻思考宏大意义',
+      '回顾本周的内在成长，对自己温柔一些'],
+    careerPath:{
+      skills:['同理心','深度倾听','心理学理论','表达能力'],
+      learning:'建议攻读心理学硕士，考取心理咨询师证书实习入门',
+      salary:'15-50万/年',
+      growth:'资深咨询���/机构创办者/培训导师'
+    }
   },
   INFP:{code:'INFP',name:'调停者',tagline:'诗意、善良的利他主义者，渴望美好有意义的事业',group:'外交官',color:'#10b981',icon:'🌿',
     summary:'你是温柔而充满理想的心灵诗人。你内心丰富，对美和意义有深刻的追求。你真诚、善良，渴望用自己的方式让世界更美好。',
@@ -864,7 +1159,26 @@ const TYPES = {
       {emoji:'🧑‍⚕️',name:'心理咨询师',desc:'用共情疗愈他人'},
       {emoji:'🎵',name:'音乐人',desc:'用旋律打动人心'},
       {emoji:'🌍',name:'公益项目策划',desc:'为有意义的事贡献力量'}],
-    advice:['把理想化为具体行动，再小的步伐也比空想有力量','学会接纳批评，建设性的反馈是成长的养分','不要过度内耗，有些事没有想象中那么严重','建立规律的生活节奏，为创造力提供稳定的土壤']
+    advice:['把理想化为具体行动，再小的步伐也比空想有力量','学会接纳批评，建设性的反馈是成长的养分','不要过度内耗，有些事没有想象中那么严重','建立规律的生活节奏，为创造力提供稳定的土壤'],
+    celebrities:[
+      {name:'莎士比亚',title:'剧作家',emoji:'🎭'},
+      {name:'J.K.罗琳',title:'哈利波特作者',emoji:'⚡'},
+      {name:'王尔德',title:'作家',emoji:'🌹'},
+      {name:'约翰尼·德普',title:'演员',emoji:'🏴‍☠️'}],
+    dailyInsights:[
+      '今天作为INFP，把一个想法化为具体行动，再小都好',
+      '接受一个建设性反馈，它是成长的养分而非攻击',
+      '今天完成一件拖延的小事，体验行动的力量',
+      '给自己一段规律的创作时间，灵感需要土壤',
+      '与一个让你感到安全的人分享内心世界',
+      '今天用艺术或文字表达当下的情绪，不必修饰',
+      '回顾本周的小成就，给自己一个拥抱'],
+    careerPath:{
+      skills:['文字表达','想象力','情感洞察','审美能力'],
+      learning:'建议大量阅读+持续创作，从自媒体或投稿入门积累读者',
+      salary:'10-40万/年(波动大)',
+      growth:'畅销作家/内容IP/编剧'
+    }
   },
   ENFJ:{code:'ENFJ',name:'主人公',tagline:'富有魅力、鼓舞人心的领导者',group:'外交官',color:'#10b981',icon:'🌟',
     summary:'你是温暖而有感染力的天生领袖。你善于激发他人的潜力，用热情和真诚凝聚人心。你关心他人成长，乐于助人，是团队中不可或缺的灵魂人物。',
@@ -877,7 +1191,26 @@ const TYPES = {
       {emoji:'📢',name:'公关/品牌经理',desc:'传递有价值的理念'},
       {emoji:'🤝',name:'公益组织创始人',desc:'凝聚力量做善事'},
       {emoji:'🎬',name:'活动策划',desc:'创造难忘的体验'}],
-    advice:['记得照顾自己的需求，爱人之前先爱自己','允许他人犯错和按自己的节奏成长，不必事事操心','学会说"不"，你的时间和精力是有限的','接受不完美，不是每个人都需要被你拯救']
+    advice:['记得照顾自己的需求，爱人之前先爱自己','允许他人犯错和按自己的节奏成长，不必事事操心','学会说"不"，你的时间和精力是有限的','接受不完美，不是每个人都需要被你拯救'],
+    celebrities:[
+      {name:'奥巴马',title:'美国前总统',emoji:'🇺🇸'},
+      {name:'奥普拉',title:'脱口秀主持人',emoji:'🎤'},
+      {name:'曼德拉',title:'南非前总统',emoji:'🌍'},
+      {name:'马丁·路德·金',title:'民权领袖',emoji:'✊'}],
+    dailyInsights:[
+      '今天作为ENFJ，把焦点放回自己，问问"我需要什么"',
+      '允许一个人按自己的节奏成长，不必事事操心',
+      '今天对一件事说"不"，你的能量是有限的',
+      '给自己一段不被需要的时光，只为自己而活',
+      '接受不是每个人都会被你感召，那不是你的失败',
+      '今天表达一个真实的负面感受，不必总是鼓舞他人',
+      '回顾本周你为他人的付出，也为自己庆祝一下'],
+    careerPath:{
+      skills:['表达能力','同理心','组织协调','激励他人'],
+      learning:'建议考取教师资格证或HR证书，从教学/培训岗位入门',
+      salary:'15-50万/年',
+      growth:'教学主管/培训总监/教育创业者'
+    }
   },
   ENFP:{code:'ENFP',name:'竞选者',tagline:'热情、有创造力、爱社交的自由灵魂',group:'外交官',color:'#10b981',icon:'🔥',
     summary:'你是热情洋溢的自由灵魂，对生活充满好奇和热爱。你善于发现可能性，用热情感染身边的人。你富有创造力，渴望自由和有意义的人生。',
@@ -890,7 +1223,26 @@ const TYPES = {
       {emoji:'📢',name:'市场/品牌策划',desc:'让好产品被更多人看到'},
       {emoji:'🎤',name:'活动主持/演讲者',desc:'用表达影响他人'},
       {emoji:'🚀',name:'创业者',desc:'把热爱变成事业'}],
-    advice:['培养专注和坚持的能力，把热情转化为持续的产出','建立时间管理和执行系统，让创意真正落地','学会区分主次，集中精力做好最重要的事','在追求新鲜感的同时，珍惜已有的关系和成果']
+    advice:['培养专注和坚持的能力，把热情转化为持续的产出','建立时间管理和执行系统，让创意真正落地','学会区分主次，集中精力做好最重要的事','在追求新鲜感的同时，珍惜已有的关系和成果'],
+    celebrities:[
+      {name:'华特·迪士尼',title:'迪士尼创始人',emoji:'🏰'},
+      {name:'罗宾·威廉姆斯',title:'演员',emoji:'🎭'},
+      {name:'罗伯特·���尼',title:'演员',emoji:'🦾'},
+      {name:'雪莱',title:'诗人',emoji:'🖋️'}],
+    dailyInsights:[
+      '今天作为ENFP，把一个热情坚持推进一整天',
+      '建立今天的"三件最重要的事"，专注完成它们',
+      '给自己一段不被打扰的专注时间，远离手机',
+      '今天完成一件你之前搁置的事，体验落地的喜悦',
+      '与老朋友联系，珍惜已有的关系，不只是发现新的',
+      '把今天的灵感写下来，但不急于开始新项目',
+      '回顾本周真正完成的事，给自己一些认可'],
+    careerPath:{
+      skills:['创意策划','表达感染力','社交运营','审美能力'],
+      learning:'建议选定垂直领域持续输出，从单一平台起步积累粉丝',
+      salary:'15-80万/年(波动大)',
+      growth:'头部创作者/MCN创始人/品牌主理人'
+    }
   },
   ISTJ:{code:'ISTJ',name:'物流师',tagline:'实际而注重事实的可靠主义者',group:'守护者',color:'#3b82f6',icon:'📋',
     summary:'你是踏实可靠的实干家，重视秩序、传统和事实。你做事严谨负责，言出必行，是团队中最值得信赖的人。你尊重规则，追求稳定和效率。',
@@ -903,7 +1255,26 @@ const TYPES = {
       {emoji:'🏢',name:'项目经理',desc:'确保项目按计划推进'},
       {emoji:'🔧',name:'工程师',desc:'用严谨构建可靠系统'},
       {emoji:'🏦',name:'银行/金融分析师',desc:'稳健管理风险'}],
-    advice:['尝试拥抱变化，稳定很重要，但适度的创新能打开新天地','有意识地关注他人的感受，人际关系的投资会带来长远回报','给自己留一些弹性空间，不必事事都有万全准备','对新技术和新方法保持开放，它们可能提升你的效率']
+    advice:['尝试拥抱变化，稳定很重要，但适度的创新能打开新天地','有意识地关注他人的感受，人际关系的投资会带来长远回报','给自己留一些弹性空间，不必事事都有万全准备','对新技术和新方法保持开放，它们可能提升你的效率'],
+    celebrities:[
+      {name:'乔治·华盛顿',title:'美国国父',emoji:'🇺🇸'},
+      {name:'默克尔',title:'德国前总理',emoji:'🇩🇪'},
+      {name:'沃伦·巴菲特',title:'投资家',emoji:'📈'},
+      {name:'海明威',title:'作家',emoji:'📖'}],
+    dailyInsights:[
+      '今天作为ISTJ，尝试一件小的新事物，你会发现变化并不可怕',
+      '关注一位同事的感受，问一句"今天怎么样"',
+      '给自己留一点弹性时间，不必事事都规划满',
+      '对一个新的工具或方法保持开放，看看能否提升效率',
+      '今天允许计划有小小的偏差，世界依然运转',
+      '与朋友聊一些非工作的话题，关系需要温度',
+      '回顾本周稳定推进的事项，给自己肯定'],
+    careerPath:{
+      skills:['严谨细致','数据分析','规则理解','责任感'],
+      learning:'建议攻读会计/财务专业，考取CPA/CFA证书入门',
+      salary:'15-50万/年',
+      growth:'财务总监/合伙人/审计高管'
+    }
   },
   ISFJ:{code:'ISFJ',name:'守护者',tagline:'非常专注、温暖的守护者，随时准备保护爱的人',group:'守护者',color:'#3b82f6',icon:'🛡️',
     summary:'你是温柔而坚定的守护者，默默付出，细心照顾身边的每一个人。你忠诚、有耐心、记忆力好，善于记住他人的需求。你是团队中不可或缺的温暖力量。',
@@ -916,7 +1287,26 @@ const TYPES = {
       {emoji:'📚',name:'图书管理员',desc:'有条理地管理信息'},
       {emoji:'🏢',name:'行政/人事',desc:'默默支撑组织运转'},
       {emoji:'🧒',name:'社工/育儿师',desc:'关爱需要帮助的人'}],
-    advice:['学会把自己的需求放在第一位，照顾好自己才能更好地照顾他人','勇敢表达自己的想法和不满，沉默不代表问题会消失','接受变化，尝试走出舒适区，你会发现更多可能','不要把所有人的期待都扛在肩上，学会说"不"']
+    advice:['学会把自己的需求放在第一位，照顾好自己才能更好地照顾他人','勇敢表达自己的想法和不满，沉默不代表问题会消失','接受变化，尝试走出舒适区，你会发现更多可能','不要把所有人的期待都扛在肩上，学会说"不"'],
+    celebrities:[
+      {name:'南丁格尔',title:'护理学先驱',emoji:'🏥'},
+      {name:'凯特王妃',title:'英国王妃',emoji:'👑'},
+      {name:'罗莎·帕克斯',title:'民权活动家',emoji:'✊'},
+      {name:'贝多芬',title:'作曲家',emoji:'🎵'}],
+    dailyInsights:[
+      '今天作为ISFJ，把"我需要"放在"你需要"之前',
+      '勇敢表达一个不满，沉默不代表问题会消失',
+      '给自己留一段独处时光，那是你的充电方式',
+      '今天尝试一件小的新事，走出舒适区一点点',
+      '接受变化，不必总是依赖熟悉的方式',
+      '对一位你帮助过的人说"不"，看看关系依然存在',
+      '回顾本周对自己的照顾，给自己一些掌声'],
+    careerPath:{
+      skills:['细心体贴','耐心负责','医学知识','沟通能力'],
+      learning:'建议攻读护理或医学专业，考取执业证书实习入门',
+      salary:'10-40万/年',
+      growth:'护士长/护理主任/专科护士'
+    }
   },
   ESTJ:{code:'ESTJ',name:'总经理',tagline:'出色的管理者，在管理事务方面无与伦比',group:'守护者',color:'#3b82f6',icon:'📌',
     summary:'你是高效务实的组织者，天生擅长管理和执行。你尊重规则和传统，做事有条不紊，善于把混乱变为秩序。你直言不讳，注重效率和结果。',
@@ -929,7 +1319,26 @@ const TYPES = {
       {emoji:'💼',name:'项目经理',desc:'确保项目按时保质完成'},
       {emoji:'🏦',name:'银行经理',desc:'稳健运营业务'},
       {emoji:'📋',name:'质量总监',desc:'把控标准和品质'}],
-    advice:['学会倾听不同的声音，灵活有时比正确更重要','关注团队成员的感受，命令式管理不如赋能式领导持久','对新方法和变化保持开放，效率可以通过不同方式实现','允许犯错和试错，这是创新的必要成本']
+    advice:['学会倾听不同的声音，灵活有时比正确更重要','关注团队成员的感受，命令式管理不如赋能式领导持久','对新方法和变化保持开放，效率可以通过不同方式实现','允许犯错和试错，这是创新的必要成本'],
+    celebrities:[
+      {name:'亨利·福特',title:'福特汽车创始人',emoji:'🚗'},
+      {name:'米歇尔·奥巴马',title:'美国前第一夫人',emoji:'🌺'},
+      {name:'朱镕基',title:'中国前总理',emoji:'🏢'},
+      {name:'杜鲁门',title:'美国前总统',emoji:'🎩'}],
+    dailyInsights:[
+      '今天作为ESTJ，倾听一个不同的声音，不必立刻反驳',
+      '关注团队成员的感受，命令不如赋能持久',
+      '对一个新的方法保持开放，效率可以多种方式实现',
+      '允许一次犯错，那是创新的必要成本',
+      '今天留出一段不被安排的时间，体验"无目的"',
+      '对家人表达一句感谢，关系的投资回报最长',
+      '回顾本周的成就，也允许自己回顾遗憾'],
+    careerPath:{
+      skills:['组织管理','流程优化','执行力','沟通协调'],
+      learning:'建议从基层管理做起，积累团队和项目管理经验',
+      salary:'20-70万/年',
+      growth:'运营总监/事业部总经理/COO'
+    }
   },
   ESFJ:{code:'ESFJ',name:'执政官',tagline:'极有同情心、受欢迎的社交达人',group:'守护者',color:'#3b82f6',icon:'💛',
     summary:'你是温暖热心的社交达人，天生善于关心和照顾他人。你重视和谐的人际关系，乐于组织活动、帮助身边的人。你是聚会中的核心，团队中的粘合剂。',
@@ -942,7 +1351,26 @@ const TYPES = {
       {emoji:'📢',name:'客户成功经理',desc:'维护客户关系'},
       {emoji:'🎉',name:'活动策划',desc:'组织温馨的聚会'},
       {emoji:'👨‍🏫',name:'教师',desc:'关心学生全面发展'}],
-    advice:['学会独立判断，不必过度在意他人的评价和认可','勇敢面对冲突，回避只会让问题积累和恶化','给自己留出独处和充电的时间，不必时刻取悦他人','接受不是每个人都会喜欢你，做真实的自己最重要']
+    advice:['学会独立判断，不必过度在意他人的评价和认可','勇敢面对冲突，回避只会让问题积累和恶化','给自己留出独处和充电的时间，不必时刻取悦他人','接受不是每个人都会喜欢你，做真实的自己最重要'],
+    celebrities:[
+      {name:'泰勒·斯威夫特',title:'歌手',emoji:'🎸'},
+      {name:'比尔·克林顿',title:'美国前总统',emoji:'🎷'},
+      {name:'休·杰克曼',title:'演员',emoji:'🐺'},
+      {name:'詹妮弗·洛佩兹',title:'歌手/演员',emoji:'💃'}],
+    dailyInsights:[
+      '今天作为ESFJ，独立判断一件事，不必在意他人评价',
+      '勇敢面对一个冲突，回避只会让问题积累',
+      '给自己一段独处的时光，不必时刻取悦他人',
+      '接受不是每个人都会喜欢你，做真实的自己',
+      '今天拒绝一个不合理的请求，你的时间很宝贵',
+      '与朋友聊一些深刻的话题，不必总是轻松',
+      '回顾本周对自己的关注，给自己一份礼物'],
+    careerPath:{
+      skills:['同理心','沟通协调','服务意识','组织能力'],
+      learning:'建议攻读护理/医学/酒店管理专业，从一线服务岗位入门',
+      salary:'10-40万/年',
+      growth:'护士长/服务总监/客户成功总监'
+    }
   },
   ISTP:{code:'ISTP',name:'鉴赏家',tagline:'大胆而实际的实验家，擅长使用各种工具',group:'探险家',color:'#f59e0b',icon:'🔧',
     summary:'你是冷静务实的实干家，天生善于动手解决问题。你好奇心强，喜欢探索事物运作的原理。你沉着冷静，在危机中总能保持清醒，是解决问题的高手。',
@@ -955,7 +1383,26 @@ const TYPES = {
       {emoji:'🚑',name:'急救/消防员',desc:'在危机中拯救生命'},
       {emoji:'🏎️',name:'赛车手/运动员',desc:'挑战身体极限'},
       {emoji:'💻',name:'开发者/运维',desc:'排查和解决技术故障'}],
-    advice:['学会与人协作，团队合作能完成个人无法实现的目标','适当做长期规划，不要总是走一步看一步','关注他人的感受，沟通和人际关系同样重要','找到能持续激发你兴趣的领域，深度耕耘']
+    advice:['学会与人协作，团队合作能完成个人无法实现的目标','适当做长期规划，不要总是走一步看一步','关注他人的感受，沟通和人际关系同样重要','找到能持续激发你兴趣的领域，深度耕耘'],
+    celebrities:[
+      {name:'迈克尔·乔丹',title:'篮球运动员',emoji:'🏀'},
+      {name:'史泰龙',title:'演员',emoji:'🎬'},
+      {name:'克林特·伊斯特伍德',title:'导演/演员',emoji:'🤠'},
+      {name:'王石',title:'万科创始人',emoji:'⛰️'}],
+    dailyInsights:[
+      '今天作为ISTP，与团队协作完成一件事，体验集体力量',
+      '做一个简单的长期规划，哪怕只是3个月的方向',
+      '关注一位同事的感受，沟通也是技术活',
+      '找到能持续激发你兴趣的领域，开始深耕',
+      '今天用语言而非行动表达一个想法',
+      '给自己一段不被工具和任务打扰的安静时光',
+      '回顾本周解决的问题，给自己一些认可'],
+    careerPath:{
+      skills:['动手能力','问题排查','技术理解','冷静应变'],
+      learning:'建议攻读工程类专业，通过实习和项目积累实操经验',
+      salary:'15-50万/年',
+      growth:'技术专家/项目经理/技术总监'
+    }
   },
   ISFP:{code:'ISFP',name:'探险家',tagline:'灵活迷人的艺术家，随时准备探索新事物',group:'探险家',color:'#f59e0b',icon:'🎨',
     summary:'你是温柔而富有艺术气质的探险家。你敏感、有审美，善于发现生活中的美。你追求自由和真实，不喜欢被框架束缚，用独特的方式表达自己。',
@@ -968,7 +1415,26 @@ const TYPES = {
       {emoji:'🎵',name:'音乐人/舞者',desc:'用艺术表达自我'},
       {emoji:'🍳',name:'厨师/烘焙师',desc:'创造美味的艺术'},
       {emoji:'🌱',name:'园艺师/兽医',desc:'与自然和动物相处'}],
-    advice:['培养长远规划的意识，自由也需要方向来引导','勇敢面对冲突和困难，逃避只会让问题变大','认识到自己的价值，你的敏感和审美是珍贵的礼物','建立自信，大胆展示你的作品和才华']
+    advice:['培养长远规划的意识，自由也需要方向来引导','勇敢面对冲突和困难，逃避只会让问题变大','认识到自己的价值，你的敏感和审美是珍贵的礼物','建立自信，大胆展示你的作品和才华'],
+    celebrities:[
+      {name:'米开朗基罗',title:'雕塑家/画家',emoji:'🎨'},
+      {name:'鲍勃·迪伦',title:'歌手/诗人',emoji:'🎵'},
+      {name:'王菲',title:'歌手',emoji:'🎤'},
+      {name:'周星驰',title:'演员/导演',emoji:'🎬'}],
+    dailyInsights:[
+      '今天作为ISFP，做一个简单的本周计划，自由需要方向',
+      '勇敢面对一个小冲突，逃避只会让问题变大',
+      '认识到自己的价值，你的敏感是珍贵的礼物',
+      '今天大胆展示你的作品，不必等"完美"',
+      '建立自信，对自己说一句"我足够好"',
+      '用艺术表达当下的情绪，不必修饰',
+      '回顾本周的创造，给自己温柔的肯定'],
+    careerPath:{
+      skills:['审美能力','创意表达','软件技能','同理心'],
+      learning:'建议主修设计专业，建立作品集从设计公司或自由职业入门',
+      salary:'12-45万/年',
+      growth:'设计总监/独立设计师/创意工作室主理人'
+    }
   },
   ESTP:{code:'ESTP',name:'企业家',tagline:'聪明、精力充沛的实干家，享受冒险',group:'探险家',color:'#f59e0b',icon:'🚀',
     summary:'你是精力充沛的行动派，天生敢于冒险和挑战。你思维敏捷，善于抓住当下的机会。你不喜欢空谈，信奉"做了再说"，是天生的问题解决者和冒险家。',
@@ -981,7 +1447,26 @@ const TYPES = {
       {emoji:'📈',name:'交易员/投资人',desc:'在波动中获利'},
       {emoji:'⚽',name:'运动员/教练',desc:'在赛场上一展身手'},
       {emoji:'🚒',name:'急救/警察',desc:'在一线快速反应'}],
-    advice:['学会在行动前适当评估风险，三思而后行能避免很多麻烦','培养耐心和长期思维，有些事需要时间才能看到回报','注重细节和后续执行，不要只享受开拓的快感','学会倾听他人的建议，尤其是来自谨慎型人的提醒']
+    advice:['学会在行动前适当评估风险，三思而后行能避免很多麻烦','培养耐心和长期思维，有些事需要时间才能看到回报','注重细节和后续执行，不要只享受开拓的快感','学会倾听他人的建议，尤其是来自谨慎型人的提醒'],
+    celebrities:[
+      {name:'麦当娜',title:'歌手',emoji:'🎤'},
+      {name:'菲尔普斯',title:'游泳奥运冠军',emoji:'🏊'},
+      {name:'特朗普',title:'美国前总统/商人',emoji:'💰'},
+      {name:'黄渤',title:'演员',emoji:'🎭'}],
+    dailyInsights:[
+      '今天作为ESTP，行动前花5分钟评估风险，三思而后行',
+      '培养一点耐心，有些事需要时间才能看到回报',
+      '注重一个项目的后续执行，不只是开拓的快感',
+      '倾听一位谨慎型朋友的建议，那是宝贵的平衡',
+      '今天做一件需要长期坚持的事，体验延迟满足',
+      '给自己一段安静的反思时光，远离刺激',
+      '回顾本周的冒险与收获，也回顾一下代价'],
+    careerPath:{
+      skills:['沟通说服','应变能力','机会洞察','抗压能力'],
+      learning:'建议从一线销售或BD岗位入门，在实战中积累客户资源',
+      salary:'15-80万/年(提成制)',
+      growth:'销售总监/商务VP/创业者'
+    }
   },
   ESFP:{code:'ESFP',name:'表演者',tagline:'热情洋溢、即兴发挥的派对明星',group:'探险家',color:'#f59e0b',icon:'🎉',
     summary:'你是热情洋溢的派对灵魂，天生善于享受和创造快乐。你活力四射、善于社交，总能让身边的人开怀大笑。你活在当下，热爱生活中的每一份精彩。',
@@ -994,9 +1479,91 @@ const TYPES = {
       {emoji:'💄',name:'造型师/美妆师',desc:'创造美的体验'},
       {emoji:'🍽️',name:'餐饮/旅游服务',desc:'让客人享受美好时光'},
       {emoji:'👶',name:'幼教/亲子指导',desc:'陪伴孩子快乐成长'}],
-    advice:['培养长期规划和理财意识，享受当下也要为未来留余地','学会面对严肃的问题，不是所有事都能一笑而过','在社交之外培养独处的能力，与自己相处也很重要','找到能持续激发热情的事业，把快乐变成可持续的职业']
+    advice:['培养长期规划和理财意识，享受当下也要为未来留余地','学会面对严肃的问题，不是所有事都能一笑而过','在社交之外培养独处的能力，与自己相处也很重要','找到能持续激发热情的事业，把快乐变成可持续的职业'],
+    celebrities:[
+      {name:'玛丽莲·梦露',title:'演员',emoji:'💋'},
+      {name:'贾斯汀·比伯',title:'歌手',emoji:'🎶'},
+      {name:'阿黛尔',title:'歌手',emoji:'🎤'},
+      {name:'陈赫',title:'演员',emoji:'😄'}],
+    dailyInsights:[
+      '今天作为ESFP，做一个简单的本月规划，享受当下也留余地',
+      '面对一个严肃的问题，不是所有事都能一笑而过',
+      '培养独处的能力，与自己相处也很重要',
+      '今天拒绝一次冲动消费，体验克制的力量',
+      '找到一个能持续激发热情的事业，把快乐变可持续',
+      '与朋友聊一些深刻的话题，不只是欢乐',
+      '回顾本周的快乐时刻，也允许自己感受其他情绪'],
+    careerPath:{
+      skills:['表演表达','舞台感染力','社交能力','即兴发挥'],
+      learning:'建议主修表演/播音专业，从短视频或剧场演出积累经验',
+      salary:'12-60万/年(波动大)',
+      growth:'知名演员/主持人/演艺工作室主理人'
+    }
   }
 };
+
+/* ====================================================================
+   性格兼容性计算
+   规则：
+   - 完全相同类型：恋爱70/友情90/工作85
+   - 相同维度倾向：小幅加分（友情/工作更看重同频）
+   - E-I 互补：恋爱+15/友情+10/工作+8
+   - N-N 同频：精神共鸣 +12
+   - N-S 差异：降低亲密度（最影响共鸣）
+   - T-F 互补：恋爱+15
+   - J-P 互补：生活+10
+   ==================================================================== */
+function getCompatibility(t1, t2){
+  if(!t1||!t2) return {love:0,friendship:0,work:0,desc:'未知'};
+  if(t1===t2){
+    return {love:70, friendship:90, work:85, desc:'同类型·深度共鸣'};
+  }
+  const d1=t1.split(''), d2=t2.split('');
+  let love=45, friendship=50, work=55;
+
+  // 维度1：E-I
+  if(d1[0]===d2[0]){
+    love+=5; friendship+=8; work+=6;            // 相同倾向小幅加分
+  }else{
+    love+=15; friendship+=10; work+=8;          // E-I 互补
+  }
+
+  // 维度2：N-S
+  if(d1[1]===d2[1]){
+    if(d1[1]==='N'){
+      love+=12; friendship+=12; work+=8;        // N-N 同频精神共鸣
+    }else{
+      love+=8; friendship+=8; work+=10;         // S-S 同频
+    }
+  }else{
+    love-=8; friendship-=5; work-=3;            // N-S 差异降低共鸣
+  }
+
+  // 维度3：T-F
+  if(d1[2]===d2[2]){
+    love+=5; friendship+=8; work+=10;           // 相同倾向
+  }else{
+    love+=15; friendship+=5; work+=3;           // T-F 互补
+  }
+
+  // 维度4：J-P
+  if(d1[3]===d2[3]){
+    love+=5; friendship+=5; work+=12;           // 相同倾向
+  }else{
+    love+=10; friendship+=5; work-=2;           // J-P 互补（生活+10）
+  }
+
+  const clamp=v=>Math.max(5,Math.min(98,Math.round(v)));
+  love=clamp(love); friendship=clamp(friendship); work=clamp(work);
+
+  let desc;
+  if(love>=80) desc='灵魂伴侣·强烈吸引';
+  else if(love>=65) desc='互补的火花';
+  else if(love>=50) desc='需要磨合的组合';
+  else desc='差异较大的搭配';
+
+  return {love, friendship, work, desc};
+}
 
 /* ====================================================================
    应用状态
@@ -1078,6 +1645,10 @@ function go(page){
   window.scrollTo(0,0);
   if(page==='history')renderHistory();
   if(page==='profile')renderProfile();
+  if(page==='celebs')renderCelebs();
+  if(page==='daily')renderDaily();
+  if(page==='growth')renderGrowthChart();
+  if(page==='careers')renderCareers();
   updateNav();
 }
 
@@ -1414,8 +1985,11 @@ function showResult(type,dims){
     <div class="result-actions">
       <button class="btn btn-primary btn-lg" onclick="saveResult('${type}')">💾 保存结果</button>
       <button class="btn btn-outline btn-lg" onclick="generatePoster('${type}')">🖼️ 海报分享</button>
-      <button class="btn btn-outline btn-lg" onclick="startTest()">🔄 再测一次</button>
+      <button class="btn btn-outline btn-lg" id="aiAnalysisBtn" onclick="getAIAnalysis()">🤖 AI深度解读</button>
+      <button class="btn btn-ghost btn-lg" onclick="startTest()">🔄 再测一次</button>
     </div>
+
+    <div class="ai-section" id="aiSection"></div>
 
     <div class="share-section">
       <h3>分享给朋友</h3>
@@ -1716,6 +2290,373 @@ function checkUrlResult(){
     history.replaceState(null,'',location.pathname);
     toast('这是分享的性格结果，点击"再测一次"亲自测试');
   }
+}
+
+/* ====================================================================
+   功能1：性格兼容分析
+   ==================================================================== */
+let compatPick=[null,null];
+function openCompatPicker(slot){
+  appState._compatSlot=slot;
+  const html=Object.keys(TYPES).map(code=>{
+    const t=TYPES[code];
+    return `<div class="gallery-card" style="--card-color:${t.color};min-width:120px;text-align:center;padding:14px" onclick="pickCompat('${code}')">
+      <div class="gallery-icon">${t.icon}</div>
+      <div class="gallery-code" style="color:${t.color};font-size:16px">${t.code}</div>
+      <div class="gallery-name" style="font-size:11px">${t.name}</div>
+    </div>`;
+  }).join('');
+  openModalContent('选择MBTI类型','<div class="gallery-grid" style="grid-template-columns:repeat(4,1fr)">'+html+'</div>');
+}
+function pickCompat(code){
+  compatPick[appState._compatSlot-1]=code;
+  closeModal('customModal');
+  const el=document.getElementById('compatPick'+appState._compatSlot);
+  const t=TYPES[code];
+  el.innerHTML=`<div class="pick-icon">${t.icon}</div><div class="pick-code" style="color:${t.color}">${t.code}</div><div class="pick-name">${t.name}</div>`;
+  document.getElementById('compatCalcBtn').disabled=!(compatPick[0]&&compatPick[1]);
+}
+function calcCompatibility(){
+  if(!compatPick[0]||!compatPick[1])return;
+  const t1=TYPES[compatPick[0]],t2=TYPES[compatPick[1]];
+  const r=getCompatibility(compatPick[0],compatPick[1]);
+  const colors={love:'#ec4899',friendship:'#3b82f6',work:'#10b981'};
+  const icons={love:'💕',friendship:'🤝',work:'💼'};
+  const labels={love:'恋爱契合度',friendship:'友情契合度',work:'职场契合度'};
+  let html='<div class="compat-desc">💡 '+r.desc+'</div>';
+  ['love','friendship','work'].forEach(k=>{
+    const v=r[k];
+    const level=v>=80?'绝佳':v>=65?'很好':v>=50?'不错':v>=35?'一般':'挑战';
+    html+=`<div class="compat-score-card">
+      <div class="compat-score-icon">${icons[k]}</div>
+      <div style="flex:1">
+        <div style="font-weight:600;margin-bottom:6px">${labels[k]} <span style="color:var(--text-mute);font-size:13px;font-weight:400">${level}</span></div>
+        <div class="compat-score-bar"><div class="compat-score-fill" style="width:${v}%;background:${colors[k]}"></div></div>
+      </div>
+      <div class="compat-score-val" style="color:${colors[k]}">${v}</div>
+    </div>`;
+  });
+  html+=`<div style="text-align:center;margin-top:16px">
+    <button class="btn btn-outline" onclick="generateCompatPoster()">🖼️ 生成兼容海报</button>
+    <button class="btn btn-ghost" onclick="go('explore')">返回探索</button>
+  </div>`;
+  document.getElementById('compatResults').innerHTML=html;
+  setTimeout(()=>{document.querySelectorAll('.compat-score-fill').forEach(el=>el.style.width=el.style.width)},100);
+}
+function generateCompatPoster(){
+  if(!compatPick[0]||!compatPick[1])return;
+  const t1=TYPES[compatPick[0]],t2=TYPES[compatPick[1]];
+  const r=getCompatibility(compatPick[0],compatPick[1]);
+  const W=750,H=1100;
+  const canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;
+  const ctx=canvas.getContext('2d');
+  // 背景渐变
+  const grad=ctx.createLinearGradient(0,0,W,H);
+  grad.addColorStop(0,t1.color);grad.addColorStop(1,t2.color);
+  ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+  // 标题
+  ctx.fillStyle='#fff';ctx.textAlign='center';ctx.font='bold 36px sans-serif';
+  ctx.fillText('性格兼容分析',W/2,80);
+  // 两个类型
+  ctx.font='72px sans-serif';ctx.fillText(t1.icon,W/4,200);ctx.fillText(t2.icon,W*3/4,200);
+  ctx.font='bold 48px sans-serif';ctx.fillText(t1.code,W/4,270);ctx.fillText(t2.code,W*3/4,270);
+  ctx.font='20px sans-serif';ctx.fillText(t1.name,W/4,300);ctx.fillText(t2.name,W*3/4,300);
+  ctx.font='60px sans-serif';ctx.fillText('💕',W/2,220);
+  // 分数
+  const items=[['💕 恋爱',r.love,'#ec4899'],['🤝 友情',r.friendship,'#3b82f6'],['💼 职场',r.work,'#10b981']];
+  items.forEach((item,i)=>{
+    const y=380+i*120;
+    ctx.fillStyle='rgba(255,255,255,.15)';ctx.fillRect(80,y,W-160,80);
+    ctx.fillStyle='#fff';ctx.textAlign='left';ctx.font='bold 22px sans-serif';
+    ctx.fillText(item[0],100,y+32);
+    ctx.font='bold 40px sans-serif';ctx.textAlign='right';
+    ctx.fillText(item[1],W-100,y+48);
+  });
+  // 描述
+  ctx.fillStyle='rgba(255,255,255,.9)';ctx.textAlign='center';ctx.font='18px sans-serif';
+  wrapText(ctx,r.desc,W/2,800,W-160,28);
+  // 底部
+  ctx.font='14px sans-serif';ctx.fillStyle='rgba(255,255,255,.6)';
+  ctx.fillText('MBTI性格测试 · 扫码测测你的类型',W/2,H-40);
+  // 下载
+  const link=document.createElement('a');link.download=`${compatPick[0]}-${compatPick[1]}-compat.png`;
+  link.href=canvas.toDataURL();link.click();
+  toast('兼容海报已下载！');
+}
+
+/* ====================================================================
+   功能3：成长追踪（Canvas折线图）
+   ==================================================================== */
+function renderGrowthChart(){
+  const history=appState.currentUser?appState.currentUser.history:[];
+  const tempHistory=JSON.parse(localStorage.getItem('mbti_temp_history')||'[]');
+  const allRecords=[...history||[],...tempHistory].filter(r=>r&&r.type).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const canvas=document.getElementById('growthChart');
+  const empty=document.getElementById('growthEmpty');
+  const legend=document.getElementById('growthLegend');
+  if(!canvas)return;
+  if(allRecords.length<2){canvas.style.display='none';empty.style.display='block';legend.style.display='none';return;}
+  canvas.style.display='block';empty.style.display='none';legend.style.display='flex';
+  const ctx=canvas.getContext('2d');
+  const W=640,H=320,padL=50,padR=20,padT=20,padB=60;
+  ctx.clearRect(0,0,W,H);
+  // 背景网格
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  ctx.strokeStyle=isDark?'rgba(255,255,255,.08)':'rgba(0,0,0,.06)';
+  ctx.lineWidth=1;ctx.font='11px sans-serif';
+  for(let i=0;i<=10;i++){const y=padT+(H-padT-padB)*i/10;ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();
+    ctx.fillStyle=isDark?'rgba(255,255,255,.4)':'rgba(0,0,0,.4)';ctx.textAlign='right';ctx.fillText(100-i*10+'%',padL-6,y+3);}
+  // 维度数据
+  const dims=[{key:'EI',label:'E-I',color:'#3b82f6'},{key:'SN',label:'S-N',color:'#10b981'},{key:'TF',label:'T-F',color:'#f59e0b'},{key:'JP',label:'J-P',color:'#ec4899'}];
+  dims.forEach(dim=>{
+    ctx.strokeStyle=dim.color;ctx.lineWidth=2;ctx.beginPath();
+    allRecords.forEach((r,i)=>{
+      const ans=r.answers||[];
+      // 简化：从类型推断维度倾向
+      const code=r.type;
+      const isA=dim.key==='EI'?code[0]==='E':dim.key==='SN'?code[1]==='S':dim.key==='TF'?code[2]==='T':code[3]==='J';
+      const val=isA?65:35; // 简化估算
+      const x=padL+(W-padL-padR)*(allRecords.length===1?0.5:i/(allRecords.length-1));
+      const y=padT+(H-padT-padB)*(100-val)/100;
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+      // 画点
+      ctx.fillStyle=dim.color;ctx.beginPath();ctx.arc(x,y,4,0,Math.PI*2);ctx.fill();
+    });
+    ctx.stroke();
+  });
+  // X轴日期
+  ctx.fillStyle=isDark?'rgba(255,255,255,.5)':'rgba(0,0,0,.5)';ctx.textAlign='center';ctx.font='10px sans-serif';
+  allRecords.forEach((r,i)=>{
+    const x=padL+(W-padL-padR)*(allRecords.length===1?0.5:i/(allRecords.length-1));
+    const d=new Date(r.date);const label=(d.getMonth()+1)+'/'+d.getDate();
+    ctx.fillText(label,x,H-padB+16);
+    ctx.fillText(r.type,x,H-padB+32);
+  });
+}
+
+/* ====================================================================
+   功能7：性格名人墙
+   ==================================================================== */
+function renderCelebs(){
+  const grid=document.getElementById('celebGrid');if(!grid)return;
+  let html='';
+  Object.keys(TYPES).forEach(code=>{
+    const t=TYPES[code];if(!t.celebrities)return;
+    t.celebrities.forEach(c=>{
+      html+=`<div class="celeb-card" onclick="showTypeDetail('${code}')">
+        <div class="celeb-emoji">${c.emoji}</div>
+        <div class="celeb-name">${c.name}</div>
+        <div class="celeb-title">${c.title}</div>
+        <span class="celeb-type-tag" style="background:${t.color};color:#fff">${t.code} · ${t.name}</span>
+      </div>`;
+    });
+  });
+  grid.innerHTML=html;
+}
+
+/* ====================================================================
+   功能6：每日性格洞察
+   ==================================================================== */
+function renderDaily(){
+  const card=document.getElementById('dailyCard');if(!card)return;
+  // 获取用户最近测试类型
+  const history=appState.currentUser?appState.currentUser.history:[];
+  const temp=JSON.parse(localStorage.getItem('mbti_temp_history')||'[]');
+  const all=[...history||[],...temp].filter(r=>r&&r.type);
+  if(all.length===0)return;
+  const lastType=all[0].type;const t=TYPES[lastType];if(!t||!t.dailyInsights)return;
+  const today=new Date();const dayOfYear=Math.floor((today-new Date(today.getFullYear(),0,0))/86400000);
+  const insight=t.dailyInsights[dayOfYear%t.dailyInsights.length];
+  const dateStr=today.toLocaleDateString('zh-CN',{month:'long',day:'numeric',weekday:'long'});
+  card.innerHTML=`<div class="daily-date">${dateStr}</div>
+    <div class="daily-icon">${t.icon}</div>
+    <div class="daily-text">${insight}</div>
+    <div class="daily-type-badge" style="background:${t.color}">${t.code} · ${t.name}</div>
+    <p style="margin-top:16px;font-size:13px;color:var(--text-mute)">明日再来查看新的洞察提示</p>`;
+}
+
+/* ====================================================================
+   功能5：团队性格地图
+   ==================================================================== */
+function createTeam(){
+  const name=document.getElementById('teamNameInput').value.trim();
+  if(!name){toast('请输入团队名称');return;}
+  // 生成6位团队码
+  const code=name.substring(0,2).toUpperCase()+Math.random().toString(36).substring(2,6).toUpperCase();
+  const team={name,code,members:[],createdAt:new Date().toISOString()};
+  // 如果用户有测试结果，自动加入
+  const history=appState.currentUser?appState.currentUser.history:[];const temp=JSON.parse(localStorage.getItem('mbti_temp_history')||'[]');
+  const all=[...(history||[]),...temp].filter(r=>r&&r.type);
+  if(all.length>0){team.members.push({name:'我',type:all[0].type});}
+  localStorage.setItem('mbti_team_'+code,JSON.stringify(team));
+  renderTeam(team);
+  toast('团队创建成功！分享码：'+code);
+}
+function renderTeam(team){
+  const area=document.getElementById('teamArea');
+  // 统计类型分布
+  const dist={};const groups={分析家:0,外交官:0,守护者:0,探险家:0};
+  team.members.forEach(m=>{dist[m.type]=(dist[m.type]||0)+1;if(TYPES[m.type])groups[TYPES[m.type].group]=(groups[TYPES[m.type].group]||0)+1;});
+  const total=team.members.length;
+  let distHtml='';
+  Object.keys(dist).sort((a,b)=>dist[b]-dist[a]).forEach(code=>{
+    const t=TYPES[code];const pct=Math.round(dist[code]/total*100);
+    distHtml+=`<div class="team-bar">
+      <div class="team-bar-label">${t?t.icon:''} ${code}</div>
+      <div class="team-bar-track"><div class="team-bar-fill" style="width:${pct}%;background:${t?t.color:'#666'}">${dist[code]}人</div></div>
+    </div>`;
+  });
+  // 团队洞察
+  const groupColors={分析家:'#8b5cf6',外交官:'#10b981',守护者:'#3b82f6',探险家:'#f59e0b'};
+  let groupHtml='';
+  Object.keys(groups).forEach(g=>{if(groups[g]>0)groupHtml+=`<div class="team-bar"><div class="team-bar-label">${g}</div><div class="team-bar-track"><div class="team-bar-fill" style="width:${groups[g]/total*100}%;background:${groupColors[g]}">${groups[g]}人</div></div></div>`;});
+  // 洞察分析
+  let insights=[];
+  if(groups['分析家']>total*0.4)insights.push('📊 团队中分析家占比高，擅长战略规划，但需注意执行力落地');
+  if(groups['外交官']>total*0.4)insights.push('💗 团队中外交官多，人际氛围好，但需注意决策效率');
+  if(groups['守护者']>total*0.4)insights.push('🛡️ 团队中守护者多，执行力强，但需注意创新和灵活性');
+  if(groups['探险家']>total*0.4)insights.push('⚡ 团队中探险家多，灵活创新，但需注意计划性和跟进');
+  const types=Object.keys(dist);
+  if(types.length>=3)insights.push('🌈 团队性格多样性丰富，视角多元，有利于创新');
+  if(types.length===1)insights.push('⚠️ 团队性格高度一致，沟通顺畅但可能存在思维盲区');
+  if(total>=3&&groups['分析家']>0&&groups['外交官']>0)insights.push('🤝 分析家+外交官组合，既有战略又有温度，领导力均衡');
+  area.innerHTML=`<div class="team-share-code">
+    <p style="font-size:13px;color:var(--text-mute);margin-bottom:4px">团队分享码（成员凭此码加入）</p>
+    <code>${team.code}</code>
+    <p style="font-size:12px;color:var(--text-mute);margin-top:4px">${team.name} · ${total}人</p>
+  </div>
+  <div style="text-align:center;margin-bottom:16px">
+    <input type="text" class="team-input" id="memberNameInput" placeholder="成员昵称" style="max-width:120px;margin-right:4px">
+    <select class="team-input" id="memberTypeInput" style="max-width:120px;display:inline-block">
+      ${Object.keys(TYPES).map(c=>`<option value="${c}">${c} ${TYPES[c].name}</option>`).join('')}
+    </select>
+    <button class="btn btn-primary" onclick="addTeamMember('${team.code}')">添加成员</button>
+  </div>
+  <h3 style="text-align:center;margin-bottom:16px">性格类型分布</h3>
+  <div class="team-dist">${distHtml||'<p style="text-align:center;color:var(--text-mute)">暂无成员数据</p>'}</div>
+  <h3 style="text-align:center;margin:24px 0 16px">四大组分布</h3>
+  <div class="team-dist">${groupHtml||'<p style="text-align:center;color:var(--text-mute)">暂无数据</p>'}</div>
+  <div class="team-insights"><h4>🔍 团队优势与盲区</h4>${insights.map(i=>`<div class="team-insight-item">${i}</div>`).join('')||'<div class="team-insight-item">添加更多成员后查看分析</div>'}</div>`;
+}
+function addTeamMember(code){
+  const name=document.getElementById('memberNameInput').value.trim()||'成员'+Math.floor(Math.random()*100);
+  const type=document.getElementById('memberTypeInput').value;
+  const team=JSON.parse(localStorage.getItem('mbti_team_'+code)||'{}');
+  if(!team.members){toast('团队不存在');return;}
+  team.members.push({name,type});
+  localStorage.setItem('mbti_team_'+code,JSON.stringify(team));
+  renderTeam(team);toast(name+' 已加入团队');
+}
+
+/* ====================================================================
+   功能4：职业路径规划
+   ==================================================================== */
+function renderCareers(){
+  const area=document.getElementById('careersArea');if(!area)return;
+  const history=appState.currentUser?appState.currentUser.history:[];
+  const temp=JSON.parse(localStorage.getItem('mbti_temp_history')||'[]');
+  const all=[...(history||[]),...temp].filter(r=>r&&r.type);
+  let type=all.length>0?all[0].type:null;
+  let html='';
+  if(!type){
+    html='<div style="text-align:center;padding:40px"><div style="font-size:48px;margin-bottom:12px">🚀</div><p style="color:var(--text-soft);margin-bottom:16px">先完成测试，查看你的专属职业路径</p><button class="btn btn-primary" onclick="startTest()">去做测试</button></div>';
+  }else{
+    const t=TYPES[type];
+    const cp=t.careerPath||{skills:['分析能力','沟通技巧'],learning:'持续学习提升',salary:'面议',growth:'多方向发展'};
+    html=`<div class="career-path-card">
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="font-size:48px">${t.icon}</div>
+        <div style="font-size:24px;font-weight:800;color:${t.color}">${t.code}</div>
+        <div style="font-size:16px;font-weight:600">${t.name}</div>
+      </div>
+      <div class="career-path-section"><h4>🎯 核心技能需求</h4>${cp.skills.map(s=>`<span class="career-skill-tag">${s}</span>`).join('')}</div>
+      <div class="career-path-section"><h4>📚 学习路径</h4><p style="font-size:14px;color:var(--text-soft);line-height:1.7">${cp.learning}</p></div>
+      <div class="career-info-row">
+        <div class="career-info-item"><div class="label">💰 薪资范围</div><div class="val">${cp.salary}</div></div>
+        <div class="career-info-item"><div class="label">📈 发展方向</div><div class="val">${cp.growth}</div></div>
+      </div>
+      <div class="career-path-section" style="margin-top:20px">
+        <h4>💼 全部推荐职业</h4>
+        ${t.careers.map(c=>`<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)"><span style="font-size:22px">${c.emoji}</span><div><strong style="font-size:14px">${c.name}</strong><br><span style="font-size:12px;color:var(--text-soft)">${c.desc}</span></div></div>`).join('')}
+      </div>
+    </div>`;
+  }
+  area.innerHTML=html;
+}
+
+/* ====================================================================
+   功能2：AI深度解读（调用后端 Agnes API 代理）
+   ==================================================================== */
+async function getAIAnalysis(){
+  const btn=document.getElementById('aiAnalysisBtn');if(btn){btn.disabled=true;btn.textContent='AI分析中...';}
+  const section=document.getElementById('aiSection');
+  if(!section)return;
+  // 获取最近测试结果
+  const history=appState.currentUser?appState.currentUser.history:[];
+  const temp=JSON.parse(localStorage.getItem('mbti_temp_history')||'[]');
+  const all=[...(history||[]),...temp].filter(r=>r&&r.type);
+  if(all.length===0){toast('请先完成测试');if(btn){btn.disabled=false;btn.textContent='🤖 AI深度解读';}return;}
+  const lastResult=all[0];
+  const t=TYPES[lastResult.type];
+  section.innerHTML='<div class="ai-card"><div class="ai-loading"><div class="spinner"></div><p>Agnes AI 正在分析你的性格...</p></div></div>';
+  // 构建AI请求
+  const dims=lastResult.dims||{};
+  const dimStr=Object.keys(dims).map(k=>{const d=dims[k];return d?`${d.a}:${d.aVal}% / ${d.b}:${d.bVal}%`:''}).filter(Boolean).join('，')||'默认50/50';
+  const prompt=`你是一位专业的MBTI性格分析师。用户完成了MBTI测试，请根据以下信息给出深度个性化解读。
+
+用户类型：${lastResult.type}（${t.name}）
+维度比例：${dimStr}
+测试模式：${lastResult.mode||'detailed'}
+
+请从以下4个方面分析（共约400字，用中文，分段清晰）：
+1. 🔍 性格内核：结合维度比例，分析这个人的核心驱动力和思维模式（偏T 70%和偏T 55%的人有什么不同）
+2. 💡 独特优势：基于具体维度倾向，指出TA比别人更突出的3个优势
+3. ⚠️ 潜在挑战：针对维度比例，提醒TA需要警惕的2个盲区
+4. 🎯 行动建议：给出3条具体可执行的建议
+
+要求：语言亲切专业，像一位了解TA的朋友在聊天。不要用"你是一个INTJ"这种泛泛的模板话。`;
+
+  try{
+    const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),30000);
+    const resp=await fetch('/api/ai-analysis',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prompt}),signal:controller.signal});
+    clearTimeout(timer);
+    if(!resp.ok)throw new Error('AI服务暂时不可用');
+    const data=await resp.json();
+    const content=data.content||data.choices?.[0]?.message?.content||'分析结果为空';
+    // 简单Markdown渲染
+    const html=content.split('\n').map(line=>{
+      line=line.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+      if(line.trim().startsWith('#'))return `<h4 style="margin:16px 0 8px;color:var(--primary)">${line.replace(/^#+\s*/,'')}</h4>`;
+      if(line.trim())return `<p>${line}</p>`;return '';
+    }).join('');
+    section.innerHTML=`<div class="ai-card"><div class="ai-content">${html}</div>
+      <div class="ai-btn"><button class="btn btn-outline" onclick="getAIAnalysis()">🔄 重新分析</button>
+      <button class="btn btn-ghost" onclick="copyAIResult()">📋 复制结果</button></div></div>`;
+  }catch(e){
+    section.innerHTML=`<div class="ai-card"><div style="text-align:center;padding:20px">
+      <p style="color:var(--text-soft)">⚠️ ${e.message||'AI分析失败'}</p>
+      <p style="font-size:13px;color:var(--text-mute);margin-top:8px">请确保后端服务已启动（localhost:8090）</p>
+      <button class="btn btn-primary" style="margin-top:12px" onclick="getAIAnalysis()">重试</button></div></div>`;
+  }
+  if(btn){btn.disabled=false;btn.textContent='🤖 AI深度解读';}
+}
+function copyAIResult(){
+  const text=document.querySelector('.ai-content')?.innerText||'';
+  navigator.clipboard.writeText(text).then(()=>toast('已复制AI分析结果')).catch(()=>toast('复制失败'));
+}
+
+/* 通用模态框 */
+function openModalContent(title,contentHTML){
+  let modal=document.getElementById('customModal');
+  if(!modal){
+    modal=document.createElement('div');modal.className='modal-overlay';modal.id='customModal';
+    modal.innerHTML='<div class="modal"><h2 class="modal-title" id="customModalTitle"></h2><div id="customModalBody"></div><button class="modal-close" onclick="closeModal(\'customModal\')">✕</button></div>';
+    document.body.appendChild(modal);
+  }
+  document.getElementById('customModalTitle').textContent=title;
+  document.getElementById('customModalBody').innerHTML=contentHTML;
+  modal.classList.add('show');
 }
 
 /* ====================================================================
