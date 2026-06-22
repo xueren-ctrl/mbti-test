@@ -1379,8 +1379,14 @@ function showResult(type,dims){
 
     <p class="result-share-tip">提示：登录后可保存测试记录，随时在"历史"中回看</p>
   `;
-  go('result');
+    go('result');
+  setTimeout(()=>{
+    if(appState.currentUser){
+      saveResult(type);
+    }
+  },500);
 }
+
 
 /* ====================================================================
    模态框控制
