@@ -424,22 +424,46 @@ a{color:var(--primary);text-decoration:none}
 .type-modal-career span:first-child{font-size:22px}
 
 /* ============ 响应式 ============ */
-@media(max-width:640px){
-  .hero h1{font-size:30px}
+@media(max-width:768px){
+  .hero h1{font-size:32px}
   .hero p{font-size:15px}
-  .hero-visual{gap:12px}
-  .highlight-chip{padding:14px 18px}
-  .highlight-chip .num{font-size:22px}
+  .gallery-grid{grid-template-columns:repeat(3,1fr)}
+  .feature-nav{grid-template-columns:repeat(3,1fr)}
+  .compat-selector{grid-template-columns:1fr;gap:12px}
+  .compat-heart{transform:rotate(90deg)}
+  .celeb-grid{grid-template-columns:repeat(2,1fr)}
+  .career-info-row{flex-direction:column;gap:8px}
+  .result-actions{flex-direction:column}
+  .result-actions .btn{width:100%}
+  .share-buttons{flex-wrap:wrap;justify-content:center}
+}
+@media(max-width:640px){
+  .hero h1{font-size:26px}
+  .hero p{font-size:14px}
+  .hero-visual{gap:10px}
+  .highlight-chip{padding:12px 14px;flex:1 1 40%}
+  .highlight-chip .num{font-size:20px}
+  .highlight-chip .label{font-size:11px}
   .type-chip{padding:12px 4px}
   .features{grid-template-columns:1fr}
   .gallery-grid{grid-template-columns:repeat(2,1fr)}
-  .question-text{font-size:18px}
-  .question-card{padding:24px 20px}
-  .result-type-code{font-size:48px}
+  .feature-nav{grid-template-columns:repeat(2,1fr)}
+  .celeb-grid{grid-template-columns:1fr}
+  .question-text{font-size:17px}
+  .question-card{padding:20px 16px}
+  .result-type-code{font-size:42px}
   .result-dimensions{grid-template-columns:1fr}
   .swot-grid{grid-template-columns:1fr}
-  .container{padding:20px 16px}
-  .navbar-inner{padding:12px 16px}
+  .container{padding:16px 14px}
+  .navbar-inner{padding:10px 14px}
+  .nav-actions .btn{padding:6px 10px;font-size:13px}
+  .feature-header h2{font-size:22px}
+  .feature-header p{font-size:13px}
+  .compat-score-card{padding:14px;gap:10px}
+  .compat-score-icon{font-size:24px}
+  .compat-score-val{font-size:20px}
+  .modal{margin:16px;padding:20px}
+  .team-input{max-width:100%!important}
 }
 
 /* ============ 新功能页面通用 ============ */
@@ -2323,7 +2347,33 @@ function calcCompatibility(){
   const colors={love:'#ec4899',friendship:'#3b82f6',work:'#10b981'};
   const icons={love:'💕',friendship:'🤝',work:'💼'};
   const labels={love:'恋爱契合度',friendship:'友情契合度',work:'职场契合度'};
-  let html='<div class="compat-desc">💡 '+r.desc+'</div>';
+  // 生成兼容理由
+  const reasons=generateCompatReasons(compatPick[0],compatPick[1],r);
+  let html=`
+  <div style="text-align:center;margin-bottom:24px">
+    <div style="display:inline-flex;align-items:center;gap:16px;padding:20px 32px;border-radius:20px;background:linear-gradient(135deg,${t1.color}22,${t2.color}22);border:1px solid var(--border)">
+      <div style="text-align:center">
+        <div style="font-size:40px">${t1.icon}</div>
+        <div style="font-size:20px;font-weight:800;color:${t1.color}">${t1.code}</div>
+        <div style="font-size:12px;color:var(--text-soft)">${t1.name}</div>
+      </div>
+      <div style="font-size:32px">💕</div>
+      <div style="text-align:center">
+        <div style="font-size:40px">${t2.icon}</div>
+        <div style="font-size:20px;font-weight:800;color:${t2.color}">${t2.code}</div>
+        <div style="font-size:12px;color:var(--text-soft)">${t2.name}</div>
+      </div>
+    </div>
+  </div>`;
+  // 总体评分
+  const avgScore=Math.round((r.love+r.friendship+r.work)/3);
+  const overallLevel=avgScore>=80?'天作之合':avgScore>=65?'非常互补':avgScore>=50?'不错搭配':avgScore>=35?'需要磨合':'充满挑战';
+  html+=`<div style="text-align:center;margin-bottom:20px">
+    <div style="font-size:14px;color:var(--text-mute)">综合契合度</div>
+    <div style="font-size:48px;font-weight:900;background:linear-gradient(135deg,${t1.color},${t2.color});-webkit-background-clip:text;background-clip:text;color:transparent">${avgScore}<span style="font-size:20px">分</span></div>
+    <div style="font-size:16px;font-weight:600;color:var(--text-soft)">${overallLevel}</div>
+  </div>`;
+  // 三维度评分
   ['love','friendship','work'].forEach(k=>{
     const v=r[k];
     const level=v>=80?'绝佳':v>=65?'很好':v>=50?'不错':v>=35?'一般':'挑战';
@@ -2331,17 +2381,58 @@ function calcCompatibility(){
       <div class="compat-score-icon">${icons[k]}</div>
       <div style="flex:1">
         <div style="font-weight:600;margin-bottom:6px">${labels[k]} <span style="color:var(--text-mute);font-size:13px;font-weight:400">${level}</span></div>
-        <div class="compat-score-bar"><div class="compat-score-fill" style="width:${v}%;background:${colors[k]}"></div></div>
+        <div class="compat-score-bar"><div class="compat-score-fill" style="width:0%;background:${colors[k]}" data-target="${v}"></div></div>
       </div>
       <div class="compat-score-val" style="color:${colors[k]}">${v}</div>
     </div>`;
   });
-  html+=`<div style="text-align:center;margin-top:16px">
+  // 兼容理由
+  html+=`<div style="max-width:600px;margin:24px auto;padding:24px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border)">
+    <h4 style="font-size:16px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:6px">📖 兼容理由分析</h4>
+    ${reasons.map(r=>`<div style="padding:10px 0;border-bottom:1px solid var(--border);font-size:14px;line-height:1.7;color:var(--text-soft)"><span style="margin-right:6px">${r.icon}</span><strong style="color:var(--text)">${r.title}</strong>：${r.desc}</div>`).join('')}
+  </div>`;
+  html+=`<div style="text-align:center;margin-top:20px">
     <button class="btn btn-outline" onclick="generateCompatPoster()">🖼️ 生成兼容海报</button>
     <button class="btn btn-ghost" onclick="go('explore')">返回探索</button>
   </div>`;
   document.getElementById('compatResults').innerHTML=html;
-  setTimeout(()=>{document.querySelectorAll('.compat-score-fill').forEach(el=>el.style.width=el.style.width)},100);
+  // 动画填充进度条
+  setTimeout(()=>{document.querySelectorAll('.compat-score-fill').forEach(el=>{el.style.width=el.dataset.target+'%'})},100);
+}
+function generateCompatReasons(c1,c2,r){
+  const t1=TYPES[c1],t2=TYPES[c2];
+  const reasons=[];
+  // E-I 维度
+  const e1=c1[0]==='E',e2=c2[0]==='E';
+  if(e1!==e2){
+    reasons.push({icon:'⚡',title:'能量互补',desc:`${t1.name}偏${e1?'外向':'内向'}，${t2.name}偏${e2?'外向':'内向'}，一个主动破冰、一个善于倾听，社交节奏完美配合。`});
+  }else{
+    reasons.push({icon:'🔄',title:'能量同频',desc:`两人都偏${e1?'外向':'内向'}，${e1?'一起社交充电，不会冷场':'都喜欢安静相处，不会互相打扰'}。`});
+  }
+  // S-N 维度
+  const n1=c1[1]==='N',n2=c2[1]==='N';
+  if(n1&&n2){
+    reasons.push({icon:'🌌',title:'精神共鸣',desc:'两人都是直觉型，善于探讨抽象概念和未来愿景，聊天容易深入到灵魂层面。'});
+  }else if(n1!==n2){
+    reasons.push({icon:'🌍',title:'视角互补',desc:'一个关注细节与现实，一个关注可能与未来，合作时既有落地能力又有创新视野。'});
+  }else{
+    reasons.push({icon:'📝',title:'务实同频',desc:'两人都偏实感，重视具体事实和当下体验，沟通直接高效，不易产生理解偏差。'});
+  }
+  // T-F 维度
+  const tf1=c1[2]==='T',tf2=c2[2]==='T';
+  if(tf1!==tf2){
+    reasons.push({icon:'💗',title:'感性与理性平衡',desc:`${tf1?t1.name:t2.name}提供理性分析，${tf1?t2.name:t1.name}带来情感温度，恋爱中既有逻辑又有浪漫。`});
+  }else{
+    reasons.push({icon:'🧠',title:'决策风格一致',desc:`两人都偏${tf1?'思考':'情感'}做决定，${tf1?'面对问题冷静客观，不会情绪化':'彼此体贴对方感受，关系温暖和谐'}。`});
+  }
+  // J-P 维度
+  const j1=c1[3]==='J',j2=c2[3]==='J';
+  if(j1!==j2){
+    reasons.push({icon:'⚖️',title:'生活节奏互补',desc:'一个喜欢计划和秩序，一个享受灵活和即兴，既有方向感又有惊喜感。'});
+  }else{
+    reasons.push({icon:'📅',title:'生活步调一致',desc:`两人都偏${j1?'判断':'感知'}，${j1?'喜欢一起做计划，生活井然有序':'都喜欢随性而为，生活充满灵活性'}。`});
+  }
+  return reasons;
 }
 function generateCompatPoster(){
   if(!compatPick[0]||!compatPick[1])return;
@@ -2585,7 +2676,7 @@ function renderCareers(){
 }
 
 /* ====================================================================
-   功能2：AI深度解读（调用后端 Agnes API 代理）
+   功能2：AI深度解读（支持前端直连Agnes API + 后端代理双模式）
    ==================================================================== */
 async function getAIAnalysis(){
   const btn=document.getElementById('aiAnalysisBtn');if(btn){btn.disabled=true;btn.textContent='AI分析中...';}
@@ -2598,7 +2689,31 @@ async function getAIAnalysis(){
   if(all.length===0){toast('请先完成测试');if(btn){btn.disabled=false;btn.textContent='🤖 AI深度解读';}return;}
   const lastResult=all[0];
   const t=TYPES[lastResult.type];
-  section.innerHTML='<div class="ai-card"><div class="ai-loading"><div class="spinner"></div><p>Agnes AI 正在分析你的性格...</p></div></div>';
+  // 检查API Key
+  let apiKey=localStorage.getItem('agnes_api_key')||'';
+  const useBackend=await checkBackendAI();
+  if(!apiKey&&!useBackend){
+    // 弹出API Key输入框
+    section.innerHTML=`<div class="ai-card">
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="font-size:48px;margin-bottom:8px">🤖</div>
+        <h3 style="font-size:18px;font-weight:700">AI深度解读需要Agnes API Key</h3>
+        <p style="font-size:13px;color:var(--text-soft);margin-top:8px">输入你的Key即可使用，Key只保存在本地浏览器，不会上传</p>
+      </div>
+      <input type="password" id="agnesKeyInput" placeholder="sk-xxxx..." style="width:100%;padding:12px 16px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--card);color:var(--text);font-size:14px;margin-bottom:12px;box-sizing:border-box">
+      <div style="display:flex;gap:8px;justify-content:center">
+        <button class="btn btn-primary" onclick="saveKeyAndAnalyze()">🔑 保存并分析</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('aiSection').innerHTML=''">取消</button>
+      </div>
+      <p style="font-size:12px;color:var(--text-mute);margin-top:12px;text-align:center">
+        获取Key：apihub.agnes-ai.com 注册后获取<br>
+        或运行本地后端(node server.js)自动使用后端Key
+      </p>
+    </div>`;
+    if(btn){btn.disabled=false;btn.textContent='🤖 AI深度解读';}
+    return;
+  }
+  section.innerHTML='<div class="ai-card"><div class="ai-loading"><div class="spinner"></div><p>Agnes AI 正在深度分析你的性格...</p></div></div>';
   // 构建AI请求
   const dims=lastResult.dims||{};
   const dimStr=Object.keys(dims).map(k=>{const d=dims[k];return d?`${d.a}:${d.aVal}% / ${d.b}:${d.bVal}%`:''}).filter(Boolean).join('，')||'默认50/50';
@@ -2617,29 +2732,72 @@ async function getAIAnalysis(){
 要求：语言亲切专业，像一位了解TA的朋友在聊天。不要用"你是一个INTJ"这种泛泛的模板话。`;
 
   try{
-    const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),30000);
-    const resp=await fetch('/api/ai-analysis',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({prompt}),signal:controller.signal});
-    clearTimeout(timer);
-    if(!resp.ok)throw new Error('AI服务暂时不可用');
-    const data=await resp.json();
-    const content=data.content||data.choices?.[0]?.message?.content||'分析结果为空';
+    let content='';
+    if(useBackend){
+      // 后端代理模式
+      const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),30000);
+      const resp=await fetch('/api/ai-analysis',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({prompt}),signal:controller.signal});
+      clearTimeout(timer);
+      if(!resp.ok)throw new Error('后端AI服务不可用');
+      const data=await resp.json();
+      content=data.content||data.choices?.[0]?.message?.content||'';
+    }else{
+      // 前端直连Agnes API
+      const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),30000);
+      const resp=await fetch('https://apihub.agnes-ai.com/v1/chat/completions',{method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
+        body:JSON.stringify({
+          model:'agnes-2.0-flash',
+          messages:[{role:'system',content:'你是一位专业的MBTI性格分析师，擅长根据用户的MBTI类型和维度比例给出深度个性化解读。语言风格亲切专业，像一位了解用户的朋友。回复用中文。'},
+            {role:'user',content:prompt}],
+          temperature:0.8,max_tokens:1024
+        }),signal:controller.signal});
+      clearTimeout(timer);
+      if(!resp.ok){const err=await resp.text();throw new Error('API错误('+resp.status+'): '+err.substring(0,100));}
+      const data=await resp.json();
+      content=data.choices?.[0]?.message?.content||'';
+    }
+    if(!content)throw new Error('AI返回内容为空');
     // 简单Markdown渲染
     const html=content.split('\n').map(line=>{
       line=line.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
       if(line.trim().startsWith('#'))return `<h4 style="margin:16px 0 8px;color:var(--primary)">${line.replace(/^#+\s*/,'')}</h4>`;
       if(line.trim())return `<p>${line}</p>`;return '';
     }).join('');
-    section.innerHTML=`<div class="ai-card"><div class="ai-content">${html}</div>
+    section.innerHTML=`<div class="ai-card"><div style="display:flex;align-items:center;gap:8px;margin-bottom:16px"><span style="font-size:20px">🤖</span><span style="font-weight:700;color:var(--primary)">Agnes AI 深度解读</span><span style="font-size:11px;padding:2px 8px;border-radius:999px;background:rgba(16,185,129,.12);color:#10b981;margin-left:auto">agnes-2.0-flash</span></div><div class="ai-content">${html}</div>
       <div class="ai-btn"><button class="btn btn-outline" onclick="getAIAnalysis()">🔄 重新分析</button>
-      <button class="btn btn-ghost" onclick="copyAIResult()">📋 复制结果</button></div></div>`;
+      <button class="btn btn-ghost" onclick="copyAIResult()">📋 复制结果</button>
+      <button class="btn btn-ghost" onclick="clearAPIKey()" style="font-size:12px">🔑 清除Key</button></div></div>`;
   }catch(e){
     section.innerHTML=`<div class="ai-card"><div style="text-align:center;padding:20px">
-      <p style="color:var(--text-soft)">⚠️ ${e.message||'AI分析失败'}</p>
-      <p style="font-size:13px;color:var(--text-mute);margin-top:8px">请确保后端服务已启动（localhost:8090）</p>
-      <button class="btn btn-primary" style="margin-top:12px" onclick="getAIAnalysis()">重试</button></div></div>`;
+      <div style="font-size:36px;margin-bottom:8px">⚠️</div>
+      <p style="color:var(--text-soft);font-size:14px">${e.message||'AI分析失败'}</p>
+      <button class="btn btn-primary" style="margin-top:12px" onclick="getAIAnalysis()">重试</button>
+      <button class="btn btn-ghost" style="margin-top:12px;margin-left:8px" onclick="clearAPIKey()">重新输入Key</button>
+      </div></div>`;
   }
   if(btn){btn.disabled=false;btn.textContent='🤖 AI深度解读';}
+}
+async function checkBackendAI(){
+  try{
+    const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),2000);
+    const resp=await fetch('/api/health',{signal:controller.signal});
+    clearTimeout(timer);
+    return resp.ok;
+  }catch(e){return false;}
+}
+function saveKeyAndAnalyze(){
+  const key=document.getElementById('agnesKeyInput').value.trim();
+  if(!key){toast('请输入API Key');return;}
+  localStorage.setItem('agnes_api_key',key);
+  toast('Key已保存，正在分析...');
+  getAIAnalysis();
+}
+function clearAPIKey(){
+  localStorage.removeItem('agnes_api_key');
+  toast('API Key已清除');
+  document.getElementById('aiSection').innerHTML='';
 }
 function copyAIResult(){
   const text=document.querySelector('.ai-content')?.innerText||'';
