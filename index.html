@@ -429,8 +429,8 @@ a{color:var(--primary);text-decoration:none}
   .hero p{font-size:15px}
   .gallery-grid{grid-template-columns:repeat(3,1fr)}
   .feature-nav{grid-template-columns:repeat(3,1fr)}
-  .compat-selector{grid-template-columns:1fr;gap:12px}
-  .compat-heart{transform:rotate(90deg)}
+  .compat-selector{flex-direction:column;gap:8px}
+  .compat-heart{transform:rotate(90deg);padding:4px 0}
   .celeb-grid{grid-template-columns:repeat(2,1fr)}
   .career-info-row{flex-direction:column;gap:8px}
   .result-actions{flex-direction:column}
@@ -473,13 +473,13 @@ a{color:var(--primary);text-decoration:none}
 .feature-header p{color:var(--text-soft);font-size:15px}
 
 /* 兼容分析 */
-.compat-selector{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;max-width:500px;margin:0 auto 24px}
-.compat-type-pick{text-align:center;padding:24px;border-radius:var(--radius);background:var(--card);border:2px solid var(--border);cursor:pointer;transition:all .3s}
-.compat-type-pick:hover{border-color:var(--primary)}
-.compat-type-pick .pick-icon{font-size:36px;margin-bottom:8px}
-.compat-type-pick .pick-code{font-size:22px;font-weight:800;color:var(--primary)}
+.compat-selector{display:flex;align-items:stretch;gap:12px;max-width:520px;margin:0 auto 24px;flex-wrap:wrap;justify-content:center}
+.compat-type-pick{flex:1 1 180px;min-width:140px;text-align:center;padding:28px 16px;border-radius:var(--radius);background:var(--card);border:2px solid var(--border);cursor:pointer;transition:all .3s;box-sizing:border-box}
+.compat-type-pick:hover{border-color:var(--primary);transform:translateY(-2px)}
+.compat-type-pick .pick-icon{font-size:40px;margin-bottom:8px}
+.compat-type-pick .pick-code{font-size:24px;font-weight:800;color:var(--primary)}
 .compat-type-pick .pick-name{font-size:13px;color:var(--text-soft)}
-.compat-heart{font-size:32px;text-align:center}
+.compat-heart{font-size:32px;text-align:center;display:flex;align-items:center;justify-content:center;padding:0 4px}
 .compat-results{max-width:600px;margin:0 auto}
 .compat-score-card{display:flex;align-items:center;gap:16px;padding:20px;border-radius:var(--radius);background:var(--card);border:1px solid var(--border);margin-bottom:12px}
 .compat-score-icon{font-size:32px}
@@ -2689,27 +2689,19 @@ async function getAIAnalysis(){
   if(all.length===0){toast('请先完成测试');if(btn){btn.disabled=false;btn.textContent='🤖 AI深度解读';}return;}
   const lastResult=all[0];
   const t=TYPES[lastResult.type];
-  // 检查API Key
-  let apiKey=localStorage.getItem('agnes_api_key')||'';
+  // 检查后端是否可用
   const useBackend=await checkBackendAI();
-  if(!apiKey&&!useBackend){
-    // 弹出API Key输入框
-    section.innerHTML=`<div class="ai-card">
-      <div style="text-align:center;margin-bottom:16px">
-        <div style="font-size:48px;margin-bottom:8px">🤖</div>
-        <h3 style="font-size:18px;font-weight:700">AI深度解读需要Agnes API Key</h3>
-        <p style="font-size:13px;color:var(--text-soft);margin-top:8px">输入你的Key即可使用，Key只保存在本地浏览器，不会上传</p>
+  if(!useBackend){
+    section.innerHTML=`<div class="ai-card"><div style="text-align:center;padding:24px">
+      <div style="font-size:48px;margin-bottom:12px">🔌</div>
+      <h3 style="font-size:17px;font-weight:700;margin-bottom:8px">需要后端服务支持</h3>
+      <p style="font-size:14px;color:var(--text-soft);line-height:1.7;margin-bottom:16px">AI深度解读通过后端调用Agnes API，请先在本地启动后端服务</p>
+      <div style="background:var(--bg-soft);border-radius:var(--radius-sm);padding:14px;text-align:left;margin-bottom:16px">
+        <p style="font-size:13px;font-weight:600;margin-bottom:6px">📋 启动步骤：</p>
+        <p style="font-size:12px;color:var(--text-soft);line-height:1.8">1. 下载 server.js 到本地 server 目录<br>2. PowerShell 执行 <code style="background:var(--card);padding:2px 6px;border-radius:4px">npm install</code><br>3. 执行 <code style="background:var(--card);padding:2px 6px;border-radius:4px">node server.js</code><br>4. 打开 <code style="background:var(--card);padding:2px 6px;border-radius:4px">http://localhost:8090</code></p>
       </div>
-      <input type="password" id="agnesKeyInput" placeholder="sk-xxxx..." style="width:100%;padding:12px 16px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--card);color:var(--text);font-size:14px;margin-bottom:12px;box-sizing:border-box">
-      <div style="display:flex;gap:8px;justify-content:center">
-        <button class="btn btn-primary" onclick="saveKeyAndAnalyze()">🔑 保存并分析</button>
-        <button class="btn btn-ghost" onclick="document.getElementById('aiSection').innerHTML=''">取消</button>
-      </div>
-      <p style="font-size:12px;color:var(--text-mute);margin-top:12px;text-align:center">
-        获取Key：apihub.agnes-ai.com 注册后获取<br>
-        或运行本地后端(node server.js)自动使用后端Key
-      </p>
-    </div>`;
+      <button class="btn btn-primary" onclick="getAIAnalysis()">🔄 重新检测</button>
+    </div></div>`;
     if(btn){btn.disabled=false;btn.textContent='🤖 AI深度解读';}
     return;
   }
@@ -2732,32 +2724,13 @@ async function getAIAnalysis(){
 要求：语言亲切专业，像一位了解TA的朋友在聊天。不要用"你是一个INTJ"这种泛泛的模板话。`;
 
   try{
-    let content='';
-    if(useBackend){
-      // 后端代理模式
-      const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),30000);
-      const resp=await fetch('/api/ai-analysis',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({prompt}),signal:controller.signal});
-      clearTimeout(timer);
-      if(!resp.ok)throw new Error('后端AI服务不可用');
-      const data=await resp.json();
-      content=data.content||data.choices?.[0]?.message?.content||'';
-    }else{
-      // 前端直连Agnes API
-      const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),30000);
-      const resp=await fetch('https://apihub.agnes-ai.com/v1/chat/completions',{method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},
-        body:JSON.stringify({
-          model:'agnes-2.0-flash',
-          messages:[{role:'system',content:'你是一位专业的MBTI性格分析师，擅长根据用户的MBTI类型和维度比例给出深度个性化解读。语言风格亲切专业，像一位了解用户的朋友。回复用中文。'},
-            {role:'user',content:prompt}],
-          temperature:0.8,max_tokens:1024
-        }),signal:controller.signal});
-      clearTimeout(timer);
-      if(!resp.ok){const err=await resp.text();throw new Error('API错误('+resp.status+'): '+err.substring(0,100));}
-      const data=await resp.json();
-      content=data.choices?.[0]?.message?.content||'';
-    }
+    const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),30000);
+    const resp=await fetch('/api/ai-analysis',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prompt}),signal:controller.signal});
+    clearTimeout(timer);
+    if(!resp.ok)throw new Error('AI服务返回错误('+resp.status+')');
+    const data=await resp.json();
+    const content=data.content||data.choices?.[0]?.message?.content||'';
     if(!content)throw new Error('AI返回内容为空');
     // 简单Markdown渲染
     const html=content.split('\n').map(line=>{
@@ -2767,14 +2740,12 @@ async function getAIAnalysis(){
     }).join('');
     section.innerHTML=`<div class="ai-card"><div style="display:flex;align-items:center;gap:8px;margin-bottom:16px"><span style="font-size:20px">🤖</span><span style="font-weight:700;color:var(--primary)">Agnes AI 深度解读</span><span style="font-size:11px;padding:2px 8px;border-radius:999px;background:rgba(16,185,129,.12);color:#10b981;margin-left:auto">agnes-2.0-flash</span></div><div class="ai-content">${html}</div>
       <div class="ai-btn"><button class="btn btn-outline" onclick="getAIAnalysis()">🔄 重新分析</button>
-      <button class="btn btn-ghost" onclick="copyAIResult()">📋 复制结果</button>
-      <button class="btn btn-ghost" onclick="clearAPIKey()" style="font-size:12px">🔑 清除Key</button></div></div>`;
+      <button class="btn btn-ghost" onclick="copyAIResult()">📋 复制结果</button></div></div>`;
   }catch(e){
     section.innerHTML=`<div class="ai-card"><div style="text-align:center;padding:20px">
       <div style="font-size:36px;margin-bottom:8px">⚠️</div>
       <p style="color:var(--text-soft);font-size:14px">${e.message||'AI分析失败'}</p>
       <button class="btn btn-primary" style="margin-top:12px" onclick="getAIAnalysis()">重试</button>
-      <button class="btn btn-ghost" style="margin-top:12px;margin-left:8px" onclick="clearAPIKey()">重新输入Key</button>
       </div></div>`;
   }
   if(btn){btn.disabled=false;btn.textContent='🤖 AI深度解读';}
@@ -2786,18 +2757,6 @@ async function checkBackendAI(){
     clearTimeout(timer);
     return resp.ok;
   }catch(e){return false;}
-}
-function saveKeyAndAnalyze(){
-  const key=document.getElementById('agnesKeyInput').value.trim();
-  if(!key){toast('请输入API Key');return;}
-  localStorage.setItem('agnes_api_key',key);
-  toast('Key已保存，正在分析...');
-  getAIAnalysis();
-}
-function clearAPIKey(){
-  localStorage.removeItem('agnes_api_key');
-  toast('API Key已清除');
-  document.getElementById('aiSection').innerHTML='';
 }
 function copyAIResult(){
   const text=document.querySelector('.ai-content')?.innerText||'';
