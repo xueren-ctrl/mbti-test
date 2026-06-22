@@ -2682,8 +2682,11 @@ function renderCareers(){
 }
 
 /* ====================================================================
-   功能2：AI深度解读（支持前端直连Agnes API + 后端代理双模式）
+   功能2：AI深度解读（前端直连Agnes API，打开即用）
    ==================================================================== */
+const AGNES_API_KEY="sk-wLiQkcSA5nf1hZpBYKATChtGViUiOQYwdTbZPmMlbmBqLXLe";
+const AGNES_API_URL="https://apihub.agnes-ai.com/v1/chat/completions";
+
 async function getAIAnalysis(){
   const btn=document.getElementById('aiAnalysisBtn');if(btn){btn.disabled=true;btn.textContent='AI分析中...';}
   const section=document.getElementById('aiSection');
@@ -2695,22 +2698,6 @@ async function getAIAnalysis(){
   if(all.length===0){toast('请先完成测试');if(btn){btn.disabled=false;btn.textContent='🤖 AI深度解读';}return;}
   const lastResult=all[0];
   const t=TYPES[lastResult.type];
-  // 检查后端是否可用
-  const useBackend=await checkBackendAI();
-  if(!useBackend){
-    section.innerHTML=`<div class="ai-card"><div style="text-align:center;padding:24px">
-      <div style="font-size:48px;margin-bottom:12px">🔌</div>
-      <h3 style="font-size:17px;font-weight:700;margin-bottom:8px">需要后端服务支持</h3>
-      <p style="font-size:14px;color:var(--text-soft);line-height:1.7;margin-bottom:16px">AI深度解读通过后端调用Agnes API，请先在本地启动后端服务</p>
-      <div style="background:var(--bg-soft);border-radius:var(--radius-sm);padding:14px;text-align:left;margin-bottom:16px">
-        <p style="font-size:13px;font-weight:600;margin-bottom:6px">📋 启动步骤：</p>
-        <p style="font-size:12px;color:var(--text-soft);line-height:1.8">1. 下载 server.js 到本地 server 目录<br>2. PowerShell 执行 <code style="background:var(--card);padding:2px 6px;border-radius:4px">npm install</code><br>3. 执行 <code style="background:var(--card);padding:2px 6px;border-radius:4px">node server.js</code><br>4. 打开 <code style="background:var(--card);padding:2px 6px;border-radius:4px">http://localhost:8090</code></p>
-      </div>
-      <button class="btn btn-primary" onclick="getAIAnalysis()">🔄 重新检测</button>
-    </div></div>`;
-    if(btn){btn.disabled=false;btn.textContent='🤖 AI深度解读';}
-    return;
-  }
   section.innerHTML='<div class="ai-card"><div class="ai-loading"><div class="spinner"></div><p>Agnes AI 正在深度分析你的性格...</p></div></div>';
   // 构建AI请求
   const dims=lastResult.dims||{};
@@ -2731,12 +2718,20 @@ async function getAIAnalysis(){
 
   try{
     const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),30000);
-    const resp=await fetch('/api/ai-analysis',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({prompt}),signal:controller.signal});
+    const resp=await fetch(AGNES_API_URL,{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+AGNES_API_KEY},
+      body:JSON.stringify({
+        model:'agnes-2.0-flash',
+        messages:[
+          {role:'system',content:'你是一位专业的MBTI性格分析师，擅长根据用户的MBTI类型和维度比例给出深度个性化解读。语言风格亲切专业，像一位了解用户的朋友。回复用中文。'},
+          {role:'user',content:prompt}
+        ],
+        temperature:0.8,max_tokens:1024
+      }),signal:controller.signal});
     clearTimeout(timer);
-    if(!resp.ok)throw new Error('AI服务返回错误('+resp.status+')');
+    if(!resp.ok){const errText=await resp.text();throw new Error('API错误('+resp.status+'): '+errText.substring(0,80));}
     const data=await resp.json();
-    const content=data.content||data.choices?.[0]?.message?.content||'';
+    const content=data.choices?.[0]?.message?.content||'';
     if(!content)throw new Error('AI返回内容为空');
     // 简单Markdown渲染
     const html=content.split('\n').map(line=>{
@@ -2755,14 +2750,6 @@ async function getAIAnalysis(){
       </div></div>`;
   }
   if(btn){btn.disabled=false;btn.textContent='🤖 AI深度解读';}
-}
-async function checkBackendAI(){
-  try{
-    const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),2000);
-    const resp=await fetch('/api/health',{signal:controller.signal});
-    clearTimeout(timer);
-    return resp.ok;
-  }catch(e){return false;}
 }
 function copyAIResult(){
   const text=document.querySelector('.ai-content')?.innerText||'';
