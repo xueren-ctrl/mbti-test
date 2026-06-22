@@ -1953,14 +1953,21 @@ function renderProfile(){
    初始化
    ==================================================================== */
 window.addEventListener('load',async ()=>{
-  await restoreSession();
-  updateNav();
-  renderTypesGallery();
-  checkUrlResult();
+  try{await restoreSession();}catch(e){console.warn('restoreSession失败:',e);}
+  try{updateNav();}catch(e){console.warn('updateNav失败:',e);}
+  try{renderTypesGallery();}catch(e){console.warn('renderTypesGallery失败:',e);}
+  try{checkUrlResult();}catch(e){console.warn('checkUrlResult失败:',e);}
+  // 无论如何都要隐藏loading
   setTimeout(()=>{
-    document.getElementById('loadingOverlay').style.display='none';
+    const el=document.getElementById('loadingOverlay');
+    if(el)el.style.display='none';
   },500);
 });
+// 安全兜底：3秒后强制隐藏loading（防止JS异常导致永远转圈）
+setTimeout(()=>{
+  const el=document.getElementById('loadingOverlay');
+  if(el)el.style.display='none';
+},3000);
 </script>
 <script>
 /**
