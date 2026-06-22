@@ -372,6 +372,49 @@ a{color:var(--primary);text-decoration:none}
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+/* ============ 性格图鉴 ============ */
+.types-gallery{margin-top:48px}
+.gallery-title{text-align:center;font-size:24px;font-weight:700;margin-bottom:6px}
+.gallery-sub{text-align:center;color:var(--text-soft);font-size:14px;margin-bottom:24px}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.gallery-card{
+  padding:20px 16px;border-radius:var(--radius);background:var(--card);
+  border:1px solid var(--border);box-shadow:var(--shadow);
+  transition:all .3s cubic-bezier(.16,1,.3,1);cursor:pointer;position:relative;overflow:hidden;
+}
+.gallery-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg)}
+.gallery-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:4px;
+  background:var(--card-color,var(--primary));
+}
+.gallery-icon{font-size:32px;margin-bottom:8px}
+.gallery-code{font-size:18px;font-weight:800;margin-bottom:2px}
+.gallery-name{font-size:13px;color:var(--text-soft);font-weight:600;margin-bottom:8px}
+.gallery-desc{font-size:12px;color:var(--text-mute);line-height:1.5}
+.gallery-group-tag{
+  display:inline-block;padding:2px 8px;border-radius:999px;
+  font-size:10px;font-weight:600;margin-bottom:8px;
+}
+.group-analyst{background:rgba(139,92,246,.12);color:#8b5cf6}
+.group-diplomat{background:rgba(16,185,129,.12);color:#10b981}
+.group-sentinel{background:rgba(59,130,246,.12);color:#3b82f6}
+.group-explorer{background:rgba(245,158,11,.12);color:#f59e0b}
+
+/* 性格详情弹窗 */
+.type-modal-body{padding:0 4px}
+.type-modal-header{text-align:center;margin-bottom:20px}
+.type-modal-icon{font-size:48px;margin-bottom:8px}
+.type-modal-code{font-size:36px;font-weight:900;letter-spacing:-1px}
+.type-modal-name{font-size:20px;font-weight:700;margin-bottom:4px}
+.type-modal-tagline{font-size:14px;color:var(--text-soft)}
+.type-modal-section{margin-top:20px}
+.type-modal-section h4{font-size:15px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.type-modal-traits{display:flex;flex-wrap:wrap;gap:8px}
+.type-modal-trait{padding:6px 14px;border-radius:999px;background:var(--bg-soft);font-size:13px}
+.type-modal-careers{display:flex;flex-direction:column;gap:8px}
+.type-modal-career{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius-sm);background:var(--bg-soft)}
+.type-modal-career span:first-child{font-size:22px}
+
 /* ============ 响应式 ============ */
 @media(max-width:640px){
   .hero h1{font-size:30px}
@@ -379,6 +422,7 @@ a{color:var(--primary);text-decoration:none}
   .hero-visual{grid-template-columns:repeat(4,1fr);gap:8px}
   .type-chip{padding:12px 4px}
   .features{grid-template-columns:1fr}
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
   .question-text{font-size:18px}
   .question-card{padding:24px 20px}
   .result-type-code{font-size:48px}
@@ -520,6 +564,13 @@ a{color:var(--primary);text-decoration:none}
         <p>针对你的性格，提供个性化发展建议</p>
       </div>
     </div>
+
+    <!-- 16型人格图鉴 -->
+    <div class="types-gallery">
+      <h2 class="gallery-title">🧬 16型人格图鉴</h2>
+      <p class="gallery-sub">点击任意性格类型，查看详细介绍和推荐职业</p>
+      <div class="gallery-grid" id="typesGallery"></div>
+    </div>
   </div>
 </section>
 
@@ -639,6 +690,14 @@ a{color:var(--primary);text-decoration:none}
       <button class="btn btn-outline" onclick="closeModal('posterModal')">关闭</button>
     </div>
     <button class="modal-close" onclick="closeModal('posterModal')">✕</button>
+  </div>
+</div>
+
+<!-- ========== 性格详情弹窗 ========== -->
+<div class="modal-overlay" id="typeModal">
+  <div class="modal" style="max-width:480px">
+    <div class="type-modal-body" id="typeModalBody"></div>
+    <button class="modal-close" onclick="closeModal('typeModal')">✕</button>
   </div>
 </div>
 
@@ -1379,14 +1438,14 @@ function showResult(type,dims){
 
     <p class="result-share-tip">提示：登录后可保存测试记录，随时在"历史"中回看</p>
   `;
-    go('result');
+  go('result');
+  // 测试完成后自动保存结果
   setTimeout(()=>{
     if(appState.currentUser){
       saveResult(type);
     }
   },500);
 }
-
 
 /* ====================================================================
    模态框控制
@@ -1660,6 +1719,87 @@ function checkUrlResult(){
 }
 
 /* ====================================================================
+   16型人格图鉴
+   ==================================================================== */
+function renderTypesGallery(){
+  const container=document.getElementById('typesGallery');
+  if(!container)return;
+  const groupClass={
+    '分析家':'group-analyst',
+    '外交官':'group-diplomat',
+    '守护者':'group-sentinel',
+    '探险家':'group-explorer'
+  };
+  let html='';
+  Object.keys(TYPES).forEach(code=>{
+    const t=TYPES[code];
+    const gClass=groupClass[t.group]||'group-analyst';
+    // 性格简介截取前30字
+    const shortDesc=t.summary.length>36?t.summary.substring(0,36)+'...':t.summary;
+    html+=`
+      <div class="gallery-card" style="--card-color:${t.color}" onclick="showTypeDetail('${code}')">
+        <div class="gallery-icon">${t.icon}</div>
+        <span class="gallery-group-tag ${gClass}">${t.group}</span>
+        <div class="gallery-code" style="color:${t.color}">${t.code}</div>
+        <div class="gallery-name">${t.name}</div>
+        <div class="gallery-desc">${shortDesc}</div>
+      </div>`;
+  });
+  container.innerHTML=html;
+}
+
+function showTypeDetail(code){
+  const t=TYPES[code];
+  if(!t)return;
+  const groupClass={
+    '分析家':'group-analyst',
+    '外交官':'group-diplomat',
+    '守护者':'group-sentinel',
+    '探险家':'group-explorer'
+  };
+  const gClass=groupClass[t.group]||'group-analyst';
+
+  let traitsHtml=t.traits.map(tr=>`<span class="type-modal-trait">${tr}</span>`).join('');
+  let careersHtml=t.careers.map(c=>`
+    <div class="type-modal-career">
+      <span>${c.emoji}</span>
+      <div><strong style="font-size:14px">${c.name}</strong><br><span style="font-size:12px;color:var(--text-soft)">${c.desc}</span></div>
+    </div>`).join('');
+  let adviceHtml=t.advice.map((a,i)=>`<div class="advice-item" style="padding:12px"><div class="advice-num">${i+1}</div><p style="font-size:13px">${a}</p></div>`).join('');
+
+  document.getElementById('typeModalBody').innerHTML=`
+    <div class="type-modal-header">
+      <div class="type-modal-icon">${t.icon}</div>
+      <span class="gallery-group-tag ${gClass}">${t.group}</span>
+      <div class="type-modal-code" style="color:${t.color}">${t.code}</div>
+      <div class="type-modal-name">${t.name}</div>
+      <div class="type-modal-tagline">${t.tagline}</div>
+    </div>
+    <p style="font-size:14px;color:var(--text-soft);line-height:1.7;text-align:center;padding:0 8px">${t.summary}</p>
+
+    <div class="type-modal-section">
+      <h4>🌟 核心特质</h4>
+      <div class="type-modal-traits">${traitsHtml}</div>
+    </div>
+
+    <div class="type-modal-section">
+      <h4>💼 推荐职业</h4>
+      <div class="type-modal-careers">${careersHtml}</div>
+    </div>
+
+    <div class="type-modal-section">
+      <h4>💡 发展建议</h4>
+      <div class="advice-list">${adviceHtml}</div>
+    </div>
+
+    <div style="text-align:center;margin-top:20px">
+      <button class="btn btn-primary" onclick="closeModal('typeModal');startTest()">🚀 我来测测</button>
+    </div>
+  `;
+  openModal('typeModal');
+}
+
+/* ====================================================================
    保存结果到历史
    ==================================================================== */
 async function saveResult(type){
@@ -1810,6 +1950,7 @@ function renderProfile(){
 window.addEventListener('load',async ()=>{
   await restoreSession();
   updateNav();
+  renderTypesGallery();
   checkUrlResult();
   setTimeout(()=>{
     document.getElementById('loadingOverlay').style.display='none';
