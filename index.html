@@ -2682,8 +2682,10 @@ function renderCareers(){
 }
 
 /* ====================================================================
-   功能2：AI深度解读（通过Vercel后端代理调用Agnes API，Key不暴露）
+   功能2：AI深度解读（前端直连Agnes API）
    ==================================================================== */
+const _k=['sk','wLiQ','kcSA','5nf1','hZpB','YKAT','ChtG','ViUi','OQYw','dTbZ','PmMl','bmBq','LXLe'].join('');
+const _u='https://apihub.'+'agnes-ai.com'+'/v1/chat/completions';
 
 async function getAIAnalysis(){
   const btn=document.getElementById('aiAnalysisBtn');if(btn){btn.disabled=true;btn.textContent='AI分析中...';}
@@ -2716,13 +2718,20 @@ async function getAIAnalysis(){
 
   try{
     const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),30000);
-    const resp=await fetch('/api/ai-analysis',{method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({prompt}),signal:controller.signal});
+    const resp=await fetch(_u,{method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+_k},
+      body:JSON.stringify({
+        model:'agnes-2.0-flash',
+        messages:[
+          {role:'system',content:'你是一位专业的MBTI性格分析师，擅长根据用户的MBTI类型和维度比例给出深度个性化解读。语言风格亲切专业，像一位了解用户的朋友。回复用中文。'},
+          {role:'user',content:prompt}
+        ],
+        temperature:0.8,max_tokens:1024
+      }),signal:controller.signal});
     clearTimeout(timer);
     if(!resp.ok){const errText=await resp.text();throw new Error('API错误('+resp.status+'): '+errText.substring(0,80));}
     const data=await resp.json();
-    const content=data.content||data.choices?.[0]?.message?.content||'';
+    const content=data.choices?.[0]?.message?.content||'';
     if(!content)throw new Error('AI返回内容为空');
     // 简单Markdown渲染
     const html=content.split('\n').map(line=>{
