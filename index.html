@@ -1931,13 +1931,13 @@ function calculateResult(){
     TF:{a:'T',b:'F',aVal:scores.T,bVal:scores.F},
     JP:{a:'J',b:'P',aVal:scores.J,bVal:scores.P}
   };
-  showResult(type,dims);
+  showResult(type,dims,true);
 }
 
 /* ====================================================================
    结果页渲染
    ==================================================================== */
-function showResult(type,dims){
+function showResult(type,dims,isNew){
   const t=TYPES[type];
   const c=document.getElementById('resultContainer');
   // 维度条
@@ -2048,12 +2048,10 @@ function showResult(type,dims){
     <p class="result-share-tip">提示：登录后可保存测试记录，随时在"历史"中回看</p>
   `;
   go('result');
-  // 测试完成后自动保存结果
-  setTimeout(()=>{
-    if(appState.currentUser){
-      saveResult(type);
-    }
-  },500);
+  // 只有新测试完成才自动保存，查看历史不重复保存
+  if(isNew&&appState.currentUser){
+    setTimeout(()=>{saveResult(type);},500);
+  }
 }
 
 /* ====================================================================
