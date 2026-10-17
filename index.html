@@ -1598,6 +1598,7 @@ function getCompatibility(t1, t2){
 let appState = {
   currentPage:'home',
   currentUser:null,
+  currentResult:null, // 当前展示的测试结果，供AI解读等直接使用
   isLoginMode:true, // true=登录 false=注册
   test:{answers:new Array(28).fill(null),currentQ:0},
   apiBase:'',       // 后端API地址，空字符串表示同源
@@ -1940,6 +1941,8 @@ function calculateResult(){
 function showResult(type,dims,isNew){
   const t=TYPES[type];
   const c=document.getElementById('resultContainer');
+  // 记录当前展示的结果(含维度/模式)，供AI解读直接使用，不依赖是否已保存
+  appState.currentResult={type:type,dims:dims,mode:(appState.test&&appState.test.mode)||'detailed'};
   // 维度条
   let dimHtml='';
   const dimNames={EI:'外向 E / 内向 I',SN:'感觉 S / 直觉 N',TF:'思考 T / 情感 F',JP:'判断 J / 知觉 P'};
@@ -2048,9 +2051,9 @@ function showResult(type,dims,isNew){
     <p class="result-share-tip">提示：登录后可保存测试记录，随时在"历史"中回看</p>
   `;
   go('result');
-  // 只有新测试完成才自动保存，查看历史不重复保存
-  if(isNew&&appState.currentUser){
-    setTimeout(()=>{saveResult(type);},500);
+  // 只有新测试完成才自动保存，查看历史不重复保存；未登录也静默存入本地临时
+  if(isNew){
+    setTimeout(()=>{saveResult(type,true);},500);
   }
 }
 
@@ -2689,12 +2692,15 @@ async function getAIAnalysis(){
   const btn=document.getElementById('aiAnalysisBtn');if(btn){btn.disabled=true;btn.textContent='AI分析中...';}
   const section=document.getElementById('aiSection');
   if(!section)return;
-  // 获取最近测试结果
-  const history=appState.currentUser?appState.currentUser.history:[];
-  const temp=JSON.parse(localStorage.getItem('mbti_temp_history')||'[]');
-  const all=[...(history||[]),...temp].filter(r=>r&&r.type);
-  if(all.length===0){toast('请先完成测试');if(btn){btn.disabled=false;btn.textContent='🤖 AI深度解读';}return;}
-  const lastResult=all[0];
+  // 获取待分析结果：优先当前展示的结果，其次历史/临时记录
+  let lastResult=(appState.currentResult&&appState.currentResult.type)?appState.currentResult:null;
+  if(!lastResult){
+    const history=appState.currentUser?appState.currentUser.history:[];
+    const temp=JSON.parse(localStorage.getItem('mbti_temp_history')||'[]');
+    const all=[...(history||[]),...temp].filter(r=>r&&r.type);
+    if(all.length===0){toast('请先完成测试');if(btn){btn.disabled=false;btn.textContent='🤖 AI深度解读';}return;}
+    lastResult=all[0];
+  }
   const t=TYPES[lastResult.type];
   section.innerHTML='<div class="ai-card"><div class="ai-loading"><div class="spinner"></div><p>Agnes AI 正在深度分析你的性格...</p></div></div>';
   // 构建AI请求
@@ -2851,7 +2857,7 @@ function showTypeDetail(code){
 /* ====================================================================
    保存结果到历史
    ==================================================================== */
-async function saveResult(type){
+async function saveResult(type,silent){
   const record={
     type:type,
     date:new Date().toISOString(),
@@ -2883,16 +2889,21 @@ async function saveResult(type){
       toast('结果已保存到历史记录');
     }
   }else{
-    // 未登录，存到本地临时
+    // 未登录，存到本地临时；与最新一条完全相同则不重复入库(防止自动保存+手动保存重复)
     let temp=JSON.parse(localStorage.getItem('mbti_temp_history')||'[]');
-    temp.unshift(record);
-    if(temp.length>5)temp=temp.slice(0,5);
-    localStorage.setItem('mbti_temp_history',JSON.stringify(temp));
-    // 弹出登录引导
-    if(confirm('你还没有登录，刷新页面后数据会丢失。\n\n是否现在登录/注册以永久保存测试记录？')){
+    const isDup=temp[0]&&temp[0].type===record.type&&JSON.stringify(temp[0].answers)===JSON.stringify(record.answers);
+    if(!isDup){
+      temp.unshift(record);
+      if(temp.length>5)temp=temp.slice(0,5);
+      localStorage.setItem('mbti_temp_history',JSON.stringify(temp));
+    }
+    if(silent){
+      // 自动保存：静默存入本地临时，不弹窗、不跳转
+      if(!isDup)toast('已保存到本地临时记录（建议登录后永久保存）');
+    }else if(confirm('你还没有登录，刷新页面后数据会丢失。\n\n是否现在登录/注册以永久保存测试记录？')){
       go('auth');
     }else{
-      toast('已临时保存（刷新后丢失），建议登录后保存');
+      toast(isDup?'该结果已在临时记录中':'已临时保存（刷新后丢失），建议登录后保存');
     }
   }
 }
