@@ -2720,38 +2720,56 @@ async function getAIAnalysis(){
 
 要求：语言亲切专业，像一位了解TA的朋友在聊天。不要用"你是一个INTJ"这种泛泛的模板话。`;
 
-  try{
-    const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),30000);
-    const resp=await fetch(_u,{method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+_k},
-      body:JSON.stringify({
-        model:'agnes-2.0-flash',
-        messages:[
-          {role:'system',content:'你是一位专业的MBTI性格分析师，擅长根据用户的MBTI类型和维度比例给出深度个性化解读。语言风格亲切专业，像一位了解用户的朋友。回复用中文。'},
-          {role:'user',content:prompt}
-        ],
-        temperature:0.8,max_tokens:1024
-      }),signal:controller.signal});
-    clearTimeout(timer);
-    if(!resp.ok){const errText=await resp.text();throw new Error('API错误('+resp.status+'): '+errText.substring(0,80));}
-    const data=await resp.json();
-    const content=data.choices?.[0]?.message?.content||'';
-    if(!content)throw new Error('AI返回内容为空');
+  // 模型优先级：优先最新 flash；遇"模型不存在/无可用渠道"自动降级到备选，避免单模型下线导致功能不可用
+  const MODELS=['agnes-3.0-flash','agnes-2.5-flash','agnes-3.0-pro'];
+  let content='',usedModel='',lastErr=null;
+  for(const model of MODELS){
+    try{
+      const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),30000);
+      const resp=await fetch(_u,{method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+_k},
+        body:JSON.stringify({
+          model:model,
+          messages:[
+            {role:'system',content:'你是一位专业的MBTI性格分析师，擅长根据用户的MBTI类型和维度比例给出深度个性化解读。语言风格亲切专业，像一位了解用户的朋友。回复用中文。'},
+            {role:'user',content:prompt}
+          ],
+          temperature:0.8,max_tokens:1024
+        }),signal:controller.signal});
+      clearTimeout(timer);
+      const respText=await resp.text();
+      if(!resp.ok){
+        const err=new Error('API错误('+resp.status+'): '+respText.substring(0,80));
+        // 模型不存在/无可用渠道 → 记下错误，降级到下一个备选模型
+        if(resp.status===400||resp.status===404||resp.status===503||/model_not_found|无可用渠道|无可用/.test(respText)){lastErr=err;continue;}
+        throw err;
+      }
+      const data=JSON.parse(respText);
+      content=data.choices?.[0]?.message?.content||'';
+      usedModel=model;
+      if(!content)throw new Error('AI返回内容为空');
+      break;
+    }catch(e){
+      if(e.name==='AbortError'){lastErr=new Error('请求超时，请重试');break;}
+      lastErr=e;
+    }
+  }
+  if(!content){
+    section.innerHTML=`<div class="ai-card"><div style="text-align:center;padding:20px">
+      <div style="font-size:36px;margin-bottom:8px">⚠️</div>
+      <p style="color:var(--text-soft);font-size:14px">${(lastErr&&lastErr.message)||'AI分析失败'}</p>
+      <button class="btn btn-primary" style="margin-top:12px" onclick="getAIAnalysis()">重试</button>
+      </div></div>`;
+  }else{
     // 简单Markdown渲染
     const html=content.split('\n').map(line=>{
       line=line.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
       if(line.trim().startsWith('#'))return `<h4 style="margin:16px 0 8px;color:var(--primary)">${line.replace(/^#+\s*/,'')}</h4>`;
       if(line.trim())return `<p>${line}</p>`;return '';
     }).join('');
-    section.innerHTML=`<div class="ai-card"><div style="display:flex;align-items:center;gap:8px;margin-bottom:16px"><span style="font-size:20px">🤖</span><span style="font-weight:700;color:var(--primary)">Agnes AI 深度解读</span><span style="font-size:11px;padding:2px 8px;border-radius:999px;background:rgba(16,185,129,.12);color:#10b981;margin-left:auto">agnes-2.0-flash</span></div><div class="ai-content">${html}</div>
+    section.innerHTML=`<div class="ai-card"><div style="display:flex;align-items:center;gap:8px;margin-bottom:16px"><span style="font-size:20px">🤖</span><span style="font-weight:700;color:var(--primary)">Agnes AI 深度解读</span><span style="font-size:11px;padding:2px 8px;border-radius:999px;background:rgba(16,185,129,.12);color:#10b981;margin-left:auto">${usedModel}</span></div><div class="ai-content">${html}</div>
       <div class="ai-btn"><button class="btn btn-outline" onclick="getAIAnalysis()">🔄 重新分析</button>
       <button class="btn btn-ghost" onclick="copyAIResult()">📋 复制结果</button></div></div>`;
-  }catch(e){
-    section.innerHTML=`<div class="ai-card"><div style="text-align:center;padding:20px">
-      <div style="font-size:36px;margin-bottom:8px">⚠️</div>
-      <p style="color:var(--text-soft);font-size:14px">${e.message||'AI分析失败'}</p>
-      <button class="btn btn-primary" style="margin-top:12px" onclick="getAIAnalysis()">重试</button>
-      </div></div>`;
   }
   if(btn){btn.disabled=false;btn.textContent='🤖 AI深度解读';}
 }
