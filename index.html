@@ -15,6 +15,8 @@
   --primary:#6366f1;
   --primary-light:#818cf8;
   --primary-dark:#4f46e5;
+  --btn-primary:#5b5bd6;
+  --btn-primary-hover:#4f46e5;
   --accent:#8b5cf6;
   --bg:#09090b;
   --bg-soft:#131316;
@@ -22,7 +24,7 @@
   --card-strong:#18181b;
   --text:#fafafa;
   --text-soft:#a1a1aa;
-  --text-mute:#71717a;
+  --text-mute:#8b8b94;
   --border:rgba(255,255,255,.08);
   --border-strong:rgba(255,255,255,.16);
   --success:#10b981;
@@ -52,6 +54,8 @@
   --primary:#4f46e5;
   --primary-light:#6366f1;
   --primary-dark:#4338ca;
+  --btn-primary:#4f46e5;
+  --btn-primary-hover:#4338ca;
   --accent:#7c3aed;
   --bg:#fbfbfc;
   --bg-soft:#f4f4f5;
@@ -59,7 +63,7 @@
   --card-strong:#ffffff;
   --text:#18181b;
   --text-soft:#52525b;
-  --text-mute:#8e8e96;
+  --text-mute:#6b6b74;
   --border:rgba(0,0,0,.09);
   --border-strong:rgba(0,0,0,.16);
   --shadow:0 1px 2px rgba(0,0,0,.05);
@@ -96,7 +100,7 @@ a{color:var(--primary);text-decoration:none}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:99px;border:2px solid transparent;background-clip:content-box}
 ::-webkit-scrollbar-thumb:hover{background:var(--text-mute);background-clip:content-box;border:2px solid transparent}
-:focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:4px}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
 
 /* ============ 氛围层（弱极光，仅此一层） ============ */
 body::before{
@@ -120,7 +124,7 @@ body::before{
   display:flex;align-items:center;justify-content:space-between;
   padding:12px 24px;
 }
-.logo{display:flex;align-items:center;gap:9px;font-weight:650;font-size:15px;color:var(--text);letter-spacing:-.01em}
+.logo{display:flex;align-items:center;gap:9px;font-weight:650;font-size:15px;color:var(--text);letter-spacing:-.01em;background:none;border:none;padding:0;font-family:inherit;cursor:pointer;min-height:40px}
 .logo-icon{
   width:28px;height:28px;border-radius:8px;
   background:linear-gradient(135deg,var(--primary),var(--primary-dark));
@@ -131,7 +135,7 @@ body::before{
 .logo:hover .logo-icon{transform:rotate(-8deg)}
 .nav-actions{display:flex;align-items:center;gap:4px}
 .theme-toggle{
-  width:34px;height:34px;border-radius:8px;
+  width:40px;height:40px;border-radius:8px;
   display:flex;align-items:center;justify-content:center;
   background:none;color:var(--text-mute);font-size:16px;
   transition:color var(--dur-2) var(--ease),background-color var(--dur-2) var(--ease);
@@ -147,11 +151,11 @@ body::before{
   letter-spacing:.01em;
 }
 .btn-primary{
-  background:var(--primary);
+  background:var(--btn-primary);
   color:#fff;
   box-shadow:0 1px 2px rgba(0,0,0,.2);
 }
-.btn-primary:hover{background:var(--primary-light);transform:translateY(-1px);box-shadow:var(--glow)}
+.btn-primary:hover{background:var(--btn-primary-hover);transform:translateY(-1px);box-shadow:var(--glow)}
 .btn-primary:active{transform:scale(.98)}
 .btn-ghost{background:none;color:var(--text-soft)}
 .btn-ghost:hover{background:var(--bg-soft);color:var(--text)}
@@ -161,7 +165,7 @@ body::before{
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
 
 /* 导航内按钮轻量化 */
-.nav-actions .btn{padding:7px 12px;font-size:13.5px;font-weight:500;color:var(--text-soft);background:none}
+.nav-actions .btn{padding:7px 12px;min-height:40px;font-size:13.5px;font-weight:500;color:var(--text-soft);background:none}
 .nav-actions .btn:hover{color:var(--text);background:var(--bg-soft)}
 .nav-actions .btn-outline{border:1px solid var(--border-strong);color:var(--text)}
 .nav-actions .btn-outline:hover{border-color:var(--text-mute)}
@@ -196,6 +200,10 @@ body::before{
 }
 .hero p{font-size:17px;color:var(--text-soft);max-width:520px;margin:0 auto 36px;line-height:1.75}
 .hero-cta{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap}
+.hero .hero-reassure{font-size:12.5px;color:var(--text-mute);line-height:1.5;margin:14px auto 0;max-width:none}
+.resume-test{display:none;margin:10px auto 0;padding:4px 2px;font-family:inherit;font-size:13px;color:var(--primary-light);background:none;border:none;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.resume-test:hover{color:var(--text)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .hero-cta .btn-outline{
   border:none;background:none;color:var(--text-soft);font-weight:500;padding:14px 14px;
 }
@@ -243,6 +251,8 @@ body::before{
   box-shadow:none;backdrop-filter:none;
   transition:transform var(--dur-2) var(--ease),border-color var(--dur-2) var(--ease),background-color var(--dur-2) var(--ease);
   cursor:pointer;position:relative;overflow:hidden;
+  display:block;width:100%;font:inherit;color:inherit;text-align:left;
+  -webkit-appearance:none;appearance:none;
 }
 .gallery-card:hover{transform:translateY(-2px);border-color:var(--border-strong);background:var(--card)}
 .gallery-card::before{
@@ -251,21 +261,21 @@ body::before{
 }
 .gallery-card::after{display:none}
 .gallery-icon{font-size:22px;margin-bottom:10px;display:block}
-.gallery-code{font-size:16px;font-weight:750;margin-bottom:2px;letter-spacing:-.01em}
-.gallery-name{font-size:12.5px;color:var(--text-soft);font-weight:550;margin-bottom:6px}
-.gallery-desc{font-size:12px;color:var(--text-mute);line-height:1.6}
+.gallery-code{display:block;font-size:16px;font-weight:750;margin-bottom:2px;letter-spacing:-.01em;color:var(--text)}
+.gallery-name{display:block;font-size:12.5px;color:var(--text-soft);font-weight:550;margin-bottom:6px}
+.gallery-desc{display:block;font-size:13px;color:var(--text-mute);line-height:1.6}
 .gallery-group-tag{
   display:inline-block;padding:2px 8px;border-radius:999px;
-  font-size:10.5px;font-weight:600;margin-bottom:8px;letter-spacing:.02em;
+  font-size:12px;font-weight:600;margin-bottom:8px;letter-spacing:.02em;
 }
 .group-analyst{background:rgba(139,92,246,.12);color:#a78bfa}
 .group-diplomat{background:rgba(16,185,129,.12);color:#34d399}
 .group-sentinel{background:rgba(59,130,246,.12);color:#60a5fa}
 .group-explorer{background:rgba(245,158,11,.12);color:#fbbf24}
-[data-theme="light"] .group-analyst{background:rgba(139,92,246,.10);color:#7c3aed}
-[data-theme="light"] .group-diplomat{background:rgba(16,185,129,.10);color:#059669}
-[data-theme="light"] .group-sentinel{background:rgba(59,130,246,.10);color:#2563eb}
-[data-theme="light"] .group-explorer{background:rgba(245,158,11,.10);color:#d97706}
+[data-theme="light"] .group-analyst{background:rgba(139,92,246,.10);color:#6d28d9}
+[data-theme="light"] .group-diplomat{background:rgba(16,185,129,.10);color:#047857}
+[data-theme="light"] .group-sentinel{background:rgba(59,130,246,.10);color:#1d4ed8}
+[data-theme="light"] .group-explorer{background:rgba(245,158,11,.10);color:#b45309}
 
 /* 性格详情弹窗 */
 .type-modal-body{padding:0 4px}
@@ -766,7 +776,7 @@ body::before{
 .modal-sub{text-align:center;color:var(--text-mute);font-size:13.5px;margin-bottom:26px}
 .modal-close{
   position:absolute;top:14px;right:14px;
-  width:30px;height:30px;border-radius:50%;
+  width:40px;height:40px;border-radius:50%;
   background:none;color:var(--text-mute);
   border:none;
   font-size:14px;display:flex;align-items:center;justify-content:center;
@@ -791,7 +801,7 @@ body::before{
 .mode-badge{
   position:absolute;top:-9px;left:50%;transform:translateX(-50%);
   background:var(--primary);
-  color:#fff;font-size:10.5px;font-weight:650;
+  color:#fff;font-size:11px;font-weight:650;
   padding:3px 11px;border-radius:999px;
   box-shadow:none;letter-spacing:.06em;
 }
@@ -872,7 +882,12 @@ body::before{
   .swot-grid{grid-template-columns:1fr}
   .container{padding:0 18px}
   .navbar-inner{padding:10px 16px}
-  .nav-actions .btn{padding:6px 8px;font-size:12.5px}
+  .logo > span:last-child{display:none}
+  .logo{min-width:44px;min-height:44px;justify-content:center;gap:0}
+  .nav-actions{flex:1;min-width:0;flex-wrap:wrap;justify-content:flex-end;gap:2px}
+  .nav-actions .btn{min-height:44px;padding:8px;font-size:12.5px}
+  .theme-toggle{width:44px;height:44px}
+  .modal-close{width:44px;height:44px}
   .feature-header h2{font-size:21px}
   .feature-header p{font-size:13px}
   .compat-score-card{padding:13px 0;gap:10px}
@@ -893,8 +908,14 @@ body::before{
                        transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
 @media print{
+  :root,[data-theme="dark"],[data-theme="light"]{
+    --text:#111;--text-soft:#333;--text-mute:#444;
+    --bg:#fff;--bg-soft:#fff;--card:#fff;--card-strong:#fff;
+    --border:#ddd;--border-strong:#ccc
+  }
   body::before{display:none}
-  body{background:#fff}
+  body{background:#fff;color:#111}
+  .gallery-card{background:#fff}
   .navbar,.toast,.loading-overlay,.modal-overlay{display:none!important}
   .auth-card,.growth-chart-wrap,.daily-card,.career-path-card,.profile-card,.team-insights{
     background:#fff;box-shadow:none;border-color:#ddd
@@ -913,12 +934,12 @@ body::before{
 <!-- 导航栏 -->
 <nav class="navbar">
   <div class="navbar-inner">
-    <div class="logo" onclick="go('home')" style="cursor:pointer">
-      <div class="logo-icon">🧭</div>
+    <button type="button" class="logo" onclick="go('home')" aria-label="返回首页">
+      <span class="logo-icon" aria-hidden="true">🧭</span>
       <span>MBTI 职业指南</span>
-    </div>
+    </button>
     <div class="nav-actions">
-      <button class="theme-toggle" onclick="toggleTheme()" title="切换主题">🌙</button>
+      <button class="theme-toggle" onclick="toggleTheme()" title="切换主题" aria-label="切换到浅色主题">🌙</button>
       <button class="btn btn-ghost" onclick="go('explore')">🧭 探索</button>
       <button class="btn btn-ghost" id="navHistoryBtn" onclick="go('history')" style="display:none">📜 历史</button>
       <button class="btn btn-ghost" id="navProfileBtn" onclick="go('profile')" style="display:none">👤 我的</button>
@@ -932,27 +953,30 @@ body::before{
 <section class="page active" id="page-home">
   <div class="container">
     <div class="hero">
-      <span class="hero-badge">✨ 三种测试模式 · 2分钟快速出结果</span>
+      <span class="hero-badge">✨ 12–60 题 · 最快 2 分钟出结果</span>
       <h1>发现你的<span class="grad">性格密码</span><br>解锁职业方向</h1>
-      <p>基于 MBTI 16型人格理论，通过科学的性格测试，帮你了解真实的自己，找到最适合的职业发展路径。</p>
+      <p>基于荣格类型学与 MBTI 四维模型，用 12–60 道情境题，帮你梳理性格倾向、职业方向与成长建议。</p>
       <div class="hero-cta">
         <button class="btn btn-primary btn-lg" onclick="startTest()">🚀 开始测试</button>
         <button class="btn btn-outline btn-lg" onclick="go('auth')">注册 / 登录</button>
       </div>
+      <p class="hero-reassure">免费 · 无需注册即可测 · 退出自动保留草稿</p>
+      <button type="button" class="resume-test" id="resumeTestBtn" style="display:none" onclick="resumeDraft()"></button>
     </div>
 
     <div class="hero-visual">
       <div class="highlight-chip"><span class="num">16</span><span class="label">种人格类型</span></div>
-      <div class="highlight-chip"><span class="num">60</span><span class="label">道精选题目</span></div>
+      <div class="highlight-chip"><span class="num">60</span><span class="label">道题库</span></div>
       <div class="highlight-chip"><span class="num">3</span><span class="label">档测试模式</span></div>
-      <div class="highlight-chip"><span class="num">5</span><span class="label">维度分析</span></div>
+      <div class="highlight-chip"><span class="num">4</span><span class="label">维度分析</span></div>
     </div>
 
+    <h2 class="sr-only">核心功能</h2>
     <div class="features">
       <div class="feature-card">
-        <div class="icon">🧬</div>
-        <h3>科学理论</h3>
-        <p>基于荣格心理学与 MBTI 理论，4维度精准测量</p>
+        <div class="icon" aria-hidden="true">🧬</div>
+        <h3>类型学基础</h3>
+        <p>基于荣格类型学与 MBTI 四维模型，测量你的性格倾向</p>
       </div>
       <div class="feature-card">
         <div class="icon">💼</div>
@@ -1187,7 +1211,7 @@ body::before{
         <button class="btn btn-outline mode-btn">开始完整测试</button>
       </div>
     </div>
-    <button class="modal-close" onclick="closeModal('testModeModal')">✕</button>
+    <button class="modal-close" onclick="closeModal('testModeModal')" aria-label="关闭">✕</button>
   </div>
 </div>
 
@@ -1201,7 +1225,7 @@ body::before{
       <button class="btn btn-primary btn-lg" onclick="downloadPoster()">📥 下载海报</button>
       <button class="btn btn-outline" onclick="closeModal('posterModal')">关闭</button>
     </div>
-    <button class="modal-close" onclick="closeModal('posterModal')">✕</button>
+    <button class="modal-close" onclick="closeModal('posterModal')" aria-label="关闭">✕</button>
   </div>
 </div>
 
@@ -1209,7 +1233,7 @@ body::before{
 <div class="modal-overlay" id="typeModal">
   <div class="modal" style="max-width:480px">
     <div class="type-modal-body" id="typeModalBody"></div>
-    <button class="modal-close" onclick="closeModal('typeModal')">✕</button>
+    <button class="modal-close" onclick="closeModal('typeModal')" aria-label="关闭">✕</button>
   </div>
 </div>
 
@@ -1920,16 +1944,21 @@ function toggleTheme(){
   const next=cur==='dark'?'light':'dark';
   document.documentElement.setAttribute('data-theme',next==='dark'?'dark':'light');
   localStorage.setItem('mbti_theme',next);
-  document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';
+  const btn=document.querySelector('.theme-toggle');
+  btn.textContent=next==='dark'?'☀️':'🌙';
+  btn.setAttribute('aria-label',next==='dark'?'切换到浅色主题':'切换到深色主题');
 }
 (function initTheme(){
   const saved=localStorage.getItem('mbti_theme');
+  const btn=document.querySelector('.theme-toggle');
   if(saved==='dark'||!saved){
     document.documentElement.setAttribute('data-theme','dark');
-    document.querySelector('.theme-toggle').textContent='☀️';
+    btn.textContent='☀️';
+    btn.setAttribute('aria-label','切换到浅色主题');
   }else{
     document.documentElement.setAttribute('data-theme','light');
-    document.querySelector('.theme-toggle').textContent='🌙';
+    btn.textContent='🌙';
+    btn.setAttribute('aria-label','切换到深色主题');
   }
 })();
 
@@ -1937,12 +1966,9 @@ function toggleTheme(){
    页面路由
    ==================================================================== */
 function go(page){
-  // 测试中拦截导航，防止误操作丢失进度
-  if(appState.currentPage==='test' && page!=='test' && page!=='result'){
-    const answered=appState.test.answers.filter(a=>a!==null).length;
-    if(answered>0 && !confirm(`你已经回答了 ${answered} 题，离开将丢失测试进度。\n\n确认离开吗？`)){
-      return;
-    }
+  // 测试中离开时先存草稿，首页可继续
+  if(appState.currentPage==='test' && page!=='test' && page!=='result' && appState.test){
+    saveDraft();
   }
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   const el=document.getElementById('page-'+page);
@@ -1956,6 +1982,7 @@ function go(page){
   if(page==='growth')renderGrowthChart();
   if(page==='careers')renderCareers();
   updateNav();
+  if(page==='home')refreshResume();
 }
 
 function updateNav(){
@@ -2096,25 +2123,85 @@ async function restoreSession(){
    ==================================================================== */
 function startTest(mode){
   if(!mode){openModal('testModeModal');return;}
-  let questions;
-  if(mode==='quick'){
-    // 快速版：每维度前3题（simple标记），共12题
-    questions=QUESTIONS.filter(q=>q.simple);
-  } else if(mode==='detailed'){
-    // 详细版：每维度前7题，共28题
-    const dimCount={};
-    questions=QUESTIONS.filter(q=>{
-      dimCount[q.dim]=(dimCount[q.dim]||0)+1;
-      return dimCount[q.dim]<=7;
-    });
-  } else {
-    // 完整版：全部60题
-    questions=QUESTIONS;
-  }
+  const questions=questionsForMode(mode);
   appState.test={questions:questions,answers:new Array(questions.length).fill(null),currentQ:0,mode:mode};
   closeModal('testModeModal');
   go('test');
   renderQuestion();
+  focusQuestion();
+}
+
+function focusQuestion(){
+  const q=document.getElementById('questionText');
+  if(q){q.setAttribute('tabindex','-1');q.focus();}
+}
+
+function questionsForMode(mode){
+  if(mode==='quick'){
+    // 快速版：每维度前3题（simple标记），共12题
+    return QUESTIONS.filter(q=>q.simple);
+  }
+  if(mode==='detailed'){
+    // 详细版：每维度前7题，共28题
+    const dimCount={};
+    return QUESTIONS.filter(q=>{
+      dimCount[q.dim]=(dimCount[q.dim]||0)+1;
+      return dimCount[q.dim]<=7;
+    });
+  }
+  // 完整版：全部60题
+  return QUESTIONS;
+}
+
+const DRAFT_KEY='mbti_test_draft';
+function saveDraft(){
+  if(!appState.test)return;
+  try{
+    localStorage.setItem(DRAFT_KEY,JSON.stringify({
+      mode:appState.test.mode,
+      answers:appState.test.answers,
+      currentQ:appState.test.currentQ,
+      ts:Date.now()
+    }));
+  }catch(e){}
+}
+function loadDraft(){
+  try{
+    const d=JSON.parse(localStorage.getItem(DRAFT_KEY)||'null');
+    if(!d||!['quick','detailed','full'].includes(d.mode)||!Array.isArray(d.answers))return null;
+    return d;
+  }catch(e){return null;}
+}
+function clearDraft(){
+  try{localStorage.removeItem(DRAFT_KEY);}catch(e){}
+}
+function refreshResume(){
+  const btn=document.getElementById('resumeTestBtn');
+  if(!btn)return;
+  const d=loadDraft();
+  if(!d){btn.style.display='none';return;}
+  const total=questionsForMode(d.mode).length;
+  if(d.answers.length!==total){clearDraft();btn.style.display='none';return;}
+  const done=d.answers.filter(a=>a!==null).length;
+  if(!done){btn.style.display='none';return;}
+  btn.textContent=`继续上次测试 · 已答 ${done}/${total} 题 →`;
+  btn.style.display='inline-block';
+}
+function resumeDraft(){
+  const d=loadDraft();
+  if(!d){toast('没有可继续的测试');refreshResume();return;}
+  const questions=questionsForMode(d.mode);
+  if(d.answers.length!==questions.length){clearDraft();toast('草稿已过期，请重新开始');refreshResume();return;}
+  appState.test={
+    questions:questions,
+    answers:d.answers,
+    currentQ:Math.min(d.currentQ||0,questions.length-1),
+    mode:d.mode
+  };
+  go('test');
+  renderQuestion();
+  focusQuestion();
+  toast('已恢复上次进度');
 }
 
 function renderQuestion(){
@@ -2125,7 +2212,10 @@ function renderQuestion(){
   // 进度
   const progress=((idx)/total)*100;
   document.getElementById('progressFill').style.width=progress+'%';
-  document.getElementById('progressText').textContent=`第 ${idx+1} / ${total} 题`;
+  const dimLabel={EI:'E/I',SN:'S/N',TF:'T/F',JP:'J/P'};
+  document.getElementById('progressText').textContent = total>28
+    ? `第 ${idx+1} / ${total} 题 · 第 ${Math.floor(idx/15)+1}/4 部分 · ${dimLabel[q.dim]||q.dim}`
+    : `第 ${idx+1} / ${total} 题`;
   // 题目
   document.getElementById('questionNum').textContent=`问题 ${idx+1}`;
   document.getElementById('questionText').textContent=q.text;
@@ -2164,18 +2254,19 @@ function renderDots(){
     if(i===appState.test.currentQ)cls+=' active';
     else if(appState.test.answers[i]!==null)cls+=' done';
     dot.className=cls;
-    dot.onclick=()=>{appState.test.currentQ=i;renderQuestion();};
+    dot.onclick=()=>{appState.test.currentQ=i;saveDraft();renderQuestion();};
     container.appendChild(dot);
   });
 }
 
 function selectAnswer(val){
   appState.test.answers[appState.test.currentQ]=val;
+  saveDraft();
   renderQuestion();
 }
 
 function prevQuestion(){
-  if(appState.test.currentQ>0){appState.test.currentQ--;renderQuestion();}
+  if(appState.test.currentQ>0){appState.test.currentQ--;saveDraft();renderQuestion();}
 }
 
 function nextQuestion(){
@@ -2185,6 +2276,7 @@ function nextQuestion(){
     calculateResult();
   }else{
     appState.test.currentQ++;
+    saveDraft();
     renderQuestion();
   }
 }
@@ -2193,6 +2285,7 @@ function nextQuestion(){
    MBTI 计分算法
    ==================================================================== */
 function calculateResult(){
+  clearDraft();
   const scores={E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
   appState.test.answers.forEach((ans,i)=>{
     if(ans)scores[ans]++;
@@ -2338,17 +2431,65 @@ function showResult(type,dims,isNew){
 /* ====================================================================
    模态框控制
    ==================================================================== */
+let modalReturnFocus=null;
 function openModal(id){
-  document.getElementById(id).classList.add('show');
+  const overlay=document.getElementById(id);
+  if(!overlay)return;
+  const dialog=overlay.querySelector('.modal');
+  if(dialog){
+    if(!dialog.hasAttribute('role'))dialog.setAttribute('role','dialog');
+    dialog.setAttribute('aria-modal','true');
+    const title=dialog.querySelector('.modal-title,.type-modal-name');
+    if(title){
+      if(!title.id)title.id=id+'Title';
+      dialog.setAttribute('aria-labelledby',title.id);
+    }
+    if(!dialog.hasAttribute('tabindex'))dialog.setAttribute('tabindex','-1');
+  }
+  modalReturnFocus=document.activeElement;
+  overlay.classList.add('show');
+  requestAnimationFrame(()=>{
+    if(dialog){dialog.focus({preventScroll:true});dialog.scrollTop=0;}
+    else{overlay.focus({preventScroll:true});}
+  });
 }
 function closeModal(id){
-  document.getElementById(id).classList.remove('show');
+  const overlay=document.getElementById(id);
+  if(!overlay)return;
+  overlay.classList.remove('show');
+  if(modalReturnFocus&&typeof modalReturnFocus.focus==='function'&&modalReturnFocus.getClientRects().length){
+    modalReturnFocus.focus();
+  }
+  modalReturnFocus=null;
+}
+function getFocusable(root){
+  if(!root)return [];
+  return [...root.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')]
+    .filter(el=>el.getClientRects().length>0);
 }
 // 点击遮罩关闭
 document.addEventListener('click',e=>{
   if(e.target.classList&&e.target.classList.contains('modal-overlay')){
-    e.target.classList.remove('show');
+    closeModal(e.target.id);
   }
+});
+// Esc 关闭 + 焦点陷阱
+document.addEventListener('keydown',e=>{
+  const open=[...document.querySelectorAll('.modal-overlay.show')];
+  if(!open.length)return;
+  const overlay=open[open.length-1];
+  if(e.key==='Escape'){e.preventDefault();closeModal(overlay.id);return;}
+  if(e.key!=='Tab')return;
+  const dialog=overlay.querySelector('.modal');
+  const items=getFocusable(dialog);
+  if(!items.length)return;
+  const first=items[0],last=items[items.length-1];
+  if(document.activeElement===dialog){
+    if(e.shiftKey){e.preventDefault();last.focus();}
+    return;
+  }
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
 });
 
 /* ====================================================================
@@ -3061,12 +3202,12 @@ function openModalContent(title,contentHTML){
   let modal=document.getElementById('customModal');
   if(!modal){
     modal=document.createElement('div');modal.className='modal-overlay';modal.id='customModal';
-    modal.innerHTML='<div class="modal"><h2 class="modal-title" id="customModalTitle"></h2><div id="customModalBody"></div><button class="modal-close" onclick="closeModal(\'customModal\')">✕</button></div>';
+    modal.innerHTML='<div class="modal"><h2 class="modal-title" id="customModalTitle"></h2><div id="customModalBody"></div><button class="modal-close" onclick="closeModal(\'customModal\')" aria-label="关闭">✕</button></div>';
     document.body.appendChild(modal);
   }
   document.getElementById('customModalTitle').textContent=title;
   document.getElementById('customModalBody').innerHTML=contentHTML;
-  modal.classList.add('show');
+  openModal('customModal');
 }
 
 /* ====================================================================
@@ -3088,13 +3229,13 @@ function renderTypesGallery(){
     // 性格简介截取前30字
     const shortDesc=t.summary.length>36?t.summary.substring(0,36)+'...':t.summary;
     html+=`
-      <div class="gallery-card" style="--card-color:${t.color}" onclick="showTypeDetail('${code}')">
-        <div class="gallery-icon">${t.icon}</div>
+      <button type="button" class="gallery-card" style="--card-color:${t.color}" onclick="showTypeDetail('${code}')" aria-haspopup="dialog" aria-label="${t.code} ${t.name}，${t.group}类型，查看详情">
+        <span class="gallery-icon" aria-hidden="true">${t.icon}</span>
         <span class="gallery-group-tag ${gClass}">${t.group}</span>
-        <div class="gallery-code" style="color:${t.color}">${t.code}</div>
-        <div class="gallery-name">${t.name}</div>
-        <div class="gallery-desc">${shortDesc}</div>
-      </div>`;
+        <span class="gallery-code">${t.code}</span>
+        <span class="gallery-name">${t.name}</span>
+        <span class="gallery-desc">${shortDesc}</span>
+      </button>`;
   });
   container.innerHTML=html;
 }
@@ -3312,6 +3453,7 @@ window.addEventListener('load',async ()=>{
   try{await restoreSession();}catch(e){console.warn('restoreSession失败:',e);}
   try{updateNav();}catch(e){console.warn('updateNav失败:',e);}
   try{renderTypesGallery();}catch(e){console.warn('renderTypesGallery失败:',e);}
+  try{refreshResume();}catch(e){console.warn('refreshResume失败:',e);}
   try{checkUrlResult();}catch(e){console.warn('checkUrlResult失败:',e);}
   // 无论如何都要隐藏loading
   setTimeout(()=>{
