@@ -1,7 +1,8 @@
 {
   "functions": {
     "api/ai-analysis.js": {
-      "memory": 512
+      "memory": 512,
+      "maxDuration": 60
     }
   }
 }

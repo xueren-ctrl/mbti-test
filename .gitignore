@@ -1,0 +1,7 @@
+.env
+node_modules/
+shots/
+.chrome-ai/
+mock-requests.jsonl
+audit*.mjs
+patch_ai.py

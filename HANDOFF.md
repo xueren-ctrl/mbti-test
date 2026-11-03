@@ -1,7 +1,7 @@
 # MBTI 性格测试网站 · 项目交接文档
 
 > 用途：把当前项目状态与下一步任务交给另一个 AI 接续完成。
-> 最后更新：2026-08-22
+> 最后更新：2026-11-03
 
 ---
 
@@ -11,7 +11,7 @@
 
 - 线上地址（GitHub Pages）：`https://xueren-ctrl.github.io/mbti-test/`
 - GitHub 仓库：`https://github.com/xueren-ctrl/mbti-test`（用户名 `xueren-ctrl`）
-- ⚠️ 线上**当前部署的是旧版**，尚未包含本次"重复保存"修复。
+- ⚠️ 线上已与仓库 `main` 同步（2026-11-03 核实，199,830 字节）。
 
 ---
 
@@ -21,7 +21,7 @@
 |---|---|
 | 前端 | 单文件 SPA：`/workspace/index.html`（约 180KB / ~3000 行，**无构建步骤**） |
 | 数据存储 | `localStorage`（本地）+ Node.js 后端 JSON 文件（云同步，仅本地运行用） |
-| AI | Agnes-2.0-Flash，前端**直连**；API key 做了数组拆分混淆；endpoint `https://apihub.agnes-ai.com/v1/chat/completions` |
+| AI | 经自建代理调用 Agnes（`server-ai.js` / `worker/agnes-proxy.js` / `api/ai-analysis.js`）；Key 只在服务端环境变量。前端 `AI_PROXY_URL` 留空则隐藏 AI 入口 |
 | 部署 | GitHub Pages（静态托管，国内可访问）；曾试 Vercel 因国内墙放弃 |
 | 本地后端 | `server.js` / `server-ai.js`（Node + Express），用于账号云同步 + AI 代理，**不进 Pages** |
 
@@ -44,7 +44,7 @@
 |---|---|
 | `/workspace/index.html` | **最新源码（含全部修复）**，上线用的唯一文件 |
 | `/tmp/mbti-test/index.html` | 同一份已 `git commit` 的副本（commit `9bc12d4`），仓库远端已配置 |
-| `/workspace/server/` `server.js` `server-ai.js` `api/` `deploy.sh` `DEPLOY.md` | 本地后端 / 部署脚本，**GitHub Pages 不需要** |
+| `server-ai.js` `worker/agnes-proxy.js` `api/ai-analysis.js` `AI_SETUP.md` | AI 代理与部署说明（Key 只在服务端） |
 
 ---
 
@@ -108,7 +108,8 @@ git push origin HEAD
 
 - **当前沙箱无外网出口**：`github.com` / `*.github.io` 被 DNS 解析到 `198.18.0.x` 保留网段，TLS 握手失败。`curl` / `git push` / 浏览器自动化（agent-browser）**全部失败**——已实测：同一浏览器开本地服务成功、开 GitHub 报 `ERR_CONNECTION_CLOSED`。若下一个 AI 也在同类沙箱，会撞同一堵墙，不必反复试。
 - 若下一个 AI 运行在**有网环境**（用户本机或开放沙箱），方案 A 直接 `git push` 即可。
-- **API key 已混淆写在前端**（数组拆分），这是已知权衡：因 Vercel 国内不可达，退回了前端直连。若要更安全，可改回后端代理（`server-ai.js` 已有代理逻辑），但后端需部署到可公网访问的节点（Render / VPS / 国内云），纯静态 Pages 做不到。
+- **API Key 已从前端移除**（2026-11-03）：改为代理模式，详见 `AI_SETUP.md`。
+  旧 Key 曾随公开仓库泄露，**必须在 Agnes 控制台吊销/轮换**，仅删代码不够。
 
 ---
 

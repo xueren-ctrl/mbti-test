@@ -2386,7 +2386,7 @@ function showResult(type,dims,isNew){
     <div class="result-actions">
       <button class="btn btn-primary btn-lg" onclick="saveResult('${type}')">💾 保存结果</button>
       <button class="btn btn-outline btn-lg" onclick="generatePoster('${type}')">🖼️ 海报分享</button>
-      <button class="btn btn-outline btn-lg" id="aiAnalysisBtn" onclick="getAIAnalysis()">🤖 AI深度解读</button>
+      ${aiButtonHtml()}
       <button class="btn btn-ghost btn-lg" onclick="startTest()">🔄 再测一次</button>
     </div>
 
@@ -3102,91 +3102,98 @@ function renderCareers(){
 }
 
 /* ====================================================================
-   功能2：AI深度解读（前端直连Agnes API）
+   功能2：AI深度解读（经由自建代理，API Key 不落前端）
    ==================================================================== */
-const _k=['sk-','wLiQ','kcSA','5nf1','hZpB','YKAT','ChtG','ViUi','OQYw','dTbZ','PmMl','bmBq','LXLe'].join('');
-const _u='https://apihub.'+'agnes-ai.com'+'/v1/chat/completions';
+/* 部署代理后把完整地址填在这里，例如：
+   const AI_PROXY_URL='https://ai.example.com/api/ai-analysis';
+   同域部署（整站在 Vercel 上）填 const AI_PROXY_URL='/api/ai-analysis';
+   留空 = 不启用 AI 入口（按钮隐藏），不会再出现点了必 404 的情况。 */
+const AI_PROXY_URL='';
+
+function aiProxyUrl(){
+  if(typeof window!=='undefined'&&window.MBTI_AI_PROXY)return window.MBTI_AI_PROXY;
+  return AI_PROXY_URL;
+}
+function aiConfigured(){
+  if(typeof window!=='undefined'&&window.MBTI_AI_PROXY)return true;
+  return Boolean(AI_PROXY_URL);
+}
+function aiButtonHtml(){
+  if(!aiConfigured())return '';
+  return '<button class="btn btn-outline btn-lg" id="aiAnalysisBtn" onclick="getAIAnalysis()">🤖 AI深度解读</button>';
+}
+function escapeHtml(s){
+  return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+if(!aiConfigured())console.info('[MBTI] AI 解读未配置：部署代理后把地址填入 AI_PROXY_URL');
 
 async function getAIAnalysis(){
-  const btn=document.getElementById('aiAnalysisBtn');if(btn){btn.disabled=true;btn.textContent='AI分析中...';}
+  const btn=document.getElementById('aiAnalysisBtn');
   const section=document.getElementById('aiSection');
   if(!section)return;
+  if(!aiConfigured()){toast('AI 解读暂未开通');return;}
   // 获取待分析结果：优先当前展示的结果，其次历史/临时记录
   let lastResult=(appState.currentResult&&appState.currentResult.type)?appState.currentResult:null;
   if(!lastResult){
     const history=appState.currentUser?appState.currentUser.history:[];
-    const temp=JSON.parse(localStorage.getItem('mbti_temp_history')||'[]');
+    let temp=[];try{temp=JSON.parse(localStorage.getItem('mbti_temp_history')||'[]');}catch(e){}
     const all=[...(history||[]),...temp].filter(r=>r&&r.type);
-    if(all.length===0){toast('请先完成测试');if(btn){btn.disabled=false;btn.textContent='🤖 AI深度解读';}return;}
+    if(all.length===0){toast('请先完成测试');return;}
     lastResult=all[0];
   }
-  const t=TYPES[lastResult.type];
-  section.innerHTML='<div class="ai-card"><div class="ai-loading"><div class="spinner"></div><p>Agnes AI 正在深度分析你的性格...</p></div></div>';
-  // 构建AI请求
-  const dims=lastResult.dims||{};
-  const dimStr=Object.keys(dims).map(k=>{const d=dims[k];return d?`${d.a}:${d.aVal}% / ${d.b}:${d.bVal}%`:''}).filter(Boolean).join('，')||'默认50/50';
-  const prompt=`你是一位专业的MBTI性格分析师。用户完成了MBTI测试，请根据以下信息给出深度个性化解读。
+  if(btn){btn.disabled=true;btn.textContent='AI分析中...';}
+  section.innerHTML='<div class="ai-card"><div class="ai-loading"><div class="spinner"></div><p>AI 正在深度分析你的性格...</p></div></div>';
 
-用户类型：${lastResult.type}（${t.name}）
-维度比例：${dimStr}
-测试模式：${lastResult.mode||'detailed'}
+  // 只提交结构化数据，提示词由代理生成；前端不接触任何密钥
+  const payload={
+    type:lastResult.type,
+    dims:lastResult.dims||{},
+    mode:lastResult.mode||'detailed'
+  };
 
-请从以下4个方面分析（共约400字，用中文，分段清晰）：
-1. 🔍 性格内核：结合维度比例，分析这个人的核心驱动力和思维模式（偏T 70%和偏T 55%的人有什么不同）
-2. 💡 独特优势：基于具体维度倾向，指出TA比别人更突出的3个优势
-3. ⚠️ 潜在挑战：针对维度比例，提醒TA需要警惕的2个盲区
-4. 🎯 行动建议：给出3条具体可执行的建议
-
-要求：语言亲切专业，像一位了解TA的朋友在聊天。不要用"你是一个INTJ"这种泛泛的模板话。`;
-
-  // 模型优先级：优先最新 flash；遇"模型不存在/无可用渠道"自动降级到备选，避免单模型下线导致功能不可用
-  const MODELS=['agnes-3.0-flash','agnes-2.5-flash','agnes-3.0-pro'];
   let content='',usedModel='',lastErr=null;
-  for(const model of MODELS){
-    try{
-      const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),30000);
-      const resp=await fetch(_u,{method:'POST',
-        headers:{'Content-Type':'application/json','Authorization':'Bearer '+_k},
-        body:JSON.stringify({
-          model:model,
-          messages:[
-            {role:'system',content:'你是一位专业的MBTI性格分析师，擅长根据用户的MBTI类型和维度比例给出深度个性化解读。语言风格亲切专业，像一位了解用户的朋友。回复用中文。'},
-            {role:'user',content:prompt}
-          ],
-          temperature:0.8,max_tokens:1024
-        }),signal:controller.signal});
-      clearTimeout(timer);
-      const respText=await resp.text();
-      if(!resp.ok){
-        const err=new Error('API错误('+resp.status+'): '+respText.substring(0,80));
-        // 模型不存在/无可用渠道 → 记下错误，降级到下一个备选模型
-        if(resp.status===400||resp.status===404||resp.status===503||/model_not_found|无可用渠道|无可用/.test(respText)){lastErr=err;continue;}
-        throw err;
-      }
-      const data=JSON.parse(respText);
-      content=data.choices?.[0]?.message?.content||'';
-      usedModel=model;
-      if(!content)throw new Error('AI返回内容为空');
-      break;
-    }catch(e){
-      if(e.name==='AbortError'){lastErr=new Error('请求超时，请重试');break;}
-      lastErr=e;
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),35000);
+  try{
+    const resp=await fetch(aiProxyUrl(),{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload),
+      signal:controller.signal
+    });
+    const raw=await resp.text();
+    let data=null;
+    try{data=raw?JSON.parse(raw):null;}catch(e){}
+    if(!resp.ok){
+      lastErr=new Error((data&&data.error)||('AI 服务错误（'+resp.status+'）'));
+    }else if(!data||!data.content){
+      lastErr=new Error('AI 返回内容为空');
+    }else{
+      content=String(data.content);
+      usedModel=String(data.model||'');
     }
+  }catch(e){
+    lastErr=e.name==='AbortError'?new Error('请求超时，请重试'):new Error('无法连接 AI 服务');
+  }finally{
+    clearTimeout(timer);
   }
+
   if(!content){
     section.innerHTML=`<div class="ai-card"><div style="text-align:center;padding:20px">
       <div style="font-size:36px;margin-bottom:8px">⚠️</div>
-      <p style="color:var(--text-soft);font-size:14px">${(lastErr&&lastErr.message)||'AI分析失败'}</p>
+      <p style="color:var(--text-soft);font-size:14px">${escapeHtml((lastErr&&lastErr.message)||'AI分析失败')}</p>
       <button class="btn btn-primary" style="margin-top:12px" onclick="getAIAnalysis()">重试</button>
       </div></div>`;
   }else{
-    // 简单Markdown渲染
+    // 先转义再渲染，避免模型输出被当作 HTML 执行
     const html=content.split('\n').map(line=>{
-      line=line.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
-      if(line.trim().startsWith('#'))return `<h4 style="margin:16px 0 8px;color:var(--primary)">${line.replace(/^#+\s*/,'')}</h4>`;
-      if(line.trim())return `<p>${line}</p>`;return '';
+      let s=escapeHtml(line);
+      s=s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+      if(s.trim().startsWith('#'))return `<h4 style="margin:16px 0 8px;color:var(--primary)">${s.replace(/^#+\s*/,'')}</h4>`;
+      if(s.trim())return `<p>${s}</p>`;
+      return '';
     }).join('');
-    section.innerHTML=`<div class="ai-card"><div style="display:flex;align-items:center;gap:8px;margin-bottom:16px"><span style="font-size:20px">🤖</span><span style="font-weight:700;color:var(--primary)">Agnes AI 深度解读</span><span style="font-size:11px;padding:2px 8px;border-radius:999px;background:rgba(16,185,129,.12);color:#10b981;margin-left:auto">${usedModel}</span></div><div class="ai-content">${html}</div>
+    section.innerHTML=`<div class="ai-card"><div style="display:flex;align-items:center;gap:8px;margin-bottom:16px"><span style="font-size:20px">🤖</span><span style="font-weight:700;color:var(--primary)">AI 深度解读</span>${usedModel?`<span style="font-size:11px;padding:2px 8px;border-radius:999px;background:rgba(16,185,129,.12);color:#10b981;margin-left:auto">${escapeHtml(usedModel)}</span>`:''}</div><div class="ai-content">${html}</div>
       <div class="ai-btn"><button class="btn btn-outline" onclick="getAIAnalysis()">🔄 重新分析</button>
       <button class="btn btn-ghost" onclick="copyAIResult()">📋 复制结果</button></div></div>`;
   }
