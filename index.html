@@ -3108,7 +3108,7 @@ function renderCareers(){
    const AI_PROXY_URL='https://ai.example.com/api/ai-analysis';
    同域部署（整站在 Vercel 上）填 const AI_PROXY_URL='/api/ai-analysis';
    留空 = 不启用 AI 入口（按钮隐藏），不会再出现点了必 404 的情况。 */
-const AI_PROXY_URL='';
+const AI_PROXY_URL='https://mbti-ai.li3256542896.workers.dev/api/ai-analysis';
 
 function aiProxyUrl(){
   if(typeof window!=='undefined'&&window.MBTI_AI_PROXY)return window.MBTI_AI_PROXY;

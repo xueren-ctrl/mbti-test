@@ -1,7 +1,11 @@
 .env
+.key
+.cf_token
 node_modules/
 shots/
 .chrome-ai/
+.chrome-live/
+.deploy/
 mock-requests.jsonl
 audit*.mjs
 patch_ai.py

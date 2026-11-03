@@ -1,0 +1,10 @@
+name = "mbti-ai"
+main = "agnes-proxy.js"
+compatibility_date = "2026-11-01"
+
+[vars]
+AGNES_API_URL = "https://api.agnes-ai.cn/v1/chat/completions"
+
+# 部署：cd worker && npx wrangler deploy
+# 设置密钥：npx wrangler secret put AGNES_API_KEY
+# 可选：ALLOWED_ORIGINS（默认已放行 https://xueren-ctrl.github.io）
