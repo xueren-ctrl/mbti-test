@@ -21,7 +21,7 @@
 |---|---|
 | 前端 | 单文件 SPA：`/workspace/index.html`（约 180KB / ~3000 行，**无构建步骤**） |
 | 数据存储 | `localStorage`（本地）+ Node.js 后端 JSON 文件（云同步，仅本地运行用） |
-| AI | 经自建代理调用 Agnes（`server-ai.js` / `worker/agnes-proxy.js` / `api/ai-analysis.js`）；Key 只在服务端环境变量。前端 `AI_PROXY_URL` 留空则隐藏 AI 入口 |
+| AI | 经服务端代理调用 Agnes（当前：腾讯云 SCF 函数 URL `https://1330228714-ck5rk7z3tp.ap-guangzhou.tencentscf.com/`，代码 `scf/index.js`）；Key 只在函数环境变量。前端 `AI_PROXY_URL` 留空则隐藏 AI 入口 |
 | 部署 | GitHub Pages（静态托管，国内可访问）；曾试 Vercel 因国内墙放弃 |
 | 本地后端 | `server.js` / `server-ai.js`（Node + Express），用于账号云同步 + AI 代理，**不进 Pages** |
 
@@ -44,7 +44,7 @@
 |---|---|
 | `/workspace/index.html` | **最新源码（含全部修复）**，上线用的唯一文件 |
 | `/tmp/mbti-test/index.html` | 同一份已 `git commit` 的副本（commit `9bc12d4`），仓库远端已配置 |
-| `server-ai.js` `worker/agnes-proxy.js` `api/ai-analysis.js` `AI_SETUP.md` | AI 代理与部署说明（Key 只在服务端） |
+| `server-ai.js` `worker/agnes-proxy.js` `api/ai-analysis.js` `scf/index.js` `scf/DEPLOY.md` `AI_SETUP.md` | AI 代理与部署说明（Key 只在服务端） |
 
 ---
 
