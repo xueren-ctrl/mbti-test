@@ -9,3 +9,17 @@ shots/
 mock-requests.jsonl
 audit*.mjs
 patch_ai.py
+
+.edgeone-build/
+edgeone-build/
+.edgeone/
+edgeone/.edgeone/
+
+# Tencent Cloud EdgeOne
+.env
+.edgeone/*
+.tef_dist/*
+
+# SCF build artifact
+scf/*.zip
+scf/index.cjs

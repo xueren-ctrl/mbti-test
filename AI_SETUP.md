@@ -15,6 +15,14 @@ Agnes API
 页面里已经没有 `sk-` 开头的字符串。代理负责：校验参数、生成提示词、调模型、把结果原样返回。
 因为提示词在服务端生成，别人拿到代理地址也只能问 MBTI，不能当通用大模型接口刷。
 
+## 当前线上部署（2026-11）
+
+- 代理地址：`https://1330228714-ck5rk7z3tp.ap-guangzhou.tencentscf.com/`
+- 腾讯云 SCF 函数 `mbti-ai`（ap-guangzhou，Nodejs18.15），Key 在环境变量 `AGNES_API_KEY`
+- 走 SCF 的 `http` 触发器（函数 URL），**不需要 API 网关**（腾讯云 API 网关已停止新购）
+- 前端 `AI_PROXY_URL` 已指向该地址，国内网络可直连
+- 重新部署见 `scf/DEPLOY.md`
+
 ---
 
 ## 第一步：立刻吊销旧 Key
@@ -72,14 +80,20 @@ vercel --prod
 
 仓库里的 `api/ai-analysis.js` 已经按这个结构写好，`vercel.json` 也放宽到了 60 秒。
 
+### D. 腾讯云 SCF 函数 URL（当前线上，国内可直连）
+
+函数代码在 `scf/index.js`，部署步骤见 `scf/DEPLOY.md`。
+腾讯云 API 网关已停止新购，所以用 SCF 自带的 `http` 触发器（函数 URL），公网地址形如
+`https://<实例>-<随机>.ap-guangzhou.tencentscf.com/`。
+
 ---
 
 ## 第三步：把代理地址填回页面
 
-打开 `index.html`，找到（约 3111 行）：
+打开 `index.html`，找到 `const AI_PROXY_URL=`（约 3111 行）：
 
 ```js
-const AI_PROXY_URL='';
+const AI_PROXY_URL='https://1330228714-ck5rk7z3tp.ap-guangzhou.tencentscf.com/';
 ```
 
 改成你的完整地址：
@@ -99,7 +113,7 @@ const AI_PROXY_URL='https://ai.example.com/api/ai-analysis';
 先直接打代理（带 Origin，模拟浏览器）：
 
 ```bash
-curl -s https://ai.example.com/api/ai-analysis \
+curl -s https://1330228714-ck5rk7z3tp.ap-guangzhou.tencentscf.com/ \
   -H 'Content-Type: application/json' \
   -H 'Origin: https://xueren-ctrl.github.io' \
   -d '{"type":"INTJ","dims":{"EI":{"a":"E","b":"I","aVal":35,"bVal":65},"SN":{"a":"S","b":"N","aVal":30,"bVal":70},"TF":{"a":"T","b":"F","aVal":72,"bVal":28},"JP":{"a":"J","b":"P","aVal":58,"bVal":42}},"mode":"detailed"}'
@@ -111,7 +125,7 @@ curl -s https://ai.example.com/api/ai-analysis \
 {"content":"……","model":"agnes-3.0-flash"}
 ```
 
-健康检查：`GET /api/health` → `{"ok":true,"configured":true}`
+健康检查：`GET 代理地址` → `{"ok":true,"configured":true}`
 
 再打开站点 → 完成测试 → 点「AI 深度解读」，能看到流式之外的完整结果即成功。
 
