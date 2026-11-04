@@ -3151,7 +3151,7 @@ async function getAIAnalysis(){
 
   let content='',usedModel='',lastErr=null;
   const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),35000);
+  const timer=setTimeout(()=>controller.abort(),55000);
   try{
     const resp=await fetch(aiProxyUrl(),{
       method:'POST',

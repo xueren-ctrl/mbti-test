@@ -45,6 +45,6 @@
 ## 说明
 
 - CORS 由函数自己处理，Origin 白名单在 `index.js` 的 `originAllowed`。
-- 函数超时 30s，上游请求 25s，前端 fetch 35s。
+- 函数超时 60s，上游请求 50s，前端 fetch 55s。
 - 密钥只放环境变量，不要写进 `index.js` 或仓库。
 - 子账号需要 `QcloudSCFFullAccess`；创建函数还需要服务角色 `SCF_QcsRole`。

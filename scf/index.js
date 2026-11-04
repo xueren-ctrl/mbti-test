@@ -138,7 +138,7 @@ async function callAgnes(prompt) {
         ],
         temperature: 0.8,
         max_tokens: 1024
-      }, key, 25000);
+      }, key, 50000);
 
       if (resp.status < 200 || resp.status >= 300) {
         const retryable = resp.status === 400 || resp.status === 404 || resp.status === 503 ||
