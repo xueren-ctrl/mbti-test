@@ -1636,6 +1636,128 @@ input,textarea,select{font-family:var(--font-body)}
   body{background:#fff;color:#111}
   .site-footer{display:none}
 }
+
+/* ---------- AI 完整报告 ---------- */
+.report-container{max-width:236mm;padding:0 20px 80px}
+.rpt-toolbar{
+  position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;
+  gap:18px;flex-wrap:wrap;padding:14px 0;margin-bottom:26px;
+  background:var(--bg);border-bottom:1px solid var(--text);
+}
+.rpt-toolbar-kicker{display:block;font-family:var(--font-mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.rpt-toolbar strong{font-family:var(--font-display);font-size:18px;font-weight:500}
+.rpt-toolbar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rpt-toolbar-actions .btn{padding:9px 12px;font-size:12px}
+.rpt-doc{display:flex;flex-direction:column;align-items:center;gap:26px}
+.rpt-page{
+  width:210mm;min-height:297mm;padding:17mm 19mm;box-sizing:border-box;
+  background:#fbf8f1;color:#1a1712;border:1px solid #d9d0c1;
+  box-shadow:0 12px 40px rgba(20,16,10,.14);
+  display:flex;flex-direction:column;
+  font-family:"Inter","Helvetica Neue","Microsoft YaHei","PingFang SC",sans-serif;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+}
+.rpt-page *{box-sizing:border-box}
+.rpt-head,.rpt-foot{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  font-family:"SFMono-Regular","Consolas","Liberation Mono",monospace;
+  font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:#71675a;
+}
+.rpt-head{padding-bottom:9px;border-bottom:1px solid #1a1712}
+.rpt-foot{margin-top:auto;padding-top:9px;border-top:1px solid #d9d0c1}
+.rpt-cover{padding-top:18px}
+.rpt-cover-kicker{font-family:"SFMono-Regular","Consolas","Liberation Mono",monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#7a2f2f;margin-bottom:22px}
+.rpt-cover h1{
+  font-family:"Songti SC","STSong","SimSun","Noto Serif CJK SC",serif;
+  font-size:36px;font-weight:400;line-height:1.25;letter-spacing:-.02em;margin:0 0 14px;max-width:150mm;
+}
+.rpt-cover-sub{font-size:13px;line-height:1.9;color:#4c4438;margin:0 0 26px;max-width:145mm}
+.rpt-type-line{display:flex;align-items:baseline;gap:14px;border-top:1px solid #1a1712;border-bottom:1px solid #1a1712;padding:14px 0;margin-bottom:24px}
+.rpt-type-code{font-family:"Songti SC","STSong","SimSun",serif;font-size:44px;line-height:.9;letter-spacing:-.02em}
+.rpt-type-name{font-size:13px;color:#4c4438}
+.rpt-type-note{margin-left:auto;font-family:"SFMono-Regular","Consolas",monospace;font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;color:#71675a}
+.rpt-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 28px;margin-bottom:26px}
+.rpt-meta-item{padding:10px 0;border-bottom:1px solid #d9d0c1}
+.rpt-meta-label{display:block;font-family:"SFMono-Regular","Consolas",monospace;font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:#71675a;margin-bottom:4px}
+.rpt-meta-value{font-size:12px;line-height:1.55;color:#1a1712}
+.rpt-page-kicker{font-family:"SFMono-Regular","Consolas",monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#7a2f2f;margin:20px 0 8px}
+.rpt-body{flex:1;font-size:12.5px;line-height:1.82;color:#2a251e;max-width:170mm}
+.rpt-body h2{
+  font-family:"Songti SC","STSong","SimSun","Noto Serif CJK SC",serif;
+  font-size:25px;font-weight:400;line-height:1.25;margin:0 0 12px;letter-spacing:-.01em;
+}
+.rpt-body h3{
+  font-family:"Songti SC","STSong","SimSun","Noto Serif CJK SC",serif;
+  font-size:16px;font-weight:500;line-height:1.4;margin:18px 0 7px;padding-top:11px;
+  border-top:1px solid #d9d0c1;
+}
+.rpt-body h3:first-child{margin-top:0;padding-top:0;border-top:0}
+.rpt-body p{margin:0 0 9px}
+.rpt-body ul,.rpt-body ol{margin:0 0 10px;padding-left:17px}
+.rpt-body li{margin:0 0 4px;padding-left:2px}
+.rpt-body strong{font-weight:600;color:#1a1712}
+.rpt-body em{font-style:normal;color:#7a2f2f}
+.rpt-body blockquote{margin:10px 0;padding:8px 0 8px 14px;border-left:2px solid #7a2f2f;color:#4c4438}
+.rpt-body table{width:100%;border-collapse:collapse;margin:10px 0 12px;font-size:11.5px}
+.rpt-body th,.rpt-body td{border:1px solid #d9d0c1;padding:6px 8px;text-align:left;vertical-align:top}
+.rpt-body th{background:#f1eadc;font-weight:600}
+.rpt-career{border-top:1px solid #1a1712;padding-top:12px;margin-top:14px}
+.rpt-career h3{border:0;padding:0;margin:0 0 6px;font-size:17px}
+.rpt-career ul{margin-bottom:0}
+.rpt-empty{padding:40px 0;color:#71675a;font-size:13px}
+.rpt-loading{min-height:58vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;border:1px solid var(--border);padding:40px 24px;text-align:center}
+.rpt-loading h2{font-family:var(--font-display);font-size:26px;font-weight:400;margin:0}
+.rpt-loading p{font-size:13px;line-height:1.8;color:var(--text-soft);margin:0;max-width:420px}
+.rpt-error{border:1px solid var(--danger);padding:28px;display:grid;gap:16px;justify-items:start}
+.rpt-error p{font-size:13px;line-height:1.8;color:var(--text-soft);margin:0}
+.rpt-actions{display:flex;gap:10px;flex-wrap:wrap}
+.paywall-unlock{display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--border);padding-top:16px}
+.paywall-unlock input{
+  flex:1;min-width:220px;padding:11px 12px;border:1px solid var(--border-strong);
+  background:transparent;color:var(--text);font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;
+}
+.paywall-unlock input:focus{outline:none;border-color:var(--text)}
+.paywall-unlock .btn{padding:11px 16px}
+.paywall-msg{font-family:var(--font-mono);font-size:10.5px;line-height:1.7;color:var(--accent);margin:0;min-height:1.7em}
+.report-form .form-group textarea{
+  width:100%;min-height:74px;resize:vertical;padding:11px 12px;
+  border:1px solid var(--border-strong);background:transparent;color:var(--text);
+  font-family:var(--font-body);font-size:13px;line-height:1.7;
+}
+.report-form .form-group textarea:focus{outline:none;border-color:var(--text)}
+.report-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.report-form-note{font-family:var(--font-mono);font-size:10px;line-height:1.8;color:var(--text-mute);margin:0 0 18px}
+.report-form .btn-lg{width:100%}
+@media(max-width:900px){
+  .report-container{padding:0 12px 56px}
+  .rpt-page{width:100%;min-height:0;padding:24px 18px}
+  .rpt-cover h1{font-size:30px}
+  .rpt-type-code{font-size:36px}
+  .rpt-body{max-width:none}
+  .rpt-toolbar{position:static;margin-bottom:18px}
+  .rpt-toolbar-actions{width:100%}
+  .rpt-toolbar-actions .btn{flex:1;min-width:0}
+  .report-form-grid{grid-template-columns:1fr}
+}
+@media print{
+  @page{size:A4;margin:14mm}
+  body{background:#fff!important}
+  .navbar,.site-footer,.rpt-toolbar,.toast,.modal-overlay,.loading-overlay{display:none!important}
+  .page{display:none!important}
+  #page-report{display:block!important}
+  #page-report .container{max-width:none;margin:0;padding:0}
+  .rpt-doc{display:block}
+  .rpt-page{
+    width:auto;min-height:0;margin:0;padding:0;border:0;box-shadow:none;
+    background:#fff;color:#111;page-break-after:always;break-after:page;
+  }
+  .rpt-page:last-child{page-break-after:auto;break-after:auto}
+  .rpt-head{border-bottom-color:#111}
+  .rpt-foot{border-top-color:#bbb}
+  .rpt-body{max-width:none;font-size:12px}
+  .rpt-body h3{border-top-color:#bbb}
+  .rpt-body table th{background:#f1eadc}
+}
 </style>
 </head>
 <body>
@@ -1771,6 +1893,11 @@ input,textarea,select{font-family:var(--font-body)}
 <!-- ========== 结果页 ========== -->
 <section class="page" id="page-result">
   <div class="container" id="resultContainer"></div>
+</section>
+
+<!-- ========== AI 完整报告页 ========== -->
+<section class="page" id="page-report">
+  <div class="container report-container" id="reportContainer"></div>
 </section>
 
 <!-- ========== 历史记录页 ========== -->
@@ -1940,14 +2067,14 @@ input,textarea,select{font-family:var(--font-body)}
         <div class="mode-icon">🎯</div>
         <h3>详细测试</h3>
         <p class="mode-desc">28题 · 约5-8分钟</p>
-        <p class="mode-tip">结果更精准，职业推荐更准</p>
+        <p class="mode-tip">题目更多，维度参考更细</p>
         <button class="btn btn-primary mode-btn">开始详细测试</button>
       </div>
       <div class="mode-card" onclick="startTest('full')">
         <div class="mode-icon">🔬</div>
         <h3>完整测试</h3>
         <p class="mode-desc">60题 · 约12-15分钟</p>
-        <p class="mode-tip">最全面的深度分析，结果最精准</p>
+        <p class="mode-tip">最全面的分析，适合想深入探索的人</p>
         <button class="btn btn-outline mode-btn">开始完整测试</button>
       </div>
     </div>
@@ -3176,13 +3303,10 @@ function showResult(type,dims,isNew){
     <div class="result-actions">
       <button class="btn btn-primary btn-lg" onclick="saveResult('${type}')">保存结果</button>
       <button class="btn btn-outline btn-lg" onclick="generatePoster('${type}')">海报分享</button>
-      ${aiButtonHtml()}
       <button class="btn btn-ghost btn-lg" onclick="startTest()">再测一次</button>
     </div>
 
-    <div class="ai-section" id="aiSection"></div>
-
-    ${paywallHtml(type)}
+    ${reportCtaHtml(type)}
 
     <div class="share-section">
       <h3>分享给朋友</h3>
@@ -3887,10 +4011,10 @@ function renderCareers(){
 }
 
 /* ====================================================================
-   功能2：AI深度解读（经由自建代理，API Key 不落前端）
+   AI 完整职业报告（经由自建代理，API Key 不落前端）
    ==================================================================== */
 /* 腾讯云 SCF 函数 URL（国内可直连；Key 只存在函数环境变量 AGNES_API_KEY）。
-   其他部署方式：整站同域填 '/api/ai-analysis'；留空 = 隐藏 AI 入口。 */
+   同域部署需自行实现 POST mode:'report'；留空 = 隐藏报告入口。 */
 const AI_PROXY_URL='https://1330228714-ck5rk7z3tp.ap-guangzhou.tencentscf.com/';
 
 function aiProxyUrl(){
@@ -3901,19 +4025,18 @@ function aiConfigured(){
   if(typeof window!=='undefined'&&window.MBTI_AI_PROXY)return true;
   return Boolean(AI_PROXY_URL);
 }
-function aiButtonHtml(){
-  if(!aiConfigured())return '';
-  return `<button class="btn btn-outline btn-lg" id="aiAnalysisBtn" onclick="getAIAnalysis()">${aiButtonLabel()}</button>`;
-}
 function escapeHtml(s){
   return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
-if(!aiConfigured())console.info('[MBTI] AI 解读未配置：部署代理后把地址填入 AI_PROXY_URL');
+if(!aiConfigured())console.info('[MBTI] AI 报告未配置：部署代理后把地址填入 AI_PROXY_URL');
 
 const PAY_URL='https://afdian.com/item/505c0df0d8ca11f1a2e952540025c377';
-const FREE_AI_LIMIT=3;
-const AI_CACHE_PREFIX='mbti_ai_cache_';
-const AI_QUOTA_KEY='mbti_ai_quota_v1';
+const FREE_REPORT_LIMIT=3;
+const REPORT_CACHE_PREFIX='mbti_report_cache_';
+const REPORT_QUOTA_KEY='mbti_report_quota_v1';
+const REPORT_UNLOCK_KEY='mbti_report_unlock_v1';
+const REPORT_PROFILE_KEY='mbti_report_profile_v1';
+const REPORT_LAST_KEY='mbti_report_last_v1';
 const FUNNEL_KEY='mbti_funnel_v1';
 const ANALYTICS_ENDPOINT='';
 
@@ -3956,138 +4079,401 @@ function openPaywall(type,source){
   if(!url){toast('支付入口待配置：在 index.html 中填写 PAY_URL');return;}
   window.open(url,'_blank','noopener');
 }
-function paywallHtml(type){
-  return `<div class="paywall-card">
-    <div class="paywall-kicker">完整职业报告 · 预售</div>
-    <h3>把 ${type} 的结果，变成下一步能执行的职业方向</h3>
-    <p>免费结果告诉你“是什么”。完整报告补上：3 个匹配职业的深度拆解、转型/跳槽路径、简历与面试重点，以及未来 90 天的行动清单。</p>
-    <div class="paywall-foot">
-      <div class="paywall-price">¥9.9<span>单份 · 人工整理</span></div>
-      <button class="btn btn-primary btn-lg" onclick="openPaywall('${type}','result')">解锁完整报告</button>
-    </div>
-    <p class="paywall-note">付款时备注邮箱，24 小时内交付；先点上面的 AI 深度解读，每月可免费看 ${FREE_AI_LIMIT} 次。</p>
-  </div>`;
-}
-function freeAIRemaining(){
+
+function freeReportRemaining(){
   const m=monthKey();
   try{
-    const o=JSON.parse(localStorage.getItem(AI_QUOTA_KEY)||'null');
-    if(o&&o.month===m)return Math.max(0,FREE_AI_LIMIT-(o.used||0));
+    const o=JSON.parse(localStorage.getItem(REPORT_QUOTA_KEY)||'null');
+    if(o&&o.month===m)return Math.max(0,FREE_REPORT_LIMIT-(o.used||0));
   }catch(e){}
-  return FREE_AI_LIMIT;
+  return FREE_REPORT_LIMIT;
 }
-function consumeFreeAI(){
+function consumeFreeReport(){
   const m=monthKey();
   let used=0;
   try{
-    const o=JSON.parse(localStorage.getItem(AI_QUOTA_KEY)||'null');
+    const o=JSON.parse(localStorage.getItem(REPORT_QUOTA_KEY)||'null');
     if(o&&o.month===m)used=o.used||0;
   }catch(e){}
-  try{localStorage.setItem(AI_QUOTA_KEY,JSON.stringify({month:m,used:used+1}));}catch(e){}
+  try{localStorage.setItem(REPORT_QUOTA_KEY,JSON.stringify({month:m,used:used+1}));}catch(e){}
 }
-function aiCacheKey(payload){
+function readUnlockState(){
+  let s={credits:0,usedCodes:[]};
+  try{
+    const o=JSON.parse(localStorage.getItem(REPORT_UNLOCK_KEY)||'null');
+    if(o&&typeof o==='object'){
+      s.credits=Math.max(0,Number(o.credits)||0);
+      s.usedCodes=Array.isArray(o.usedCodes)?o.usedCodes.slice(0,200):[];
+    }
+  }catch(e){}
+  return s;
+}
+function saveUnlockState(s){
+  try{localStorage.setItem(REPORT_UNLOCK_KEY,JSON.stringify(s));}catch(e){}
+}
+function unlockCredits(){
+  return readUnlockState().credits;
+}
+function consumeUnlockCredit(){
+  const s=readUnlockState();
+  if(s.credits<=0)return false;
+  s.credits-=1;
+  saveUnlockState(s);
+  return true;
+}
+function readReportProfile(){
+  try{
+    const o=JSON.parse(localStorage.getItem(REPORT_PROFILE_KEY)||'null');
+    return o&&typeof o==='object'?o:{};
+  }catch(e){return {};}
+}
+function saveReportProfile(p){
+  try{localStorage.setItem(REPORT_PROFILE_KEY,JSON.stringify(p));}catch(e){}
+}
+function readLastReport(){
+  try{
+    const o=JSON.parse(localStorage.getItem(REPORT_LAST_KEY)||'null');
+    if(o&&o.content&&o.payload&&o.payload.type)return o;
+  }catch(e){}
+  return null;
+}
+function hashStr(s){
+  let h=2166136261;
+  for(let i=0;i<s.length;i++){
+    h^=s.charCodeAt(i);
+    h=Math.imul(h,16777619);
+  }
+  return (h>>>0).toString(36);
+}
+function reportCacheKey(payload){
   const d=payload.dims||{};
+  const p=payload.profile||{};
   const sig=['EI','SN','TF','JP'].map(k=>{
     const x=d[k]||{};
     return [k,x.a,x.aVal,x.b,x.bVal].join('');
   }).join('_');
-  return (payload.type||'')+'_'+(payload.mode||'detailed')+'_'+sig;
+  return (payload.type||'')+'_'+sig+'_'+hashStr([p.name,p.role,p.years,p.city,p.confusion,p.goal].join('|'));
 }
-function readAICache(key){
+function readReportCache(key){
   try{
-    const raw=localStorage.getItem(AI_CACHE_PREFIX+key);
+    const raw=localStorage.getItem(REPORT_CACHE_PREFIX+key);
     if(!raw)return null;
     const o=JSON.parse(raw);
     if(!o||!o.content)return null;
-    if(o.ts&&Date.now()-o.ts>30*24*3600*1000){localStorage.removeItem(AI_CACHE_PREFIX+key);return null;}
+    if(o.ts&&Date.now()-o.ts>30*24*3600*1000){localStorage.removeItem(REPORT_CACHE_PREFIX+key);return null;}
     return o;
   }catch(e){return null;}
 }
-function pruneAICache(){
+function pruneReportCache(){
   const keys=[];
   try{
     for(let i=0;i<localStorage.length;i++){
       const k=localStorage.key(i);
-      if(k&&k.startsWith(AI_CACHE_PREFIX))keys.push(k);
+      if(k&&k.startsWith(REPORT_CACHE_PREFIX))keys.push(k);
     }
   }catch(e){return;}
-  if(keys.length<=20)return;
+  if(keys.length<=12)return;
   keys.map(k=>{
     let t=0;
     try{t=JSON.parse(localStorage.getItem(k)).ts||0;}catch(e){}
     return {k:k,t:t};
-  }).sort((a,b)=>b.t-a.t).slice(20).forEach(x=>{try{localStorage.removeItem(x.k);}catch(e){}});
+  }).sort((a,b)=>b.t-a.t).slice(12).forEach(x=>{try{localStorage.removeItem(x.k);}catch(e){}});
 }
-function writeAICache(key,content,model){
+function writeReportCache(key,content){
   try{
-    localStorage.setItem(AI_CACHE_PREFIX+key,JSON.stringify({content:content,model:model,ts:Date.now()}));
-    pruneAICache();
+    localStorage.setItem(REPORT_CACHE_PREFIX+key,JSON.stringify({content:content,ts:Date.now()}));
+    pruneReportCache();
   }catch(e){}
 }
-function aiResultHtml(type,content,model,cached){
-  const html=content.split('\n').map(line=>{
-    let s=escapeHtml(line);
-    s=s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
-    if(s.trim().startsWith('#'))return `<h4>${s.replace(/^#+\s*/,'')}</h4>`;
-    if(s.trim())return `<p>${s}</p>`;
-    return '';
-  }).join('');
-  return `<div class="ai-card"><div class="ai-head"><span class="ai-kicker">AI 深度解读${cached?' · 已缓存':''}</span></div><div class="ai-content">${html}</div>
-    <div class="ai-btn"><button class="btn" onclick="getAIAnalysis(true)">重新分析</button>
-    <button class="btn" onclick="copyAIResult()">复制结果</button></div></div>`;
-}
-function showAIQuotaWall(type){
-  const section=document.getElementById('aiSection');
-  if(!section)return;
-  section.innerHTML=`<div class="ai-card paywall-inline"><div class="ai-head"><span class="ai-kicker">本月免费额度已用完</span></div>
-    <p class="ai-content">免费 AI 深度解读每月 ${FREE_AI_LIMIT} 次，本月已用完。解锁完整职业报告，继续看针对 ${type} 的深度分析和行动建议。</p>
-    <div class="ai-btn"><button class="btn" onclick="openPaywall('${type}','ai_quota')">解锁完整报告 · ¥9.9</button></div></div>`;
-}
-function aiButtonLabel(){
-  const left=freeAIRemaining();
-  return left>0?`AI 深度解读（本月剩 ${left} 次）`:'AI 深度解读（额度已用完）';
+
+function reportCtaHtml(type){
+  if(!aiConfigured())return '';
+  const t=TYPES[type]||{};
+  const left=freeReportRemaining();
+  const credits=unlockCredits();
+  const last=readLastReport();
+  const hasLast=Boolean(last&&last.payload&&last.payload.type===type);
+  const status=left>0?`本月免费剩 ${left} 次`:credits>0?`已解锁 ${credits} 次`:'本月免费次数已用完';
+  const price=left>0||credits>0?'免费':'¥9.9';
+  const priceNote=left>0?'3 次 / 月':credits>0?'已购买额度':'1 份 · 解锁后生成';
+  const btnText=left>0||credits>0?'生成完整报告':'解锁并生成 · ¥9.9';
+  return `<div class="paywall-card report-cta">
+    <div class="paywall-kicker">AI 完整职业报告 · 4 页</div>
+    <h3>把 ${type} 的结果，变成一份能执行的职业路线图</h3>
+    <p>AI 会结合你的类型、维度和你填写的现状，生成 3 个差异化方向、简历与面试重点、转行路径和 90 天计划。生成后可直接打印或保存 PDF。</p>
+    <div class="paywall-foot">
+      <div class="paywall-price">${price}<span>${priceNote}</span></div>
+      <button class="btn btn-primary btn-lg" onclick="openReportForm('${type}')">${btnText}</button>
+    </div>
+    <p class="paywall-note">${status} · 生成约 30–60 秒 · 生成后即可打印</p>
+    ${hasLast?`<div><button class="btn btn-ghost" onclick="openLastReport()">查看上次生成的报告</button></div>`:''}
+  </div>`;
 }
 
-async function getAIAnalysis(force){
-  const btn=document.getElementById('aiAnalysisBtn');
-  const section=document.getElementById('aiSection');
-  if(!section)return;
-  if(!aiConfigured()){toast('AI 解读暂未开通');return;}
-  let lastResult=(appState.currentResult&&appState.currentResult.type)?appState.currentResult:null;
-  if(!lastResult){
-    const history=appState.currentUser?appState.currentUser.history:[];
-    let temp=[];try{temp=JSON.parse(localStorage.getItem('mbti_temp_history')||'[]');}catch(e){}
-    const all=[...(history||[]),...temp].filter(r=>r&&r.type);
-    if(all.length===0){toast('请先完成测试');return;}
-    lastResult=all[0];
-  }
-  const payload={
-    type:lastResult.type,
-    dims:lastResult.dims||{},
-    mode:lastResult.mode||'detailed'
-  };
-  const cacheKey=aiCacheKey(payload);
-  if(!force){
-    const hit=readAICache(cacheKey);
-    if(hit){
-      section.innerHTML=aiResultHtml(payload.type,hit.content,hit.model,true);
-      track('ai_cache_hit',{type:payload.type});
-      if(btn){btn.disabled=false;btn.textContent=aiButtonLabel();}
-      return;
-    }
-  }
-  track('ai_click',{type:payload.type});
-  if(freeAIRemaining()<=0){
-    showAIQuotaWall(payload.type);
-    track('ai_quota_blocked',{type:payload.type});
+function reportFormHtml(type){
+  const p=readReportProfile();
+  const left=freeReportRemaining();
+  const credits=unlockCredits();
+  const useFree=left>0;
+  return `<div class="report-form">
+    <p class="report-form-note">这份报告由 AI 根据你的类型和下面 5 个问题生成，约 30–60 秒。信息只保存在本机，不会上传到除 AI 生成服务之外的地方。</p>
+    <div class="report-form-grid">
+      <div class="form-group"><label for="rptName">怎么称呼你</label><input id="rptName" maxlength="20" value="${escapeHtml(p.name||'')}" placeholder="选填，例如：小林"></div>
+      <div class="form-group"><label for="rptYears">工作 / 学习年限</label><input id="rptYears" maxlength="20" value="${escapeHtml(p.years||'')}" placeholder="例如：3 年 / 应届"></div>
+    </div>
+    <div class="form-group"><label for="rptRole">现在做什么</label><input id="rptRole" maxlength="80" value="${escapeHtml(p.role||'')}" placeholder="例如：互联网运营，做用户增长"></div>
+    <div class="form-group"><label for="rptCity">城市 / 行业</label><input id="rptCity" maxlength="60" value="${escapeHtml(p.city||'')}" placeholder="例如：上海，电商"></div>
+    <div class="form-group"><label for="rptConfusion">目前最卡住你的事</label><textarea id="rptConfusion" maxlength="200" placeholder="例如：执行很熟但感觉自己可替代，想转产品又怕没经验">${escapeHtml(p.confusion||'')}</textarea></div>
+    <div class="form-group"><label for="rptGoal">1–3 年目标</label><textarea id="rptGoal" maxlength="200" placeholder="例如：1 年内完成转岗，3 年内独立负责一条业务线">${escapeHtml(p.goal||'')}</textarea></div>
+    <p class="report-form-note">生成后可直接打印或保存 PDF；结果即时生成，也不会发邮箱。${useFree?'':'本次会消耗 1 次已解锁额度。'}</p>
+    <button class="btn btn-primary btn-lg" onclick="startReportGeneration()">生成报告（${useFree?'消耗 1 次免费额度':'消耗 1 次已解锁额度'}）</button>
+  </div>`;
+}
+
+function openReportForm(type){
+  if(!aiConfigured()){toast('AI 报告暂未开通');return;}
+  appState.reportType=type;
+  const left=freeReportRemaining();
+  const credits=unlockCredits();
+  if(left<=0&&credits<=0){showReportPaywall(type);return;}
+  openModalContent('生成完整职业报告',reportFormHtml(type));
+}
+
+function showReportPaywall(type){
+  appState.reportType=type;
+  openModalContent('解锁完整报告',paywallHtml(type));
+}
+
+function paywallHtml(type){
+  const credits=unlockCredits();
+  return `<div class="paywall-card" style="margin:0;border:0;padding:0">
+    <div class="paywall-kicker">AI 完整职业报告 · 4 页</div>
+    <h3>本月免费次数已用完</h3>
+    <p>¥9.9 解锁 1 份完整报告。付款后输入解锁码即可生成，结果即时出来，也不会发邮箱。</p>
+    <div class="paywall-foot">
+      <div class="paywall-price">¥9.9<span>1 份 · 生成后自行保存 PDF</span></div>
+      <button class="btn btn-primary btn-lg" onclick="openPaywall('${type}','report_quota')">去支付</button>
+    </div>
+    <div class="paywall-unlock">
+      <input id="unlockCodeInput" autocomplete="off" placeholder="输入解锁码 MBTI-XXXXXX-XXXXXXXXXX">
+      <button class="btn btn-outline" onclick="redeemUnlockCode()">解锁</button>
+    </div>
+    <p class="paywall-msg" id="unlockMsg">${credits>0?'已解锁 '+credits+' 次':'付款后自动发码；回来输入即可，即时生成。'}</p>
+    <p class="paywall-note">每月 3 次免费；用完后 9.9 解锁 1 份。生成约 30–60 秒。</p>
+  </div>`;
+}
+
+async function redeemUnlockCode(){
+  if(!aiConfigured()){toast('解锁服务暂未开通');return;}
+  const input=document.getElementById('unlockCodeInput');
+  const msg=document.getElementById('unlockMsg');
+  const btn=document.querySelector('.paywall-unlock .btn');
+  const code=input?input.value.trim():'';
+  if(!code){if(msg)msg.textContent='请先输入解锁码';return;}
+  const normalized=code.toUpperCase().replace(/[^A-Z0-9]/g,'');
+  const state=readUnlockState();
+  if(state.usedCodes.includes(normalized)){
+    if(msg)msg.textContent='这个解锁码已经用过了';
     return;
   }
-  if(btn){btn.disabled=true;btn.textContent='AI分析中...';}
-  section.innerHTML='<div class="ai-card"><div class="ai-loading"><div class="spinner"></div><p>AI 正在深度分析你的性格...</p></div></div>';
+  if(btn){btn.disabled=true;btn.textContent='校验中...';}
+  if(msg)msg.textContent='正在校验...';
+  let err='';
+  try{
+    const resp=await fetch(aiProxyUrl(),{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'redeem',code:code})
+    });
+    const raw=await resp.text();
+    let data=null;
+    try{data=raw?JSON.parse(raw):null;}catch(e){}
+    if(!resp.ok||!data||!data.ok){
+      err=(data&&data.error)||'解锁码无效，请检查是否输入完整';
+    }else{
+      state.credits+=1;
+      state.usedCodes.push(normalized);
+      saveUnlockState(state);
+      if(msg)msg.textContent='解锁成功，已增加 1 次。';
+      track('unlock_success',{type:appState.reportType||''});
+      setTimeout(()=>{closeModal('customModal');openReportForm(appState.reportType);},600);
+    }
+  }catch(e){
+    err='无法连接解锁服务，请稍后重试';
+  }
+  if(btn){btn.disabled=false;btn.textContent='解锁';}
+  if(err&&msg)msg.textContent=err;
+}
 
-  let content='',usedModel='',lastErr=null;
+function splitReportPages(text){
+  const src=String(text||'').replace(/\r\n/g,'\n');
+  const lines=src.split('\n');
+  const pages=[];
+  let cur=null;
+  for(const line of lines){
+    const m=line.match(/^\s*#{1,3}\s*第\s*([1-4])\s*页/);
+    if(m){
+      if(cur)pages.push(cur);
+      cur={n:Number(m[1]),lines:[]};
+      continue;
+    }
+    if(cur)cur.lines.push(line);
+  }
+  if(cur)pages.push(cur);
+  return pages.map(p=>({n:p.n,text:p.lines.join('\n').trim()})).filter(p=>p.text);
+}
+
+function inlineMd(s){
+  let x=escapeHtml(s);
+  x=x.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  x=x.replace(/`([^`]+)`/g,'<code>$1</code>');
+  return x;
+}
+
+function markdownToHtml(md){
+  const lines=String(md||'').replace(/\r\n/g,'\n').split('\n');
+  let out='';
+  let list='';
+  const closeList=()=>{if(list){out+='</'+list+'>';list='';}};
+  const openList=(tag)=>{if(list!==tag){closeList();out+='<'+tag+'>';list=tag;}};
+  const tableRows=[];
+  const flushTable=()=>{
+    if(!tableRows.length)return;
+    const rows=tableRows.map(r=>r.split('|').slice(1,-1).map(c=>c.trim()));
+    const body=rows.filter(r=>!r.every(c=>/^:?-{2,}:?$/.test(c)));
+    if(body.length){
+      out+='<table>';
+      if(body.length>1){
+        out+='<thead><tr>'+body[0].map(c=>'<th>'+inlineMd(c)+'</th>').join('')+'</tr></thead>';
+      }
+      out+='<tbody>'+body.slice(body.length>1?1:0).map(r=>'<tr>'+r.map(c=>'<td>'+inlineMd(c)+'</td>').join('')+'</tr>').join('')+'</tbody></table>';
+    }
+    tableRows.length=0;
+  };
+  for(let i=0;i<lines.length;i++){
+    const raw=lines[i];
+    const t=raw.trim();
+    if(t.startsWith('|')){
+      closeList();
+      tableRows.push(t);
+      continue;
+    }
+    flushTable();
+    if(!t){closeList();continue;}
+    const h=t.match(/^(#{2,4})\s+(.+)$/);
+    if(h){
+      closeList();
+      const level=Math.min(4,h[1].length);
+      out+='<h'+level+'>'+inlineMd(h[2])+'</h'+level+'>';
+      continue;
+    }
+    const ul=t.match(/^[-*]\s+(.+)$/);
+    if(ul){openList('ul');out+='<li>'+inlineMd(ul[1])+'</li>';continue;}
+    const ol=t.match(/^\d+[.、]\s+(.+)$/);
+    if(ol){openList('ol');out+='<li>'+inlineMd(ol[1])+'</li>';continue;}
+    const quote=t.match(/^>\s?(.+)$/);
+    if(quote){closeList();out+='<blockquote>'+inlineMd(quote[1])+'</blockquote>';continue;}
+    closeList();
+    out+='<p>'+inlineMd(t)+'</p>';
+  }
+  closeList();
+  flushTable();
+  return out;
+}
+
+function renderCareerPage(text){
+  const parts=String(text||'').split(/\n(?=###\s)/).filter(Boolean);
+  if(parts.length<2)return markdownToHtml(text);
+  return parts.map(part=>{
+    const m=part.match(/^###\s*(.+)\n?/);
+    const title=m?m[1].trim():'方向';
+    const body=m?part.slice(m[0].length):part;
+    return '<div class="rpt-career"><h3>'+inlineMd(title)+'</h3>'+markdownToHtml(body)+'</div>';
+  }).join('');
+}
+
+function reportMetaHtml(payload){
+  const p=payload.profile||{};
+  const items=[
+    ['现在做什么',p.role||'未填写'],
+    ['工作 / 学习年限',p.years||'未填写'],
+    ['城市 / 行业',p.city||'未填写'],
+    ['1–3 年目标',p.goal||'未填写']
+  ];
+  return '<div class="rpt-meta">'+items.map(x=>`<div class="rpt-meta-item"><span class="rpt-meta-label">${escapeHtml(x[0])}</span><span class="rpt-meta-value">${escapeHtml(x[1])}</span></div>`).join('')+'</div>';
+}
+
+function renderReport(payload,content,opts){
+  const t=TYPES[payload.type]||{name:payload.type||''};
+  const p=payload.profile||{};
+  const pages=splitReportPages(content);
+  const byN={};
+  pages.forEach(x=>{if(!byN[x.n])byN[x.n]=x.text;});
+  if(pages.length===0)byN[1]=String(content||'');
+  const titles=['类型内核','三个方向','简历、面试与转行','90 天计划'];
+  const date=new Date().toLocaleDateString('zh-CN');
+  let body='';
+  for(let n=1;n<=4;n++){
+    const text=byN[n]||'';
+    let inner='';
+    if(n===1){
+      inner=`<div class="rpt-cover">
+        <div class="rpt-cover-kicker">AI CAREER DOSSIER · 4 PAGES</div>
+        <h1>${escapeHtml(p.name?p.name+' 的':'你的')}职业方向报告</h1>
+        <p class="rpt-cover-sub">这份报告基于你的 MBTI 结果和生成前填写的现状。它不是标准答案，而是一份可以拿去试错的路线图。</p>
+        <div class="rpt-type-line"><span class="rpt-type-code">${escapeHtml(payload.type||'')}</span><span class="rpt-type-name">${escapeHtml(t.name||'')}</span><span class="rpt-type-note">AI GENERATED · ${escapeHtml(date)}</span></div>
+        ${reportMetaHtml(payload)}
+      </div>`;
+    }
+    inner+=`<div class="rpt-page-kicker">0${n} · ${titles[n-1]}</div><div class="rpt-body">${text?(n===2?renderCareerPage(text):markdownToHtml(text)):'<div class="rpt-empty">这一页没有生成内容，请返回重试。</div>'}</div>`;
+    if(n===4&&!String(text).includes('免责声明')&&!String(text).includes('不构成心理诊断')){
+      inner+='<div class="rpt-body" style="flex:none;padding-top:10px"><p style="font-size:10px;line-height:1.7;color:#71675a;border-top:1px solid #d9d0c1;padding-top:8px">本报告由 AI 生成，基于 MBTI 框架与用户提供的信息，仅供自我探索与职业方向参考，不构成心理诊断、医疗、法律或职业建议，也不承诺录用或薪资。</p></div>';
+    }
+    body+=`<section class="rpt-page">
+      <header class="rpt-head"><span>THE PERSONALITY ARCHIVE</span><span>PRIVATE CAREER DOSSIER</span></header>
+      ${inner}
+      <footer class="rpt-foot"><span>${escapeHtml(payload.type||'')} · ${escapeHtml(t.name||'')}</span><span>${n} / 04</span></footer>
+    </section>`;
+  }
+  const toolbar=`<div class="rpt-toolbar">
+    <div><span class="rpt-toolbar-kicker">AI 完整职业报告${opts&&opts.cached?' · 已缓存':''}</span><strong>${escapeHtml(payload.type||'')} · ${escapeHtml(t.name||'')}</strong></div>
+    <div class="rpt-toolbar-actions">
+      <button class="btn btn-ghost" onclick="go('result')">返回结果</button>
+      <button class="btn btn-outline" onclick="window.print()">打印 / 保存 PDF</button>
+      <button class="btn btn-ghost" onclick="copyReportText()">复制全文</button>
+    </div>
+  </div>`;
+  const c=document.getElementById('reportContainer');
+  if(c)c.innerHTML=toolbar+'<div class="rpt-doc">'+body+'</div>';
+  try{localStorage.setItem(REPORT_LAST_KEY,JSON.stringify({payload:payload,content:content,ts:Date.now()}));}catch(e){}
+  document.title=(p.name?p.name+' 的':'')+'职业报告 · '+(payload.type||'');
+  go('report');
+  track('report_view',{type:payload.type,cached:Boolean(opts&&opts.cached)});
+}
+
+function renderReportLoading(payload){
+  const t=TYPES[payload.type]||{name:payload.type||''};
+  const c=document.getElementById('reportContainer');
+  if(c)c.innerHTML=`<div class="rpt-toolbar"><div><span class="rpt-toolbar-kicker">AI 完整职业报告</span><strong>${escapeHtml(payload.type||'')} · ${escapeHtml(t.name||'')}</strong></div><div class="rpt-toolbar-actions"><button class="btn btn-ghost" onclick="go('result')">返回结果</button></div></div>
+    <div class="rpt-loading"><div class="spinner"></div><h2>正在写你的 4 页报告</h2><p>AI 会结合你填的现状，生成 3 个方向、简历 / 面试重点和 90 天计划。大约 30–60 秒，请不要关闭页面。</p></div>`;
+  go('report');
+}
+
+function renderReportError(payload,key,useCredit,message){
+  const c=document.getElementById('reportContainer');
+  if(c)c.innerHTML=`<div class="rpt-toolbar"><div><span class="rpt-toolbar-kicker">AI 完整职业报告</span><strong>生成未完成</strong></div><div class="rpt-toolbar-actions"><button class="btn btn-ghost" onclick="go('result')">返回结果</button></div></div>
+    <div class="rpt-error"><p>${escapeHtml(message||'生成失败，请稍后重试')}</p><p style="font-size:11px;color:var(--text-mute)">本次没有扣除免费次数或已解锁额度。</p><div class="rpt-actions"><button class="btn btn-primary" onclick="retryReport()">重试</button><button class="btn btn-ghost" onclick="go('result')">返回结果</button></div></div>`;
+  appState.pendingReport={payload:payload,key:key,useCredit:useCredit};
+  go('report');
+}
+
+async function requestReport(payload,key,useCredit){
+  if(appState.reportBusy)return;
+  appState.reportBusy=true;
+  renderReportLoading(payload);
+  let content='',lastErr=null;
   const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),55000);
+  const timer=setTimeout(()=>controller.abort(),115000);
   try{
     const resp=await fetch(aiProxyUrl(),{
       method:'POST',
@@ -4104,30 +4490,73 @@ async function getAIAnalysis(force){
       lastErr=new Error('AI 返回内容为空');
     }else{
       content=String(data.content);
-      usedModel=String(data.model||'');
     }
   }catch(e){
-    lastErr=e.name==='AbortError'?new Error('请求超时，请重试'):new Error('无法连接 AI 服务');
+    lastErr=e.name==='AbortError'?new Error('生成超时，请重试'):new Error('无法连接 AI 服务，请检查网络后重试');
   }finally{
     clearTimeout(timer);
   }
-
+  appState.reportBusy=false;
   if(!content){
-    section.innerHTML=`<div class="ai-card"><div class="ai-error">
-      <p>${escapeHtml((lastErr&&lastErr.message)||'AI 分析失败')}</p>
-      <button class="btn btn-outline" onclick="getAIAnalysis(true)">重试</button>
-      </div></div>`;
-  }else{
-    writeAICache(cacheKey,content,usedModel);
-    consumeFreeAI();
-    section.innerHTML=aiResultHtml(payload.type,content,usedModel,false);
-    track('ai_success',{type:payload.type});
+    renderReportError(payload,key,useCredit,(lastErr&&lastErr.message)||'生成失败，请稍后重试');
+    return;
   }
-  if(btn){btn.disabled=false;btn.textContent=aiButtonLabel();}
+  writeReportCache(key,content);
+  if(useCredit)consumeUnlockCredit();else consumeFreeReport();
+  appState.pendingReport=null;
+  renderReport(payload,content,{cached:false});
+  track('report_success',{type:payload.type,paid:Boolean(useCredit)});
 }
-function copyAIResult(){
-  const text=document.querySelector('.ai-content')?.innerText||'';
-  navigator.clipboard.writeText(text).then(()=>toast('已复制AI分析结果')).catch(()=>toast('复制失败'));
+
+function startReportGeneration(){
+  const type=appState.reportType||(appState.currentResult&&appState.currentResult.type);
+  if(!type){toast('请先完成测试');return;}
+  const get=id=>{const el=document.getElementById(id);return el?el.value.trim():'';};
+  const profile={
+    name:get('rptName').slice(0,20),
+    role:get('rptRole').slice(0,80),
+    years:get('rptYears').slice(0,20),
+    city:get('rptCity').slice(0,60),
+    confusion:get('rptConfusion').slice(0,200),
+    goal:get('rptGoal').slice(0,200)
+  };
+  if(!profile.role||!profile.confusion||!profile.goal){
+    toast('请把「现在做什么」「最卡住的事」「1–3 年目标」填一下');
+    return;
+  }
+  const left=freeReportRemaining();
+  const credits=unlockCredits();
+  const useCredit=left<=0;
+  if(useCredit&&credits<=0){closeModal('customModal');showReportPaywall(type);return;}
+  const dims=(appState.currentResult&&appState.currentResult.dims)||{};
+  const payload={type:type,dims:dims,mode:'report',profile:profile};
+  const key=reportCacheKey(payload);
+  const hit=readReportCache(key);
+  saveReportProfile(profile);
+  closeModal('customModal');
+  if(hit){
+    renderReport(payload,hit.content,{cached:true});
+    return;
+  }
+  requestReport(payload,key,useCredit);
+}
+
+function retryReport(){
+  const p=appState.pendingReport;
+  if(!p){toast('没有可重试的请求');return;}
+  requestReport(p.payload,p.key,p.useCredit);
+}
+
+function openLastReport(){
+  const last=readLastReport();
+  if(!last){toast('还没有生成过报告');return;}
+  renderReport(last.payload,last.content,{cached:true});
+}
+
+function copyReportText(){
+  const text=document.querySelector('.rpt-doc')?.innerText||'';
+  if(!text){toast('没有可复制的内容');return;}
+  navigator.clipboard.writeText(text).then(()=>toast('已复制报告全文')).catch(()=>toast('复制失败，请手动选择'));
 }
 
 /* 通用模态框 */
