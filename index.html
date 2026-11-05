@@ -1295,6 +1295,16 @@ input,textarea,select{font-family:var(--font-body)}
 .result-actions .btn-outline{border:0;padding:12px 0;text-decoration:underline;text-underline-offset:5px;color:var(--text-soft)}
 .result-actions .btn-outline:hover{color:var(--accent);background:none}
 .result-share-tip{text-align:left;font-family:var(--font-mono);font-size:10px;letter-spacing:.05em;color:var(--text-mute);margin-top:16px}
+.paywall-card{margin:56px 0 0;padding:28px;border:1px solid var(--text);display:grid;gap:16px}
+.paywall-kicker{font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.paywall-card h3{font-family:var(--font-display);font-size:clamp(22px,2.4vw,28px);font-weight:400;line-height:1.3;margin:0}
+.paywall-card p{font-size:13.5px;line-height:1.85;color:var(--text-soft);margin:0;max-width:640px}
+.paywall-foot{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:18px}
+.paywall-price{font-family:var(--font-display);font-size:32px;font-weight:400;line-height:1}
+.paywall-price span{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;color:var(--text-mute);margin-left:6px}
+.paywall-card .paywall-note{font-family:var(--font-mono);font-size:10px;letter-spacing:.03em;color:var(--text-mute)}
+.paywall-inline .ai-content{max-width:none}
+@media(max-width:640px){.paywall-card{padding:22px}.paywall-foot .btn{width:100%}}
 
 /* ---------- share ---------- */
 .share-section{margin-top:48px;padding:24px 0 0;border-top:1px solid var(--text)}
@@ -3119,6 +3129,8 @@ function showResult(type,dims,isNew){
 
     <div class="ai-section" id="aiSection"></div>
 
+    ${paywallHtml(type)}
+
     <div class="share-section">
       <h3>分享给朋友</h3>
       <p class="share-sub">让朋友也来测测，看看你们的性格合不合</p>
@@ -3149,6 +3161,7 @@ function showResult(type,dims,isNew){
     <p class="result-share-tip">提示：登录后可保存测试记录，随时在"历史"中回看</p>
   `;
   go('result');
+  track('result_view',{type:type,isNew:Boolean(isNew)});
   // 只有新测试完成才自动保存，查看历史不重复保存；未登录也静默存入本地临时
   if(isNew){
     setTimeout(()=>{saveResult(type,true);},500);
@@ -3837,19 +3850,156 @@ function aiConfigured(){
 }
 function aiButtonHtml(){
   if(!aiConfigured())return '';
-  return '<button class="btn btn-outline btn-lg" id="aiAnalysisBtn" onclick="getAIAnalysis()">AI 深度解读</button>';
+  return `<button class="btn btn-outline btn-lg" id="aiAnalysisBtn" onclick="getAIAnalysis()">${aiButtonLabel()}</button>`;
 }
 function escapeHtml(s){
   return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 if(!aiConfigured())console.info('[MBTI] AI 解读未配置：部署代理后把地址填入 AI_PROXY_URL');
 
-async function getAIAnalysis(){
+const PAY_URL='https://afdian.com/item/505c0df0d8ca11f1a2e952540025c377';
+const FREE_AI_LIMIT=3;
+const AI_CACHE_PREFIX='mbti_ai_cache_';
+const AI_QUOTA_KEY='mbti_ai_quota_v1';
+const FUNNEL_KEY='mbti_funnel_v1';
+const ANALYTICS_ENDPOINT='';
+
+function monthKey(){
+  const d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+}
+function track(name,props){
+  const p=props||{};
+  try{if(window.umami&&typeof window.umami.track==='function')window.umami.track(name,p);}catch(e){}
+  try{
+    if(ANALYTICS_ENDPOINT&&navigator.sendBeacon){
+      navigator.sendBeacon(ANALYTICS_ENDPOINT,new Blob([JSON.stringify({name:name,props:p,ts:Date.now(),path:location.pathname})],{type:'application/json'}));
+    }
+  }catch(e){}
+  try{
+    const f=JSON.parse(localStorage.getItem(FUNNEL_KEY)||'{}');
+    f[name]=(f[name]||0)+1;
+    f.last={name:name,props:p,ts:Date.now()};
+    localStorage.setItem(FUNNEL_KEY,JSON.stringify(f));
+  }catch(e){}
+}
+window.mbtiFunnel=function(){
+  try{return JSON.parse(localStorage.getItem(FUNNEL_KEY)||'{}');}catch(e){return {};}
+};
+function paidUrl(type){
+  if(!PAY_URL)return '';
+  try{
+    const u=new URL(PAY_URL,location.href);
+    u.searchParams.set('utm_source','mbti');
+    u.searchParams.set('utm_medium','result');
+    u.searchParams.set('utm_campaign','career_report');
+    if(type)u.searchParams.set('ref_type',type);
+    return u.toString();
+  }catch(e){return PAY_URL;}
+}
+function openPaywall(type,source){
+  track('pay_click',{type:type,source:source});
+  const url=paidUrl(type);
+  if(!url){toast('支付入口待配置：在 index.html 中填写 PAY_URL');return;}
+  window.open(url,'_blank','noopener');
+}
+function paywallHtml(type){
+  return `<div class="paywall-card">
+    <div class="paywall-kicker">完整职业报告 · 预售</div>
+    <h3>把 ${type} 的结果，变成下一步能执行的职业方向</h3>
+    <p>免费结果告诉你“是什么”。完整报告补上：3 个匹配职业的深度拆解、转型/跳槽路径、简历与面试重点，以及未来 90 天的行动清单。</p>
+    <div class="paywall-foot">
+      <div class="paywall-price">¥9.9<span>单份 · 人工整理</span></div>
+      <button class="btn btn-primary btn-lg" onclick="openPaywall('${type}','result')">解锁完整报告</button>
+    </div>
+    <p class="paywall-note">付款时备注邮箱，24 小时内交付；先点上面的 AI 深度解读，每月可免费看 ${FREE_AI_LIMIT} 次。</p>
+  </div>`;
+}
+function freeAIRemaining(){
+  const m=monthKey();
+  try{
+    const o=JSON.parse(localStorage.getItem(AI_QUOTA_KEY)||'null');
+    if(o&&o.month===m)return Math.max(0,FREE_AI_LIMIT-(o.used||0));
+  }catch(e){}
+  return FREE_AI_LIMIT;
+}
+function consumeFreeAI(){
+  const m=monthKey();
+  let used=0;
+  try{
+    const o=JSON.parse(localStorage.getItem(AI_QUOTA_KEY)||'null');
+    if(o&&o.month===m)used=o.used||0;
+  }catch(e){}
+  try{localStorage.setItem(AI_QUOTA_KEY,JSON.stringify({month:m,used:used+1}));}catch(e){}
+}
+function aiCacheKey(payload){
+  const d=payload.dims||{};
+  const sig=['EI','SN','TF','JP'].map(k=>{
+    const x=d[k]||{};
+    return [k,x.a,x.aVal,x.b,x.bVal].join('');
+  }).join('_');
+  return (payload.type||'')+'_'+(payload.mode||'detailed')+'_'+sig;
+}
+function readAICache(key){
+  try{
+    const raw=localStorage.getItem(AI_CACHE_PREFIX+key);
+    if(!raw)return null;
+    const o=JSON.parse(raw);
+    if(!o||!o.content)return null;
+    if(o.ts&&Date.now()-o.ts>30*24*3600*1000){localStorage.removeItem(AI_CACHE_PREFIX+key);return null;}
+    return o;
+  }catch(e){return null;}
+}
+function pruneAICache(){
+  const keys=[];
+  try{
+    for(let i=0;i<localStorage.length;i++){
+      const k=localStorage.key(i);
+      if(k&&k.startsWith(AI_CACHE_PREFIX))keys.push(k);
+    }
+  }catch(e){return;}
+  if(keys.length<=20)return;
+  keys.map(k=>{
+    let t=0;
+    try{t=JSON.parse(localStorage.getItem(k)).ts||0;}catch(e){}
+    return {k:k,t:t};
+  }).sort((a,b)=>b.t-a.t).slice(20).forEach(x=>{try{localStorage.removeItem(x.k);}catch(e){}});
+}
+function writeAICache(key,content,model){
+  try{
+    localStorage.setItem(AI_CACHE_PREFIX+key,JSON.stringify({content:content,model:model,ts:Date.now()}));
+    pruneAICache();
+  }catch(e){}
+}
+function aiResultHtml(type,content,model,cached){
+  const html=content.split('\n').map(line=>{
+    let s=escapeHtml(line);
+    s=s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+    if(s.trim().startsWith('#'))return `<h4>${s.replace(/^#+\s*/,'')}</h4>`;
+    if(s.trim())return `<p>${s}</p>`;
+    return '';
+  }).join('');
+  return `<div class="ai-card"><div class="ai-head"><span class="ai-kicker">AI 深度解读${cached?' · 已缓存':''}</span>${model?`<span class="ai-model-tag">${escapeHtml(model)}</span>`:''}</div><div class="ai-content">${html}</div>
+    <div class="ai-btn"><button class="btn" onclick="getAIAnalysis(true)">重新分析</button>
+    <button class="btn" onclick="copyAIResult()">复制结果</button></div></div>`;
+}
+function showAIQuotaWall(type){
+  const section=document.getElementById('aiSection');
+  if(!section)return;
+  section.innerHTML=`<div class="ai-card paywall-inline"><div class="ai-head"><span class="ai-kicker">本月免费额度已用完</span></div>
+    <p class="ai-content">免费 AI 深度解读每月 ${FREE_AI_LIMIT} 次，本月已用完。解锁完整职业报告，继续看针对 ${type} 的深度分析和行动建议。</p>
+    <div class="ai-btn"><button class="btn" onclick="openPaywall('${type}','ai_quota')">解锁完整报告 · ¥9.9</button></div></div>`;
+}
+function aiButtonLabel(){
+  const left=freeAIRemaining();
+  return left>0?`AI 深度解读（本月剩 ${left} 次）`:'AI 深度解读（额度已用完）';
+}
+
+async function getAIAnalysis(force){
   const btn=document.getElementById('aiAnalysisBtn');
   const section=document.getElementById('aiSection');
   if(!section)return;
   if(!aiConfigured()){toast('AI 解读暂未开通');return;}
-  // 获取待分析结果：优先当前展示的结果，其次历史/临时记录
   let lastResult=(appState.currentResult&&appState.currentResult.type)?appState.currentResult:null;
   if(!lastResult){
     const history=appState.currentUser?appState.currentUser.history:[];
@@ -3858,15 +4008,29 @@ async function getAIAnalysis(){
     if(all.length===0){toast('请先完成测试');return;}
     lastResult=all[0];
   }
-  if(btn){btn.disabled=true;btn.textContent='AI分析中...';}
-  section.innerHTML='<div class="ai-card"><div class="ai-loading"><div class="spinner"></div><p>AI 正在深度分析你的性格...</p></div></div>';
-
-  // 只提交结构化数据，提示词由代理生成；前端不接触任何密钥
   const payload={
     type:lastResult.type,
     dims:lastResult.dims||{},
     mode:lastResult.mode||'detailed'
   };
+  const cacheKey=aiCacheKey(payload);
+  if(!force){
+    const hit=readAICache(cacheKey);
+    if(hit){
+      section.innerHTML=aiResultHtml(payload.type,hit.content,hit.model,true);
+      track('ai_cache_hit',{type:payload.type});
+      if(btn){btn.disabled=false;btn.textContent=aiButtonLabel();}
+      return;
+    }
+  }
+  track('ai_click',{type:payload.type});
+  if(freeAIRemaining()<=0){
+    showAIQuotaWall(payload.type);
+    track('ai_quota_blocked',{type:payload.type});
+    return;
+  }
+  if(btn){btn.disabled=true;btn.textContent='AI分析中...';}
+  section.innerHTML='<div class="ai-card"><div class="ai-loading"><div class="spinner"></div><p>AI 正在深度分析你的性格...</p></div></div>';
 
   let content='',usedModel='',lastErr=null;
   const controller=new AbortController();
@@ -3898,22 +4062,15 @@ async function getAIAnalysis(){
   if(!content){
     section.innerHTML=`<div class="ai-card"><div class="ai-error">
       <p>${escapeHtml((lastErr&&lastErr.message)||'AI 分析失败')}</p>
-      <button class="btn btn-outline" onclick="getAIAnalysis()">重试</button>
+      <button class="btn btn-outline" onclick="getAIAnalysis(true)">重试</button>
       </div></div>`;
   }else{
-    // 先转义再渲染，避免模型输出被当作 HTML 执行
-    const html=content.split('\n').map(line=>{
-      let s=escapeHtml(line);
-      s=s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
-      if(s.trim().startsWith('#'))return `<h4 style="margin:16px 0 8px;color:var(--primary)">${s.replace(/^#+\s*/,'')}</h4>`;
-      if(s.trim())return `<p>${s}</p>`;
-      return '';
-    }).join('');
-    section.innerHTML=`<div class="ai-card"><div class="ai-head"><span class="ai-kicker">AI 深度解读</span>${usedModel?`<span class="ai-model-tag">${escapeHtml(usedModel)}</span>`:''}</div><div class="ai-content">${html}</div>
-      <div class="ai-btn"><button class="btn btn-outline" onclick="getAIAnalysis()">重新分析</button>
-      <button class="btn btn-ghost" onclick="copyAIResult()">复制结果</button></div></div>`;
+    writeAICache(cacheKey,content,usedModel);
+    consumeFreeAI();
+    section.innerHTML=aiResultHtml(payload.type,content,usedModel,false);
+    track('ai_success',{type:payload.type});
   }
-  if(btn){btn.disabled=false;btn.textContent='AI 深度解读';}
+  if(btn){btn.disabled=false;btn.textContent=aiButtonLabel();}
 }
 function copyAIResult(){
   const text=document.querySelector('.ai-content')?.innerText||'';
