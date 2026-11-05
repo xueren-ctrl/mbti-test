@@ -1761,6 +1761,12 @@ input,textarea,select{font-family:var(--font-body)}
   .rpt-body li{margin-bottom:2px}
   .rpt-body table{font-size:10.5px}
   .rpt-body th,.rpt-body td{padding:4px 6px}
+  .rpt-page.rpt-dense .rpt-body{font-size:10px;line-height:1.52}
+  .rpt-page.rpt-dense .rpt-body h3{margin:8px 0 4px;padding-top:6px}
+  .rpt-page.rpt-dense .rpt-body p{margin-bottom:4px}
+  .rpt-page.rpt-dense .rpt-body li{margin-bottom:1px}
+  .rpt-page.rpt-dense .rpt-body table{font-size:9.5px}
+  .rpt-page.rpt-dense .rpt-body th,.rpt-page.rpt-dense .rpt-body td{padding:3px 5px}
   .rpt-body h3{border-top-color:#bbb}
   .rpt-body table th{background:#f1eadc}
 }
@@ -4435,7 +4441,7 @@ function renderReport(payload,content,opts){
     if(n===4&&!String(text).includes('免责声明')&&!String(text).includes('不构成心理诊断')){
       inner+='<div class="rpt-body" style="flex:none;padding-top:10px"><p style="font-size:10px;line-height:1.7;color:#71675a;border-top:1px solid #d9d0c1;padding-top:8px">本报告由 AI 生成，基于 MBTI 框架与用户提供的信息，仅供自我探索与职业方向参考，不构成心理诊断、医疗、法律或职业建议，也不承诺录用或薪资。</p></div>';
     }
-    body+=`<section class="rpt-page">
+    body+=`<section class="rpt-page${text&&text.length>1100?' rpt-dense':''}">
       <header class="rpt-head"><span>THE PERSONALITY ARCHIVE</span><span>PRIVATE CAREER DOSSIER</span></header>
       ${inner}
       <footer class="rpt-foot"><span>${escapeHtml(payload.type||'')} · ${escapeHtml(t.name||'')}</span><span>${n} / 04</span></footer>
