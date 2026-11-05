@@ -4441,7 +4441,7 @@ function renderReport(payload,content,opts){
     if(n===4&&!String(text).includes('免责声明')&&!String(text).includes('不构成心理诊断')){
       inner+='<div class="rpt-body" style="flex:none;padding-top:10px"><p style="font-size:10px;line-height:1.7;color:#71675a;border-top:1px solid #d9d0c1;padding-top:8px">本报告由 AI 生成，基于 MBTI 框架与用户提供的信息，仅供自我探索与职业方向参考，不构成心理诊断、医疗、法律或职业建议，也不承诺录用或薪资。</p></div>';
     }
-    body+=`<section class="rpt-page${text&&text.length>1100?' rpt-dense':''}">
+    body+=`<section class="rpt-page${text&&text.length>1000?' rpt-dense':''}">
       <header class="rpt-head"><span>THE PERSONALITY ARCHIVE</span><span>PRIVATE CAREER DOSSIER</span></header>
       ${inner}
       <footer class="rpt-foot"><span>${escapeHtml(payload.type||'')} · ${escapeHtml(t.name||'')}</span><span>${n} / 04</span></footer>
