@@ -1344,6 +1344,7 @@ input,textarea,select{font-family:var(--font-body)}
 .form-group input::placeholder{color:var(--text-mute)}
 .form-group input:focus{outline:none;border-color:var(--text);box-shadow:none}
 .auth-toggle{font-size:12.5px;color:var(--text-mute);text-align:left}
+.auth-forgot{margin-top:10px}
 .auth-error{
   border-radius:0;background:none;color:var(--danger);
   border:1px solid var(--danger);border-left-width:3px;
@@ -1740,6 +1741,9 @@ input,textarea,select{font-family:var(--font-body)}
       </form>
       <p class="auth-toggle" id="authToggle">
         还没有账号？<a href="#" onclick="toggleAuthMode();return false">注册新账号</a>
+      </p>
+      <p class="auth-toggle auth-forgot" id="authForgot">
+        <a href="#" onclick="toggleResetMode();return false">忘记密码？</a>
       </p>
     </div>
   </div>
@@ -2636,6 +2640,7 @@ let appState = {
   currentUser:null,
   currentResult:null, // 当前展示的测试结果，供AI解读等直接使用
   isLoginMode:true, // true=登录 false=注册
+  isResetMode:false,
   test:{answers:new Array(28).fill(null),currentQ:0},
   apiBase:'',       // 后端API地址，空字符串表示同源
   apiAvailable:false // 后端是否可用
@@ -2712,6 +2717,7 @@ function go(page){
   if(el)el.classList.add('active');
   appState.currentPage=page;
   window.scrollTo(0,0);
+  if(page==='auth')resetAuthMode();
   if(page==='history')renderHistory();
   if(page==='profile')renderProfile();
   if(page==='celebs')renderCelebs();
@@ -2745,14 +2751,43 @@ function toast(msg){
    ==================================================================== */
 function toggleAuthMode(){
   appState.isLoginMode=!appState.isLoginMode;
-  const login=appState.isLoginMode;
-  document.getElementById('authTitle').textContent=login?'欢迎回来':'创建账号';
-  document.getElementById('authSub').textContent=login?'登录后可保存测试记录，随时回看':'注册后可保存测试记录，随时回看';
-  document.getElementById('authSubmitBtn').textContent=login?'登录':'注册';
-  document.getElementById('authToggle').innerHTML=login
-    ?'还没有账号？<a href="#" onclick="toggleAuthMode();return false">注册新账号</a>'
-    :'已有账号？<a href="#" onclick="toggleAuthMode();return false">去登录</a>';
-  document.getElementById('authError').classList.remove('show');
+  appState.isResetMode=false;
+  renderAuthMode();
+}
+
+function toggleResetMode(){
+  appState.isResetMode=!appState.isResetMode;
+  const err=document.getElementById('authError');
+  if(err)err.classList.remove('show');
+  document.getElementById('authPassword').value='';
+  renderAuthMode();
+}
+
+function renderAuthMode(){
+  const reset=appState.isResetMode;
+  const login=!reset&&appState.isLoginMode;
+  document.getElementById('authTitle').textContent=reset?'重置密码':login?'欢迎回来':'创建账号';
+  document.getElementById('authSub').textContent=reset
+    ?'仅限当前浏览器里的账号；换设备后无法重置'
+    :(login?'登录后可保存测试记录，随时回看':'注册后可保存测试记录，随时回看');
+  document.getElementById('authSubmitBtn').textContent=reset?'重置密码':(login?'登录':'注册');
+  document.getElementById('authPassword').placeholder=reset?'新密码，至少6位':'至少6位';
+  document.getElementById('authToggle').innerHTML=reset
+    ?'想起密码了？<a href="#" onclick="toggleResetMode();return false">返回登录</a>'
+    :(login
+      ?'还没有账号？<a href="#" onclick="toggleAuthMode();return false">注册新账号</a>'
+      :'已有账号？<a href="#" onclick="toggleAuthMode();return false">去登录</a>');
+  const forgot=document.getElementById('authForgot');
+  if(forgot)forgot.style.display=login?'block':'none';
+}
+
+function resetAuthMode(){
+  appState.isLoginMode=true;
+  appState.isResetMode=false;
+  document.getElementById('authPassword').value='';
+  const err=document.getElementById('authError');
+  if(err)err.classList.remove('show');
+  renderAuthMode();
 }
 
 async function handleAuth(e){
@@ -2764,6 +2799,25 @@ async function handleAuth(e){
   btn.disabled=true;btn.textContent='处理中...';
 
   try{
+    if(appState.isResetMode){
+      if(appState.apiAvailable){
+        errEl.textContent='当前为云端账号，暂不支持自助重置，请联系站长';errEl.classList.add('show');return false;
+      }
+      const users=JSON.parse(localStorage.getItem('mbti_users')||'{}');
+      if(!users[email]){
+        errEl.textContent='这个浏览器里没有该账号，请先注册';errEl.classList.add('show');return false;
+      }
+      users[email].password=btoa(pwd.split('').reverse().join('')+'_salt');
+      localStorage.setItem('mbti_users',JSON.stringify(users));
+      localStorage.setItem('mbti_session',email);
+      appState.currentUser={email,history:users[email].history||[]};
+      appState.isResetMode=false;
+      appState.isLoginMode=true;
+      toast('密码已重置，已自动登录');
+      go('home');
+      updateNav();
+      return false;
+    }
     if(appState.apiAvailable){
       // ===== 后端API模式 =====
       const path=appState.isLoginMode?'/api/login':'/api/register';
@@ -2801,7 +2855,7 @@ async function handleAuth(e){
     errEl.textContent=err.message;errEl.classList.add('show');
   }finally{
     btn.disabled=false;
-    btn.textContent=appState.isLoginMode?'登录':'注册';
+    btn.textContent=appState.isResetMode?'重置密码':(appState.isLoginMode?'登录':'注册');
   }
   return false;
 }
