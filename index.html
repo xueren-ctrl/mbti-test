@@ -1527,7 +1527,6 @@ input,textarea,select{font-family:var(--font-body)}
 .ai-card{border:1px solid var(--border);border-top:1px solid var(--text);padding:28px;background:none}
 .ai-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
 .ai-kicker{font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
-.ai-model-tag{font-family:var(--font-mono);font-size:9px;letter-spacing:.08em;color:var(--text-mute);border:1px solid var(--border);padding:2px 8px}
 .ai-content{font-size:14px;line-height:1.9;color:var(--text-soft);max-width:700px}
 .ai-content h4{font-family:var(--font-display);font-size:17px;font-weight:500;margin:22px 0 8px;color:var(--text)}
 .ai-content p{margin:0 0 12px}
@@ -4033,7 +4032,7 @@ function aiResultHtml(type,content,model,cached){
     if(s.trim())return `<p>${s}</p>`;
     return '';
   }).join('');
-  return `<div class="ai-card"><div class="ai-head"><span class="ai-kicker">AI 深度解读${cached?' · 已缓存':''}</span>${model?`<span class="ai-model-tag">${escapeHtml(model)}</span>`:''}</div><div class="ai-content">${html}</div>
+  return `<div class="ai-card"><div class="ai-head"><span class="ai-kicker">AI 深度解读${cached?' · 已缓存':''}</span></div><div class="ai-content">${html}</div>
     <div class="ai-btn"><button class="btn" onclick="getAIAnalysis(true)">重新分析</button>
     <button class="btn" onclick="copyAIResult()">复制结果</button></div></div>`;
 }
