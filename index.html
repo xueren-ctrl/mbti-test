@@ -4025,9 +4025,9 @@ function renderCareers(){
 /* ====================================================================
    AI 完整职业报告（经由自建代理，API Key 不落前端）
    ==================================================================== */
-/* 腾讯云 SCF 函数 URL（国内可直连；Key 只存在函数环境变量 AGNES_API_KEY）。
+/* Cloudflare Pages 函数（国内可直连；Key 只存在 Pages 环境变量 AGNES_API_KEY）。
    同域部署需自行实现 POST mode:'report'；留空 = 隐藏报告入口。 */
-const AI_PROXY_URL='https://1330228714-ck5rk7z3tp.ap-guangzhou.tencentscf.com/';
+const AI_PROXY_URL='https://xueren-mbti.pages.dev/';
 
 function aiProxyUrl(){
   if(typeof window!=='undefined'&&window.MBTI_AI_PROXY)return window.MBTI_AI_PROXY;
