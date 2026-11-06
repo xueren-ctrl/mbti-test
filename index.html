@@ -4485,7 +4485,7 @@ async function requestReport(payload,key,useCredit){
   renderReportLoading(payload);
   let content='',lastErr=null;
   const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),115000);
+  const timer=setTimeout(()=>controller.abort(),140000);
   try{
     const resp=await fetch(aiProxyUrl(),{
       method:'POST',
