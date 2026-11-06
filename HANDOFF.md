@@ -1,121 +1,148 @@
-# MBTI 性格测试网站 · 项目交接文档
+# MBTI 性格测试网站 · 交接文档
 
-> 用途：把当前项目状态与下一步任务交给另一个 AI 接续完成。
-> 最后更新：2026-11-03
-
----
+> 最后更新：2026-11-06
 
 ## 1. 项目是什么
 
-一个**纯前端单文件**的 MBTI 性格测试网站。用户输入答题 → 算出 4 维度性格类型 → 输出性格画像 + 职业方向 + 发展建议，并支持分享海报、本地账号、AI 深度分析等。
+纯前端单文件 MBTI 测试站，结果页加了一份 **AI 生成的 4 页职业报告**。
 
-- 线上地址（GitHub Pages）：`https://xueren-ctrl.github.io/mbti-test/`
-- GitHub 仓库：`https://github.com/xueren-ctrl/mbti-test`（用户名 `xueren-ctrl`）
-- ⚠️ 线上已与仓库 `main` 同步（2026-11-03 核实，199,830 字节）。
+- 线上：`https://xueren-ctrl.github.io/mbti-test/`
+- 仓库：`https://github.com/xueren-ctrl/mbti-test`（公开）
+- 本地：`D:\mbti-test`（不是 git 仓库，靠 `.deploy/push_new_page.mjs` 走 GitHub Data API 发布）
+- 变现：每月免费 3 次；用完后 ¥9.9 解锁 1 份；爱发电自动发解锁码。
 
----
+## 2. 当前状态
 
-## 2. 技术栈与架构
-
-| 项 | 说明 |
+| 项 | 状态 |
 |---|---|
-| 前端 | 单文件 SPA：`/workspace/index.html`（约 180KB / ~3000 行，**无构建步骤**） |
-| 数据存储 | `localStorage`（本地）+ Node.js 后端 JSON 文件（云同步，仅本地运行用） |
-| AI | 经服务端代理调用 Agnes（当前：腾讯云 SCF 函数 URL `https://1330228714-ck5rk7z3tp.ap-guangzhou.tencentscf.com/`，代码 `scf/index.js`）；Key 只在函数环境变量。前端 `AI_PROXY_URL` 留空则隐藏 AI 入口 |
-| 部署 | GitHub Pages（静态托管，国内可访问）；曾试 Vercel 因国内墙放弃 |
-| 本地后端 | `server.js` / `server-ai.js`（Node + Express），用于账号云同步 + AI 代理，**不进 Pages** |
+| 前端报告页 | 已完成，`node --check` 通过 |
+| 报告 UI/额度/解锁/打印测试 | 通过（`.deploy/report-smoke.cjs`，4 页 PDF） |
+| SCF 解锁码校验 | 线上通过（文件首码，50 个码全部本地校验通过） |
+| SCF 报告生成 | **2026-11-06 暂停**：腾讯云账号 `InsufficientBalance`，函数返回 410；需充值 ¥1 才能恢复 |
+| Cloudflare Pages 代理 | 已上线：`https://xueren-mbti.pages.dev/`，健康检查/解锁码/4 页报告 e2e 通过；Agnes 对 Cloudflare 出口有短时限流 |
+| 前端上线 | 已发布（commit `83fd5c4`，`AI_PROXY_URL` 指向 Pages） |
+| 爱发电自动发货 | 待配置（商品价格已确认 `￥9.90`） |
 
----
+线上 AI 代理地址是 `https://api.agnes-ai.cn/v1/chat/completions`（不是 `apihub`）。
+之前 401 是接错域名，不是 Key 失效。
+`agnes-3.0-flash` / `agnes-2.5-flash` 的调用费用是 0，但网关会按 `max_tokens` 做预授权；
+余额只有 ¥0.0107 时，4096 输出的预授权（约 ¥0.0163）会失败。
+报告已改成 2000–2400 字、`max_tokens:2600`，预授权约 ¥0.0103，免费额度即可通过；
+`agnes-2.5-pro` 会产生额度不足，已从报告 fallback 移除。
 
-## 3. 已实现功能
+2026-11-06 线上故障：SCF 返回 `410 Function is Unavailable, AvailableStatus = InsufficientBalance`，
+是**腾讯云账号欠费/余额不足**，不是 Agnes。恢复：腾讯云费用中心充值 ¥1 或结清欠费。
 
-- 3 种测试模式：快速（12 题）/ 详细（28 题）/ 完整（60 题）
-- 结果页：四维分析条、推荐职业、优势劣势、发展建议
-- 分享海报 + 二维码（扫码可看结果）；社交分享（微信 / 微博 / QQ / 复制链接）
-- 本地账号系统 + 云端同步（Node 后端 + JSON DB）
-- 首页 16 型性格画廊
-- 7 大高级功能：性格兼容分析、AI 深度分析、成长追踪、职业路径规划、团队性格地图、每日洞察、名人墙
+Cloudflare 迁移进度：`worker/agnes-proxy.js` 已补全报告/解锁码逻辑；Worker `mbti-ai` 已部署到旧账号，
+但 `workers.dev` 在大陆被 DNS 污染。另在账号 `3256542896@qq.com` 建了 Pages 项目 `xueren-mbti`，
+`https://xueren-mbti.pages.dev/` 可访问，健康检查与解锁码校验通过。
+前端 `AI_PROXY_URL` 已切到 Pages；直接 POST 曾成功生成 4 页（`agnes-2.5-flash`，24s/84s）。
+**但 Agnes 会对 Cloudflare 出口做短时限流**：返回 `429 error code: 1015` + `retry-after`（1–15 分钟），
+同一 Key 本地 Node 直连正常，说明限流按出口 IP；连续测试/同一时段多次生成会失败。
+完整浏览器 e2e 已通过（`agnes-2.5-flash`，4 页，2462 字，PDF 4 页，额度 3→2）；
+但同一出口 IP 连续生成会被限流，页面会提示“当前生成请求较多，请约 15 分钟后再试”。
+要稳定支撑多人连续生成，需要中国境内中转（SCF/阿里云函数等）或 Agnes 提额/换允许 Cloudflare 出口的服务。
 
----
+## 3. 用户流程
 
-## 4. 关键文件位置（重要）
+1. 完成测试，进入结果页。
+2. 点「生成完整报告」→ 填 6 项背景（称呼、年限、当前工作、城市/行业、卡点、1–3 年目标）。
+3. 前端 POST 到 SCF，SCF 调 Agnes，一次生成 4 页 Markdown。
+4. 前端渲染成 A4：封面/类型内核、三个方向、简历面试转行、90 天计划。
+5. 用户可「打印 / 保存 PDF」或「复制全文」。
+6. 免费 3 次/月；用完后弹 ¥9.9 解锁框，输入爱发电发来的码，解锁 1 次。
+
+## 4. 关键文件
 
 | 路径 | 作用 |
 |---|---|
-| `/workspace/index.html` | **最新源码（含全部修复）**，上线用的唯一文件 |
-| `/tmp/mbti-test/index.html` | 同一份已 `git commit` 的副本（commit `9bc12d4`），仓库远端已配置 |
-| `server-ai.js` `worker/agnes-proxy.js` `api/ai-analysis.js` `scf/index.js` `scf/DEPLOY.md` `AI_SETUP.md` | AI 代理与部署说明（Key 只在服务端） |
+| `index.html` | 唯一前端源码，约 4,840 行；含报告页、额度、解锁、打印 CSS |
+| `scf/index.js` | SCF 代理：报告提示词、模型回退、限流、解锁码校验 |
+| `scf/DEPLOY.md` | 部署、环境变量、接口、排障 |
+| `.deploy/push_new_page.mjs` | 发布 `index.html` 到 GitHub Pages |
+| `.deploy/report-smoke.cjs` | 本地 CDP 端到端测试（mock AI，4 页 PDF） |
+| `.deploy/live-report-check.cjs` | 线上 CTA / 免费额度 / 解锁码验证 |
+| `.deploy/live-report-e2e.cjs` | 线上真实 AI 生成 + 4 页打印 + 扣次数验证 |
+| `tools/gen-unlock-codes.cjs` | 生成 HMAC 解锁码 |
+| `report/unlock-codes.txt` | 已生成的码（gitignored，不要提交） |
+| `report/README.md` | 运营/发码/验收说明 |
+| `server-ai.js` 等 | 旧代理，**不参与当前线上**；不要用它们测报告 |
 
----
+## 5. 技术要点
 
-## 5. 当前唯一阻塞项：修复"查看历史记录重复保存"的 Bug
+- 单文件、无构建、vanilla JS；`localStorage` 存结果、额度、缓存。
+- 前端代理地址：`index.html` 里 `AI_PROXY_URL`，可用 `window.MBTI_AI_PROXY` 覆盖。
+- SCF：Node 18.15，256 MB，120 秒；请求体 16 KB；同一 IP 10 分钟 15 次。
+- 报告最多试 2 个模型，单模型 55 秒；不足 4 页、超过 5000 字或被截断返回 502，前端不扣次数。
+- 打印时按页面字数自动加 `rpt-dense` 压缩长页，保证真实 AI 输出稳定落在 4 页 A4。
+- 报告缓存 key 含类型、维度、背景；命中缓存不扣次数。
+- 解锁码格式 `MBTI-XXXXXX-XXXXXXXXXX`；服务端只验 HMAC，不存订单。
+- 合规文案：不写“准/科学诊断”，固定免责声明；AI 不编造公司/薪资/证书。
 
-### 根因
-`showResult()` 函数内部写有自动保存逻辑，每次被调用都会存一条记录。而该函数同时被三处调用：
-1. `calculateResult`（完成新测试）—— 应当保存 ✅
-2. `viewHistoryResult`（点击历史记录查看）—— 不应保存 ❌（这就是重复来源）
-3. `checkUrlResult`（扫码查看分享结果）—— 不应保存 ❌
+## 6. 测试
 
-### 修复内容（已写入 `/workspace/index.html`）
-- 函数签名改为 `function showResult(type,dims,isNew)`（约 1940 行）
-- 自动保存逻辑改为仅在 `isNew` 为真时执行（约 2052 行）：
-  ```js
-  if(isNew&&appState.currentUser){
-    setTimeout(()=>{saveResult(type);},500);
-  }
-  ```
-- 三处调用点：
-  - `calculateResult` → `showResult(type,dims,true)`（1934 行，**新测试才保存**）
-  - `viewHistoryResult` → `showResult(type,dims)`（2954 行，查看不保存）
-  - `checkUrlResult` → `showResult(type,dims)`（2313 行，查看不保存）
-
-### 修复状态
-- ✅ 代码已改好，JS 语法已校验通过，本地起服务 HTTP 200 验证可加载
-- ✅ 已 `git commit`（仓库 `/tmp/mbti-test`，commit `9bc12d4`）
-- ❌ **尚未推送到 GitHub Pages（线上仍是旧版）**
-
----
-
-## 6. 下一步具体操作（给下一个 AI）
-
-### 目标：把修复推上线
-
-**第一步：先判断当前环境能否访问 GitHub**
 ```bash
-curl -sS -m 10 -o /dev/null -w "%{http_code}\n" https://github.com
-# 若返回 000 / TLS 报错 / DNS 解析到 198.18.0.x → 无外网，见下方"无网方案"
+cd D:\mbti-test
+node --check .deploy/report-smoke.cjs
+node .deploy/report-smoke.cjs
 ```
 
-**方案 A — 环境有外网时（直接推）：**
+测试会起本地静态服务、mock SCF、Chrome CDP，验证：
+
+- CTA、6 项表单、4 页渲染、无模型名、免责声明只出现一次
+- 免费额度 3→2→1→0、缓存命中不扣次数
+- 解锁框、码兑换、额度消耗
+- 打印 4 页、返回结果、移动端布局
+
+截图输出：`.tmp/report-desktop.png`、`.tmp/report-paywall.png`、`.tmp/report-mobile.png`；
+打印 PDF：`.tmp/report-print.pdf`。
+
+线上验收（Chrome CDP，会真实调用 AI、消耗一次免费额度）：
+
 ```bash
-cd /tmp/mbti-test
-git push origin HEAD
-# 或把 /workspace/index.html 拷到用户本地仓库后：
-# git add index.html && git commit -m "fix: 修复历史记录重复保存" && git push origin main
+node .deploy/live-report-check.cjs
+node .deploy/live-report-e2e.cjs
 ```
 
-**方案 B — 环境无外网时（当前沙箱情况，GitHub 不可达）：**
-让用户在其**自有网络环境**完成部署，二选一：
-1. **GitHub 网页直传（最省事）**：打开 `github.com/xueren-ctrl/mbti-test` → 进 `index.html` → 点铅笔「Edit」→ 把 `/workspace/index.html` 内容贴入 → Commit。1–2 分钟后 Pages 自动更新。
-2. **本地终端推送**：把 `/workspace/index.html` 下载到用户电脑，放进本地 `mbti-test` 仓库，执行上面的 git 命令。
+## 7. 发布前端
 
-### 上线后验证
-登录 → 完成一次测试（历史 +1 条）→ 进入历史记录 → 点开某条查看 → 返回 → 确认**没有**因此新增重复记录。
+```bash
+cd D:\mbti-test
+GH_TOKEN=$(gh auth token) DEPLOY_MESSAGE="..." node .deploy/push_new_page.mjs index.html
+```
 
----
+发布后等 Pages 构建，打开线上地址强制刷新，确认：
 
-## 7. 环境坑位提醒（避免下一个 AI 白费劲）
+- 结果页有报告 CTA；
+- 控制台无 JS 错误；
+- 线上来源 `https://xueren-ctrl.github.io` 的代理请求 CORS 正常；
+- 免费额度、解锁码、打印都正常。
 
-- **当前沙箱无外网出口**：`github.com` / `*.github.io` 被 DNS 解析到 `198.18.0.x` 保留网段，TLS 握手失败。`curl` / `git push` / 浏览器自动化（agent-browser）**全部失败**——已实测：同一浏览器开本地服务成功、开 GitHub 报 `ERR_CONNECTION_CLOSED`。若下一个 AI 也在同类沙箱，会撞同一堵墙，不必反复试。
-- 若下一个 AI 运行在**有网环境**（用户本机或开放沙箱），方案 A 直接 `git push` 即可。
-- **API Key 已从前端移除**（2026-11-03）：改为代理模式，详见 `AI_SETUP.md`。
-  旧 Key 曾随公开仓库泄露，**必须在 Agnes 控制台吊销/轮换**，仅删代码不够。
+## 7.1 发布 Cloudflare Pages 代理
 
----
+```bash
+cd D:\mbti-test
+CF_API_TOKEN=... node .deploy/cf-pages-deploy.cjs
+```
 
-## 8. 其他已知可优化点（非阻塞，供参考）
+- 项目：`xueren-mbti`，账号 `3256542896@qq.com`
+- 环境变量：`AGNES_API_URL`、`AGNES_API_KEY`、`UNLOCK_SECRET`（后两个为 secret）
+- 部署后先 `curl` 根路径看 `{"ok":true,"configured":true,"unlock":true}`，再跑 `node .deploy/live-report-e2e.cjs`
+- Agnes 对 Cloudflare 出口有短时 `429/1015` 限流；连续测试会命中，等 `retry-after` 后再试
 
-- 账号密码以明文存 `localStorage` → 可改为哈希
-- 二维码库已内联到 HTML（此前用 cdnjs CDN 被墙导致分享页转圈）
-- 已弃用残留：`api/ai-analysis.js`（Vercel 函数）、`vercel.json`（已简化）
-- 如未来要支持更稳的 AI 调用，建议把 Agnes 调用全部收口到后端代理，密钥不落前端。
+## 8. 下一步
+
+1. **先解决 AI 出口限流**：Cloudflare Pages 能访问，但 Agnes 对 Cloudflare 出口返回 429/1015 + `retry-after`；最省事是腾讯云费用中心充值 ¥1/结清欠费恢复 SCF，或加一个中国境内中转函数；切换后跑 `node .deploy/live-report-e2e.cjs` 确认真实 AI 出 4 页。
+2. **配置爱发电自动发货**：商品后台/电铺设置里上传 `report/unlock-codes.txt`，一码一行；付款后自动把码发给买家。
+3. 用买家视角走一遍：付款 → 收码 → 回站输入 → 生成 4 页 → 打印 PDF。确认码不重复发。
+4. 把 `report/unlock-codes.txt` 留一份离线备份；卖完后用 `tools/gen-unlock-codes.cjs` 再生成一批。
+5. 后续：解锁码一次性核销（云数据库/Redis）、SEO 落地页、域名/ICP、退换政策。
+6. 偶尔仍可能遇到上游免费模型 500/超时，已自动切 2.5-flash；若频繁出现再考虑充少量余额或加队列。
+7. 换 Key 只改 `.deploy/scf-sdk/.env` 并重部署 SCF，前端不动。
+
+## 9. 已知限制
+
+- 仓库公开，前端额度/解锁逻辑可被绕过；真正收费闸门只在 SCF 校验，且码可复用。
+- SCF 无数据库：同一解锁码清 localStorage 后可再次使用；这是 MVP 限制。
+- 爱发电没有公开 webhook/API 可用于自动核销；当前靠自动发码。
+- `report/report-template.html` 是旧人工模板，仅版式参考，不参与生产。

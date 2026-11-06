@@ -1,12 +1,16 @@
-# AI 解读接入说明（Key 不再放前端）
+# AI 完整职业报告接入说明（Key 不再放前端）
+
+> 2026-11-06：线上代理已从腾讯云 SCF 迁到 Cloudflare Pages（`worker/agnes-proxy.js` 作为 `_worker.js`）。
+> SCF 因账号欠费暂停；Pages 的 `mode:'report'` 已跑通完整 e2e。
+> `server-ai.js` / Vercel / EdgeOne 是旧文件，不支持 `mode:'report'`，不要用它们测报告。
 
 ## 现在是怎么工作的
 
 ```
 浏览器（GitHub Pages，纯静态）
-      │  POST { type, dims, mode }        ← 不含任何密钥
+      │  POST { type, dims, mode:'report', profile }   ← 不含任何密钥
       ▼
-你的代理（server-ai.js / Worker / Vercel）
+你的代理（当前：Cloudflare Pages `xueren-mbti`）
       │  Authorization: Bearer sk-...     ← Key 只在服务端环境变量
       ▼
 Agnes API
@@ -17,11 +21,13 @@ Agnes API
 
 ## 当前线上部署（2026-11）
 
-- 代理地址：`https://1330228714-ck5rk7z3tp.ap-guangzhou.tencentscf.com/`
-- 腾讯云 SCF 函数 `mbti-ai`（ap-guangzhou，Nodejs18.15），Key 在环境变量 `AGNES_API_KEY`
-- 走 SCF 的 `http` 触发器（函数 URL），**不需要 API 网关**（腾讯云 API 网关已停止新购）
+- 代理地址：`https://xueren-mbti.pages.dev/`
+- Cloudflare Pages 项目 `xueren-mbti`；`worker/agnes-proxy.js` 作为 `_worker.js` 直传部署
+- 环境变量：`AGNES_API_URL`、`AGNES_API_KEY`（secret）、`UNLOCK_SECRET`（secret）
+- 上游地址固定为 `https://api.agnes-ai.cn/v1/chat/completions`；`apihub.agnes-ai.com` 会 401
 - 前端 `AI_PROXY_URL` 已指向该地址，国内网络可直连
-- 重新部署见 `scf/DEPLOY.md`
+- 健康检查/解锁码/4 页报告 e2e 已通过；Agnes 会按 Cloudflare 出口 IP 做短时限流（`retry-after` 1–15 分钟），连续生成需等待
+- 备用：腾讯云 SCF `mbti-ai`（欠费恢复后可切回，见 `scf/DEPLOY.md`）
 
 ---
 
@@ -110,24 +116,29 @@ const AI_PROXY_URL='https://ai.example.com/api/ai-analysis';
 
 ## 验证
 
+> `agnes-3.0-flash` / `agnes-2.5-flash` 本身费用为 0，但网关会按 `max_tokens` 预授权。
+> 报告已用 2600 输出上限，避开余额只有 ¥0.0107 时的预授权失败。
+> 若仍返回 `报告服务正在补充额度`，等 1 分钟或给账户留 ¥1 再试。`agnes-2.5-pro` 可能产生额度不足，不用于报告。
+
 先直接打代理（带 Origin，模拟浏览器）：
 
 ```bash
 curl -s https://1330228714-ck5rk7z3tp.ap-guangzhou.tencentscf.com/ \
   -H 'Content-Type: application/json' \
   -H 'Origin: https://xueren-ctrl.github.io' \
-  -d '{"type":"INTJ","dims":{"EI":{"a":"E","b":"I","aVal":35,"bVal":65},"SN":{"a":"S","b":"N","aVal":30,"bVal":70},"TF":{"a":"T","b":"F","aVal":72,"bVal":28},"JP":{"a":"J","b":"P","aVal":58,"bVal":42}},"mode":"detailed"}'
+  -d '{"type":"INTJ","dims":{"EI":{"a":"I","b":"E","aVal":72,"bVal":28},"SN":{"a":"N","b":"S","aVal":64,"bVal":36},"TF":{"a":"T","b":"F","aVal":61,"bVal":39},"JP":{"a":"J","b":"P","aVal":58,"bVal":42}},"mode":"report","profile":{"name":"小林","role":"互联网运营","years":"3 年","city":"上海","confusion":"想转产品","goal":"1 年内转岗"}}'
 ```
 
-正常返回：
+正常返回 4 页 Markdown：
 
 ```json
-{"content":"……","model":"agnes-3.0-flash"}
+{"content":"## 第 1 页……## 第 4 页……","model":"agnes-3.0-flash"}
 ```
 
-健康检查：`GET 代理地址` → `{"ok":true,"configured":true}`
+健康检查：`GET 代理地址` → `{"ok":true,"configured":true,"unlock":true}`
 
-再打开站点 → 完成测试 → 点「AI 深度解读」，能看到流式之外的完整结果即成功。
+再打开站点 → 完成测试 → 点「生成完整报告」→ 填背景 → 看到 4 页即成功。
+线上回归：`node .deploy/live-report-check.cjs && node .deploy/live-report-e2e.cjs`。
 
 ## 本地联调（不消耗真实额度）
 
