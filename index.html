@@ -4107,11 +4107,11 @@ if(!aiConfigured())console.info('[MBTI] AI 报告未配置：部署代理后把�
 
 const PAY_URL='https://afdian.com/item/505c0df0d8ca11f1a2e952540025c377';
 const FREE_REPORT_LIMIT=3;
-const REPORT_CACHE_PREFIX='mbti_report_cache_v2_';
+const REPORT_CACHE_PREFIX='mbti_report_cache_';
 const REPORT_QUOTA_KEY='mbti_report_quota_v1';
 const REPORT_UNLOCK_KEY='mbti_report_unlock_v1';
 const REPORT_PROFILE_KEY='mbti_report_profile_v1';
-const REPORT_LAST_KEY='mbti_report_last_v2';
+const REPORT_LAST_KEY='mbti_report_last_v1';
 const FUNNEL_KEY='mbti_funnel_v1';
 const ANALYTICS_ENDPOINT='';
 
@@ -4506,7 +4506,16 @@ function reportMetaHtml(payload){
   return '<div class="rpt-meta">'+items.map(x=>`<div class="rpt-meta-item"><span class="rpt-meta-label">${escapeHtml(x[0])}</span><span class="rpt-meta-value">${escapeHtml(x[1])}</span></div>`).join('')+'</div>';
 }
 
+function stripReportAiWording(text){
+  return String(text||'')
+    .replace(/本报告由\s*AI\s*生成，基于/g,'本报告基于')
+    .replace(/本报告由\s*AI\s*生成/g,'本报告生成')
+    .replace(/由\s*AI\s*生成/g,'生成')
+    .replace(/AI\s*生成/g,'生成');
+}
+
 function renderReport(payload,content,opts){
+  content=stripReportAiWording(content);
   const t=TYPES[payload.type]||{name:payload.type||''};
   const p=payload.profile||{};
   const pages=splitReportPages(content);
@@ -4596,7 +4605,7 @@ async function requestReport(payload,key,useCredit){
     }else if(!data||!data.content){
       lastErr=new Error('报告内容为空');
     }else{
-      content=String(data.content);
+      content=stripReportAiWording(String(data.content));
       if(data.quota)applyServerQuota(data.quota);
     }
   }catch(e){
