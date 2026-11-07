@@ -1729,6 +1729,14 @@ input,textarea,select{font-family:var(--font-body)}
 .report-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
 .report-form-note{font-family:var(--font-mono);font-size:10px;line-height:1.8;color:var(--text-mute);margin:0 0 18px}
 .report-form .btn-lg{width:100%}
+@media(max-width:640px){
+  #customModal .report-form .btn-lg{
+    position:sticky;bottom:0;z-index:2;
+    padding:10px 0 14px;background:var(--bg);
+    border-top:1px solid var(--border);
+    box-shadow:0 -10px 18px var(--bg);
+  }
+}
 @media(max-width:900px){
   .report-container{padding:0 12px 56px}
   .rpt-page{width:100%;min-height:0;padding:24px 18px}
@@ -4078,7 +4086,7 @@ function renderCareers(){
 }
 
 /* ====================================================================
-   AI 完整职业报告（经由自建代理，API Key 不落前端）
+   完整职业报告（经由自建代理，API Key 不落前端）
    ==================================================================== */
 /* Cloudflare Pages 函数（国内可直连；Key 只存在 Pages 环境变量 AGNES_API_KEY）。
    同域部署需自行实现 POST mode:'report'；留空 = 隐藏报告入口。 */
@@ -4100,11 +4108,11 @@ if(!aiConfigured())console.info('[MBTI] AI 报告未配置：部署代理后把�
 
 const PAY_URL='https://afdian.com/item/505c0df0d8ca11f1a2e952540025c377';
 const FREE_REPORT_LIMIT=3;
-const REPORT_CACHE_PREFIX='mbti_report_cache_';
+const REPORT_CACHE_PREFIX='mbti_report_cache_v2_';
 const REPORT_QUOTA_KEY='mbti_report_quota_v1';
 const REPORT_UNLOCK_KEY='mbti_report_unlock_v1';
 const REPORT_PROFILE_KEY='mbti_report_profile_v1';
-const REPORT_LAST_KEY='mbti_report_last_v1';
+const REPORT_LAST_KEY='mbti_report_last_v2';
 const FUNNEL_KEY='mbti_funnel_v1';
 const ANALYTICS_ENDPOINT='';
 
@@ -4290,9 +4298,9 @@ function reportCtaHtml(type){
   const priceNote=left>0?'3 次 / 月':credits>0?'已购买额度':'1 份 · 解锁后生成';
   const btnText=left>0||credits>0?'生成完整报告':'解锁并生成 · ¥9.9';
   return `<div class="paywall-card report-cta">
-    <div class="paywall-kicker">AI 完整职业报告 · 4 页</div>
+    <div class="paywall-kicker">完整职业报告 · 4 页</div>
     <h3>把 ${type} 的结果，变成一份能执行的职业路线图</h3>
-    <p>AI 会结合你的类型、维度和你填写的现状，生成 3 个差异化方向、简历与面试重点、转行路径和 90 天计划。生成后可直接打印或保存 PDF。</p>
+    <p>报告会结合你的类型、维度和你填写的现状，生成 3 个差异化方向、简历与面试重点、转行路径和 90 天计划。生成后可直接打印或保存 PDF。</p>
     <div class="paywall-foot">
       <div class="paywall-price">${price}<span>${priceNote}</span></div>
       <button class="btn btn-primary btn-lg" onclick="openReportForm('${type}')">${btnText}</button>
@@ -4308,7 +4316,7 @@ function reportFormHtml(type){
   const credits=unlockCredits();
   const useFree=left>0;
   return `<div class="report-form">
-    <p class="report-form-note">这份报告由 AI 根据你的类型和下面 5 个问题生成，约 30–60 秒。信息只保存在本机，不会上传到除 AI 生成服务之外的地方。</p>
+    <p class="report-form-note">这份报告根据你的类型和下面 5 个问题生成，约 30–60 秒。资料仅用于生成本次报告，不会写入历史记录。</p>
     <div class="report-form-grid">
       <div class="form-group"><label for="rptName">怎么称呼你</label><input id="rptName" maxlength="20" value="${escapeHtml(p.name||'')}" placeholder="选填，例如：小林"></div>
       <div class="form-group"><label for="rptYears">工作 / 学习年限</label><input id="rptYears" maxlength="20" value="${escapeHtml(p.years||'')}" placeholder="例如：3 年 / 应届"></div>
@@ -4323,7 +4331,7 @@ function reportFormHtml(type){
 }
 
 async function openReportForm(type){
-  if(!aiConfigured()){toast('AI 报告暂未开通');return;}
+  if(!aiConfigured()){toast('报告暂未开通');return;}
   appState.reportType=type;
   await refreshQuota();
   const left=freeReportRemaining();
@@ -4340,7 +4348,7 @@ function showReportPaywall(type){
 function paywallHtml(type){
   const credits=unlockCredits();
   return `<div class="paywall-card" style="margin:0;border:0;padding:0">
-    <div class="paywall-kicker">AI 完整职业报告 · 4 页</div>
+    <div class="paywall-kicker">完整职业报告 · 4 页</div>
     <h3>本月免费次数已用完</h3>
     <p>¥9.9 解锁 1 份完整报告。付款后输入解锁码即可生成，结果即时出来，也不会发邮箱。</p>
     <div class="paywall-foot">
@@ -4510,16 +4518,16 @@ function renderReport(payload,content,opts){
     let inner='';
     if(n===1){
       inner=`<div class="rpt-cover">
-        <div class="rpt-cover-kicker">AI CAREER DOSSIER · 4 PAGES</div>
+        <div class="rpt-cover-kicker">CAREER DOSSIER · 4 PAGES</div>
         <h1>${escapeHtml(p.name?p.name+' 的':'你的')}职业方向报告</h1>
         <p class="rpt-cover-sub">这份报告基于你的 MBTI 结果和生成前填写的现状。它不是标准答案，而是一份可以拿去试错的路线图。</p>
-        <div class="rpt-type-line"><span class="rpt-type-code">${escapeHtml(payload.type||'')}</span><span class="rpt-type-name">${escapeHtml(t.name||'')}</span><span class="rpt-type-note">AI GENERATED · ${escapeHtml(date)}</span></div>
+        <div class="rpt-type-line"><span class="rpt-type-code">${escapeHtml(payload.type||'')}</span><span class="rpt-type-name">${escapeHtml(t.name||'')}</span><span class="rpt-type-note">PERSONALIZED · ${escapeHtml(date)}</span></div>
         ${reportMetaHtml(payload)}
       </div>`;
     }
     inner+=`<div class="rpt-page-kicker">0${n} · ${titles[n-1]}</div><div class="rpt-body">${text?(n===2?renderCareerPage(text):markdownToHtml(text)):'<div class="rpt-empty">这一页没有生成内容，请返回重试。</div>'}</div>`;
     if(n===4&&!String(text).includes('免责声明')&&!String(text).includes('不构成心理诊断')){
-      inner+='<div class="rpt-body" style="flex:none;padding-top:10px"><p style="font-size:10px;line-height:1.7;color:#71675a;border-top:1px solid #d9d0c1;padding-top:8px">本报告由 AI 生成，基于 MBTI 框架与用户提供的信息，仅供自我探索与职业方向参考，不构成心理诊断、医疗、法律或职业建议，也不承诺录用或薪资。</p></div>';
+      inner+='<div class="rpt-body" style="flex:none;padding-top:10px"><p style="font-size:10px;line-height:1.7;color:#71675a;border-top:1px solid #d9d0c1;padding-top:8px">本报告基于 MBTI 框架与用户提供的信息生成，仅供自我探索与职业方向参考，不构成心理诊断、医疗、法律或职业建议，也不承诺录用或薪资。</p></div>';
     }
     body+=`<section class="rpt-page${text&&text.length>1000?' rpt-dense':''}">
       <header class="rpt-head"><span>THE PERSONALITY ARCHIVE</span><span>PRIVATE CAREER DOSSIER</span></header>
@@ -4528,7 +4536,7 @@ function renderReport(payload,content,opts){
     </section>`;
   }
   const toolbar=`<div class="rpt-toolbar">
-    <div><span class="rpt-toolbar-kicker">AI 完整职业报告${opts&&opts.cached?' · 已缓存':''}</span><strong>${escapeHtml(payload.type||'')} · ${escapeHtml(t.name||'')}</strong></div>
+    <div><span class="rpt-toolbar-kicker">完整职业报告${opts&&opts.cached?' · 已缓存':''}</span><strong>${escapeHtml(payload.type||'')} · ${escapeHtml(t.name||'')}</strong></div>
     <div class="rpt-toolbar-actions">
       <button class="btn btn-ghost" onclick="go('result')">返回结果</button>
       <button class="btn btn-outline" onclick="window.print()">打印 / 保存 PDF</button>
@@ -4546,14 +4554,14 @@ function renderReport(payload,content,opts){
 function renderReportLoading(payload){
   const t=TYPES[payload.type]||{name:payload.type||''};
   const c=document.getElementById('reportContainer');
-  if(c)c.innerHTML=`<div class="rpt-toolbar"><div><span class="rpt-toolbar-kicker">AI 完整职业报告</span><strong>${escapeHtml(payload.type||'')} · ${escapeHtml(t.name||'')}</strong></div><div class="rpt-toolbar-actions"><button class="btn btn-ghost" onclick="go('result')">返回结果</button></div></div>
-    <div class="rpt-loading"><div class="spinner"></div><h2>正在写你的 4 页报告</h2><p>AI 会结合你填的现状，生成 3 个方向、简历 / 面试重点和 90 天计划。大约 30–60 秒，请不要关闭页面。</p></div>`;
+  if(c)c.innerHTML=`<div class="rpt-toolbar"><div><span class="rpt-toolbar-kicker">完整职业报告</span><strong>${escapeHtml(payload.type||'')} · ${escapeHtml(t.name||'')}</strong></div><div class="rpt-toolbar-actions"><button class="btn btn-ghost" onclick="go('result')">返回结果</button></div></div>
+    <div class="rpt-loading"><div class="spinner"></div><h2>正在写你的 4 页报告</h2><p>报告会结合你填的现状，生成 3 个方向、简历 / 面试重点和 90 天计划。大约 30–60 秒，请不要关闭页面。</p></div>`;
   go('report');
 }
 
 function renderReportError(payload,key,useCredit,message){
   const c=document.getElementById('reportContainer');
-  if(c)c.innerHTML=`<div class="rpt-toolbar"><div><span class="rpt-toolbar-kicker">AI 完整职业报告</span><strong>生成未完成</strong></div><div class="rpt-toolbar-actions"><button class="btn btn-ghost" onclick="go('result')">返回结果</button></div></div>
+  if(c)c.innerHTML=`<div class="rpt-toolbar"><div><span class="rpt-toolbar-kicker">完整职业报告</span><strong>生成未完成</strong></div><div class="rpt-toolbar-actions"><button class="btn btn-ghost" onclick="go('result')">返回结果</button></div></div>
     <div class="rpt-error"><p>${escapeHtml(message||'生成失败，请稍后重试')}</p><p style="font-size:11px;color:var(--text-mute)">本次没有扣除免费次数或已解锁额度。</p><div class="rpt-actions"><button class="btn btn-primary" onclick="retryReport()">重试</button><button class="btn btn-ghost" onclick="go('result')">返回结果</button></div></div>`;
   appState.pendingReport={payload:payload,key:key,useCredit:useCredit};
   go('report');
@@ -4580,16 +4588,16 @@ async function requestReport(payload,key,useCredit){
     let data=null;
     try{data=raw?JSON.parse(raw):null;}catch(e){}
     if(!resp.ok){
-      lastErr=new Error((data&&data.error)||('AI 服务错误（'+resp.status+'）'));
+      lastErr=new Error((data&&data.error)||('报告服务错误（'+resp.status+'）'));
       if(data&&data.quota)applyServerQuota(data.quota);
     }else if(!data||!data.content){
-      lastErr=new Error('AI 返回内容为空');
+      lastErr=new Error('报告内容为空');
     }else{
       content=String(data.content);
       if(data.quota)applyServerQuota(data.quota);
     }
   }catch(e){
-    lastErr=e.name==='AbortError'?new Error('生成超时，请重试'):new Error('无法连接 AI 服务，请检查网络后重试');
+    lastErr=e.name==='AbortError'?new Error('生成超时，请重试'):new Error('无法连接报告服务，请检查网络后重试');
   }finally{
     clearTimeout(timer);
   }
