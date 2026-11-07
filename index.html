@@ -1730,8 +1730,8 @@ input,textarea,select{font-family:var(--font-body)}
 .report-form-note{font-family:var(--font-mono);font-size:10px;line-height:1.8;color:var(--text-mute);margin:0 0 18px}
 .report-form .btn-lg{width:100%}
 @media(max-width:640px){
-  #customModal .modal{display:flex;flex-direction:column;overflow:hidden}
-  #customModalBody{display:flex;flex-direction:column;flex:1;min-height:0}
+  #customModal.report-modal .modal{display:flex;flex-direction:column;overflow:hidden}
+  #customModal.report-modal #customModalBody{display:flex;flex-direction:column;flex:1;min-height:0}
   #customModal .report-form{display:flex;flex-direction:column;flex:1;min-height:0}
   #customModal .report-form-fields{flex:1;min-height:0;overflow-y:auto;padding-right:4px}
   #customModal .report-form-actions{flex:none;padding-top:10px;border-top:1px solid var(--border);background:var(--bg)}
@@ -4686,6 +4686,7 @@ function openModalContent(title,contentHTML){
   }
   document.getElementById('customModalTitle').textContent=title;
   document.getElementById('customModalBody').innerHTML=contentHTML;
+  modal.classList.toggle('report-modal',Boolean(modal.querySelector('.report-form')));
   openModal('customModal');
 }
 
