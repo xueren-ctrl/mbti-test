@@ -2126,7 +2126,7 @@ input,textarea,select{font-family:var(--font-body)}
 <div class="modal-overlay" id="posterModal">
   <div class="modal modal-poster">
     <h2 class="modal-title">你的职业方向海报</h2>
-    <p class="modal-sub">保存图片发朋友圈。朋友扫码会看到同类型的职业方向。</p>
+    <p class="modal-sub">保存图片发朋友圈。朋友扫码可以直接测自己的类型。</p>
     <div class="poster-wrap" id="posterWrap"></div>
     <div class="poster-actions">
       <button class="btn btn-primary btn-lg" onclick="downloadPoster()">下载海报</button>
@@ -3615,7 +3615,7 @@ function generatePoster(type){
   const qrSize=190,qrX=792,qrY=1058;
   ctx.fillStyle='#fbf8f2';
   ctx.fillRect(qrX-14,qrY-14,qrSize+28,qrSize+28);
-  const shareUrl=location.origin+location.pathname+'#result='+type;
+  const shareUrl=getPosterUrl(type);
   const qr=qrcode(0,'M');
   qr.addData(shareUrl);
   qr.make();
@@ -3663,7 +3663,7 @@ function posterCaption(type){
 
 function copyPosterCaption(){
   if(!posterType)return;
-  const text=posterCaption(posterType)+'\n'+getShareUrl(posterType);
+  const text=posterCaption(posterType)+'\n'+getPosterUrl(posterType);
   if(navigator.clipboard){
     navigator.clipboard.writeText(text).then(()=>{
       toast('分享文案已复制，去发朋友圈吧');
@@ -3724,6 +3724,9 @@ function downloadPoster(){
    ==================================================================== */
 function getShareUrl(type){
   return location.origin+location.pathname+'#result='+type;
+}
+function getPosterUrl(type){
+  return location.origin+location.pathname+'?start=1&from=poster-'+type.toLowerCase();
 }
 function getShareText(type){
   const t=TYPES[type];
