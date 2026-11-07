@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://xueren-ctrl.github.io/mbti-test/sitemap.xml

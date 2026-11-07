@@ -1161,9 +1161,11 @@ input,textarea,select{font-family:var(--font-body)}
 }
 .gallery-sub{
   text-align:left;font-family:var(--font-mono);
-  font-size:10.5px;letter-spacing:.05em;color:var(--text-mute);
+  font-size:11px;letter-spacing:.05em;color:var(--text-mute);
   margin-bottom:32px;padding-left:0;
 }
+.gallery-sub a{color:var(--text);text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.gallery-sub a:hover{color:var(--accent)}
 .gallery-grid{
   display:grid;grid-template-columns:repeat(4,1fr);gap:0;
   border-top:1px solid var(--border);border-left:1px solid var(--border);
@@ -1296,6 +1298,9 @@ input,textarea,select{font-family:var(--font-body)}
 .result-actions .btn-outline{border:0;padding:12px 0;text-decoration:underline;text-underline-offset:5px;color:var(--text-soft)}
 .result-actions .btn-outline:hover{color:var(--accent);background:none}
 .result-share-tip{text-align:left;font-family:var(--font-mono);font-size:10px;letter-spacing:.05em;color:var(--text-mute);margin-top:16px}
+.result-type-index{margin:18px 0 0;font-family:var(--font-mono);font-size:11px;letter-spacing:.04em}
+.result-type-index a{color:var(--text-soft);text-decoration:underline;text-underline-offset:4px}
+.result-type-index a:hover{color:var(--accent)}
 .paywall-card{margin:56px 0 0;padding:28px;border:1px solid var(--text);display:grid;gap:16px}
 .paywall-kicker{font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
 .paywall-card h3{font-family:var(--font-display);font-size:clamp(22px,2.4vw,28px);font-weight:400;line-height:1.3;margin:0}
@@ -1450,6 +1455,14 @@ input,textarea,select{font-family:var(--font-body)}
 }
 .career-row strong{font-size:13px;font-weight:500}
 .career-row span{font-size:12.5px;color:var(--text-soft)}
+.type-index-block{margin-top:52px;padding-top:24px;border-top:1px solid var(--text)}
+.type-index-block h3{font-family:var(--font-display);font-size:24px;font-weight:400;margin:0 0 6px}
+.type-index-block>p{font-size:12.5px;line-height:1.8;color:var(--text-soft);margin:0 0 18px;max-width:44em}
+.type-index-links{display:grid;grid-template-columns:repeat(2,1fr);gap:0 28px}
+.type-index-links a{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);font-size:12.5px;text-decoration:none}
+.type-index-links a span{font-family:var(--font-mono);font-size:11px;color:var(--text-mute);white-space:nowrap}
+.type-modal-index{text-align:center;margin:18px 0 0;font-family:var(--font-mono);font-size:11px;letter-spacing:.04em}
+@media(max-width:680px){.type-index-links{grid-template-columns:1fr}}
 .type-modal-summary{
   font-size:13.5px;line-height:1.85;color:var(--text-soft);
   margin:0 0 26px;text-align:left;
@@ -1593,7 +1606,7 @@ input,textarea,select{font-family:var(--font-body)}
   .feature-card{padding:22px 0}
   .types-gallery{margin-top:64px;padding-top:22px}
   .gallery-title{font-size:27px}
-  .gallery-sub{font-size:9.5px;margin-bottom:24px}
+  .gallery-sub{font-size:11px;margin-bottom:24px}
   .gallery-card{padding:18px 14px 20px}
   .gallery-code{font-size:24px}
   .gallery-name{font-size:11.5px;margin-bottom:6px}
@@ -1863,7 +1876,7 @@ input,textarea,select{font-family:var(--font-body)}
     <div class="types-gallery">
       <span class="section-kicker">02 — 类型</span>
       <h2 class="gallery-title">16 型人格图鉴</h2>
-      <p class="gallery-sub">点击任意类型，查看详细介绍与推荐职业</p>
+      <p class="gallery-sub">点击任意类型，查看详细介绍与推荐职业；也可以<a href="types/index.html">按类型查职业方向 →</a></p>
       <div class="gallery-grid" id="typesGallery"></div>
     </div>
   </div>
@@ -2112,11 +2125,12 @@ input,textarea,select{font-family:var(--font-body)}
 <!-- ========== 海报模态框 ========== -->
 <div class="modal-overlay" id="posterModal">
   <div class="modal modal-poster">
-    <h2 class="modal-title">分享你的性格海报</h2>
-    <p class="modal-sub">保存图片分享给朋友，扫码即可查看你的性格详情</p>
+    <h2 class="modal-title">你的职业方向海报</h2>
+    <p class="modal-sub">保存图片发朋友圈。朋友扫码会看到同类型的职业方向。</p>
     <div class="poster-wrap" id="posterWrap"></div>
     <div class="poster-actions">
-      <button class="btn btn-primary btn-lg" onclick="downloadPoster()">📥 下载海报</button>
+      <button class="btn btn-primary btn-lg" onclick="downloadPoster()">下载海报</button>
+      <button class="btn btn-outline" onclick="copyPosterCaption()">复制分享文案</button>
       <button class="btn btn-outline" onclick="closeModal('posterModal')">关闭</button>
     </div>
     <button class="modal-close" onclick="closeModal('posterModal')" aria-label="关闭">✕</button>
@@ -3386,6 +3400,7 @@ function showResult(type,dims,isNew){
       <button class="btn btn-outline btn-lg" onclick="generatePoster('${type}')">海报分享</button>
       <button class="btn btn-ghost btn-lg" onclick="startTest()">再测一次</button>
     </div>
+    <p class="result-type-index"><a href="types/${type.toLowerCase()}.html">查看 ${type} 职业方向速查 →</a></p>
 
     ${reportCtaHtml(type)}
 
@@ -3494,6 +3509,7 @@ document.addEventListener('keydown',e=>{
    分享海报生成
    ==================================================================== */
 let posterDataUrl=null;
+let posterType=null;
 
 function generatePoster(type){
   if(typeof qrcode==='undefined'){
@@ -3501,91 +3517,111 @@ function generatePoster(type){
     return;
   }
   const t=TYPES[type];
-  const W=750,H=1200;
+  if(!t)return;
+  const W=1080,H=1440;
   const canvas=document.createElement('canvas');
   canvas.width=W;canvas.height=H;
   const ctx=canvas.getContext('2d');
+  const serif='"Noto Serif SC","Source Han Serif SC","Songti SC","SimSun",serif';
+  const sans='"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif';
+  const mono='"SFMono-Regular",Consolas,"Liberation Mono",monospace';
+  const paper='#f4f0e7',ink='#1a1712',muted='#6d6558',rule='#d8d0c0',accent='#9e3b2b',band='#17140f';
 
-  // 纸张底色
-  ctx.fillStyle='#f4f0e7';
+  ctx.fillStyle=paper;
   ctx.fillRect(0,0,W,H);
 
-  // 外框
-  ctx.strokeStyle='#1a1712';
+  // 页眉：品牌 + 档案编号
+  ctx.textAlign='left';
+  ctx.fillStyle=ink;
+  ctx.font='500 21px '+sans;
+  ctx.fillText('MBTI 职业档案',72,92);
+  ctx.fillStyle=muted;
+  ctx.font='400 13px '+mono;
+  ctx.fillText('PERSONALITY ARCHIVE / CAREER DOSSIER',72,120);
+  ctx.textAlign='right';
+  ctx.fillStyle=ink;
+  ctx.font='400 14px '+mono;
+  ctx.fillText('TYPE '+t.code+' / 16',W-72,92);
+  ctx.fillStyle=accent;
+  ctx.font='500 18px '+sans;
+  ctx.fillText(t.group+'类型',W-72,126);
+  ctx.strokeStyle=rule;
   ctx.lineWidth=1;
-  ctx.strokeRect(28,28,W-56,H-56);
+  ctx.beginPath();ctx.moveTo(72,146);ctx.lineTo(W-72,146);ctx.stroke();
 
-  // 顶部标题
-  ctx.fillStyle='#1a1712';
-  ctx.font='500 24px "Noto Serif SC",serif';
-  ctx.textAlign='center';
-  ctx.fillText('MBTI 职业指南',W/2,82);
-  ctx.fillStyle='#8a8172';
-  ctx.font='400 13px "Noto Sans SC",sans-serif';
-  ctx.fillText('PERSONALITY ARCHIVE',W/2,108);
+  // 类型主视觉
+  ctx.textAlign='left';
+  ctx.fillStyle=ink;
+  ctx.font='500 210px '+serif;
+  ctx.fillText(t.code,68,362);
+  ctx.font='500 52px '+serif;
+  ctx.fillText(t.name,72,430);
+  ctx.fillStyle=muted;
+  ctx.font='400 24px '+sans;
+  ctx.fillText(t.tagline,72,478);
+  ctx.fillStyle=accent;
+  ctx.fillRect(72,516,48,3);
+  ctx.fillStyle=ink;
+  ctx.font='400 18px '+sans;
+  ctx.fillText(t.traits.slice(0,4).join('  ·  '),136,520);
 
-  // 卡片区域
-  const cardY=150,cardH=790,cardX=48,cardW=W-96;
-  ctx.strokeStyle='#1a1712';
+  // 三个职业方向
+  ctx.strokeStyle=rule;
   ctx.lineWidth=1;
-  ctx.strokeRect(cardX,cardY,cardW,cardH);
+  ctx.beginPath();ctx.moveTo(72,568);ctx.lineTo(W-72,568);ctx.stroke();
+  ctx.fillStyle=ink;
+  ctx.font='500 34px '+serif;
+  ctx.fillText('适合我的 3 个职业方向',72,625);
 
-  // 类型标签
-  ctx.fillStyle='#9e3b2b';
-  ctx.font='500 13px "Noto Sans SC",sans-serif';
-  ctx.fillText(t.group+'类型 · 人格档案',W/2,cardY+52);
+  const careers=t.careers.slice(0,3);
+  careers.forEach((career,i)=>{
+    const y=702+i*100;
+    ctx.fillStyle=accent;
+    ctx.font='500 15px '+mono;
+    ctx.fillText('0'+(i+1),72,y-8);
+    ctx.fillStyle=ink;
+    ctx.font='500 40px '+serif;
+    ctx.fillText(career.name,150,y);
+    ctx.fillStyle=muted;
+    ctx.font='400 18px '+sans;
+    ctx.fillText(career.desc,150,y+33);
+    if(i<careers.length-1){
+      ctx.strokeStyle=rule;
+      ctx.beginPath();ctx.moveTo(150,y+55);ctx.lineTo(W-72,y+55);ctx.stroke();
+    }
+  });
 
-  // 大类型代码
-  ctx.fillStyle='#1a1712';
-  ctx.font='500 104px "Noto Serif SC",serif';
-  ctx.fillText(t.code,W/2,cardY+172);
+  ctx.strokeStyle=rule;
+  ctx.beginPath();ctx.moveTo(72,978);ctx.lineTo(W-72,978);ctx.stroke();
 
-  // 类型名称
-  ctx.font='500 34px "Noto Serif SC",serif';
-  ctx.fillText(t.name,W/2,cardY+224);
+  // 深色转化区
+  ctx.fillStyle=band;
+  ctx.fillRect(36,1010,W-72,340);
+  ctx.textAlign='left';
+  ctx.fillStyle=paper;
+  ctx.font='500 54px '+serif;
+  ctx.fillText('你是什么型？',72,1102);
+  ctx.fillStyle='#d8c9b6';
+  ctx.font='400 22px '+sans;
+  ctx.fillText('28 道情境题，约 5 分钟',72,1150);
+  ctx.fillStyle='#e3a08f';
+  ctx.font='500 20px '+sans;
+  ctx.fillText('免费看 3 个方向 · 完整 4 页 ¥9.9',72,1194);
+  ctx.fillStyle='#958a7b';
+  ctx.font='400 14px '+sans;
+  ctx.fillText('前 50 份 ¥9.9，之后 ¥19.9',72,1228);
 
-  // 标语
-  ctx.fillStyle='#6d6558';
-  ctx.font='400 19px "Noto Sans SC",sans-serif';
-  wrapText(ctx,t.tagline,W/2,cardY+270,W-160,30);
-
-  // 分隔线
-  ctx.strokeStyle='#d8d0c0';
-  ctx.lineWidth=1;
-  ctx.beginPath();ctx.moveTo(cardX+48,cardY+322);ctx.lineTo(cardX+cardW-48,cardY+322);ctx.stroke();
-
-  // 核心特质
-  ctx.fillStyle='#8a8172';
-  ctx.font='500 12px "Noto Sans SC",sans-serif';
-  ctx.fillText('核 心 特 质',W/2,cardY+362);
-  ctx.fillStyle='#1a1712';
-  ctx.font='400 19px "Noto Sans SC",sans-serif';
-  const traitText=t.traits.slice(0,4).join('  ·  ');
-  ctx.fillText(traitText,W/2,cardY+398);
-
-  // 推荐职业
-  ctx.fillStyle='#8a8172';
-  ctx.font='500 12px "Noto Sans SC",sans-serif';
-  ctx.fillText('推 荐 职 业 方 向',W/2,cardY+452);
-  ctx.fillStyle='#1a1712';
-  ctx.font='400 19px "Noto Sans SC",sans-serif';
-  const careerText=t.careers.slice(0,3).map(c=>c.name).join('   ');
-  ctx.fillText(careerText,W/2,cardY+488);
-
-  // 二维码
-  const qrSize=196,qrX=(W-qrSize)/2,qrY=cardY+542;
-  ctx.fillStyle='#fff';
+  // 二维码卡片
+  const qrSize=190,qrX=792,qrY=1058;
+  ctx.fillStyle='#fbf8f2';
   ctx.fillRect(qrX-14,qrY-14,qrSize+28,qrSize+28);
-  ctx.strokeStyle='#1a1712';
-  ctx.lineWidth=1;
-  ctx.strokeRect(qrX-14,qrY-14,qrSize+28,qrSize+28);
   const shareUrl=location.origin+location.pathname+'#result='+type;
   const qr=qrcode(0,'M');
   qr.addData(shareUrl);
   qr.make();
   const count=qr.getModuleCount();
   const cellSize=qrSize/count;
-  ctx.fillStyle='#1a1712';
+  ctx.fillStyle=ink;
   for(let r=0;r<count;r++){
     for(let c=0;c<count;c++){
       if(qr.isDark(r,c)){
@@ -3593,21 +3629,59 @@ function generatePoster(type){
       }
     }
   }
-  // 二维码提示
-  ctx.fillStyle='#8a8172';
-  ctx.font='400 15px "Noto Sans SC",sans-serif';
-  ctx.fillText('扫码查看完整性格分析',W/2,qrY+qrSize+44);
+  ctx.textAlign='center';
+  ctx.fillStyle=paper;
+  ctx.font='400 15px '+sans;
+  ctx.fillText('扫码测你的类型',qrX+qrSize/2,qrY+qrSize+42);
 
-  // 底部
-  ctx.fillStyle='#8a8172';
-  ctx.font='400 14px "Noto Sans SC",sans-serif';
-  ctx.fillText('免费 · 无需注册 · 结果可随时重测',W/2,H-48);
+  // 页脚
+  ctx.textAlign='left';
+  ctx.fillStyle='#958a7b';
+  ctx.font='400 12px '+sans;
+  ctx.fillText('结果仅用于自我探索，不构成职业建议',72,1382);
+  ctx.textAlign='right';
+  ctx.fillText('MBTI · 16 型职业档案',W-72,1382);
 
-  // 转为图片显示
+  // 外框最后画，压住深色区的直角
+  ctx.strokeStyle=ink;
+  ctx.lineWidth=2;
+  ctx.strokeRect(36,36,W-72,H-72);
+
+  posterType=type;
   posterDataUrl=canvas.toDataURL('image/png');
   const wrap=document.getElementById('posterWrap');
-  wrap.innerHTML=`<img src="${posterDataUrl}" alt="性格海报">`;
+  wrap.innerHTML=`<img src="${posterDataUrl}" alt="${t.code} ${t.name} 的职业方向海报">`;
   openModal('posterModal');
+}
+
+function posterCaption(type){
+  const t=TYPES[type];
+  if(!t)return '';
+  const directions=t.careers.slice(0,3).map(c=>c.name).join('、');
+  return `我的 MBTI 是 ${t.code} ${t.name}，适合我的 3 个方向是：${directions}。你是什么型？`;
+}
+
+function copyPosterCaption(){
+  if(!posterType)return;
+  const text=posterCaption(posterType)+'\n'+getShareUrl(posterType);
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(()=>{
+      toast('分享文案已复制，去发朋友圈吧');
+    }).catch(()=>{fallbackPosterCopy(text);});
+  }else{
+    fallbackPosterCopy(text);
+  }
+}
+
+function fallbackPosterCopy(text){
+  const ta=document.createElement('textarea');
+  ta.value=text;
+  ta.style.position='fixed';ta.style.opacity='0';
+  document.body.appendChild(ta);
+  ta.select();
+  try{document.execCommand('copy');toast('分享文案已复制，去发朋友圈吧');}
+  catch(e){toast('复制失败，请手动选中复制');}
+  document.body.removeChild(ta);
 }
 
 function roundRect(ctx,x,y,w,h,r){
@@ -3640,9 +3714,9 @@ function downloadPoster(){
   if(!posterDataUrl){toast('海报生成中，请稍候');return;}
   const a=document.createElement('a');
   a.href=posterDataUrl;
-  a.download='MBTI性格海报.png';
+  a.download='MBTI-'+posterType+'-职业方向.png';
   a.click();
-  toast('海报已下载，快分享给朋友吧！');
+  toast('海报已下载，发朋友圈吧');
 }
 
 /* ====================================================================
@@ -3728,6 +3802,14 @@ function checkUrlResult(){
     history.replaceState(null,'',location.pathname);
     toast('这是分享的性格结果，点击"再测一次"亲自测试');
   }
+}
+
+function maybeStartFromQuery(){
+  const params=new URLSearchParams(location.search);
+  if(params.get('start')!=='1')return;
+  if(location.hash&&/result=/.test(location.hash))return;
+  if(appState.test&&appState.test.questions)return;
+  startTest('detailed');
 }
 
 /* ====================================================================
@@ -4059,6 +4141,18 @@ function addTeamMember(code){
 /* ====================================================================
    功能4：职业路径规划
    ==================================================================== */
+function typeIndexHtml(){
+  const links=Object.keys(TYPES).map(code=>{
+    const t=TYPES[code];
+    return `<a href="types/${code.toLowerCase()}.html"><strong>${code} · ${t.name}</strong><span>适合岗位 →</span></a>`;
+  }).join('');
+  return `<div class="type-index-block">
+    <h3>16 型职业方向速查</h3>
+    <p>每种类型一页：适合岗位、不太适合的岗位、转行建议。没做测试也可以直接按类型查。</p>
+    <div class="type-index-links">${links}</div>
+  </div>`;
+}
+
 function renderCareers(){
   const area=document.getElementById('careersArea');if(!area)return;
   const history=appState.currentUser?appState.currentUser.history:[];
@@ -4088,7 +4182,7 @@ function renderCareers(){
       </div>
     </div>`;
   }
-  area.innerHTML=html;
+  area.innerHTML=html+typeIndexHtml();
 }
 
 /* ====================================================================
@@ -4836,6 +4930,8 @@ function showTypeDetail(code){
       <div class="advice-list">${adviceHtml}</div>
     </div>
 
+    <p class="type-modal-index"><a href="types/${code.toLowerCase()}.html">查看 ${code} 职业方向速查 →</a></p>
+
     <div style="text-align:center;margin-top:20px">
       <button class="btn btn-primary" onclick="closeModal('typeModal');startTest()">我来测测</button>
     </div>
@@ -5015,6 +5111,7 @@ window.addEventListener('load',async ()=>{
   try{renderTypesGallery();}catch(e){console.warn('renderTypesGallery失败:',e);}
   try{refreshResume();}catch(e){console.warn('refreshResume失败:',e);}
   try{checkUrlResult();}catch(e){console.warn('checkUrlResult失败:',e);}
+  try{maybeStartFromQuery();}catch(e){console.warn('maybeStartFromQuery失败:',e);}
   // 无论如何都要隐藏loading
   setTimeout(()=>{
     const el=document.getElementById('loadingOverlay');
