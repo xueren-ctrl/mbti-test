@@ -2780,8 +2780,13 @@ let appState = {
   isLoginMode:true, // true=登录 false=注册
   isResetMode:false,
   test:{answers:new Array(28).fill(null),currentQ:0},
-  apiBase:'',       // 后端API地址，空字符串表示同源
-  apiAvailable:false // 后端是否可用
+  apiBase:(function(){
+    const h=location.hostname;
+    if(h==='localhost'||h==='127.0.0.1')return 'http://127.0.0.1:8788';
+    return 'https://xueren-mbti.pages.dev';
+  })(), // 云端账号 / 历史 / 额度
+  apiAvailable:false, // 后端是否可用
+  serverQuota:null // 服务端额度快照：{month,freeLeft,credits}
 };
 
 /* ====================================================================
@@ -2789,12 +2794,14 @@ let appState = {
    ==================================================================== */
 async function apiCheck(){
   const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),3000);
+  const timer=setTimeout(()=>controller.abort(),5000);
   try{
     const resp=await fetch(appState.apiBase+'/api/health',{signal:controller.signal});
     clearTimeout(timer);
-    appState.apiAvailable=resp.ok;
-    return resp.ok;
+    let data=null;
+    try{data=await resp.json();}catch(e){}
+    appState.apiAvailable=Boolean(resp.ok&&data&&data.ok&&data.db);
+    return appState.apiAvailable;
   }catch(e){
     clearTimeout(timer);
     appState.apiAvailable=false;
@@ -2811,9 +2818,10 @@ async function apiCall(path,method,data){
     headers,
     body:data?JSON.stringify(data):undefined
   });
-  const result=await resp.json();
-  if(!resp.ok)throw new Error(result.error||'请求失败');
-  return result;
+  let result=null;
+  try{result=await resp.json();}catch(e){}
+  if(!resp.ok)throw new Error((result&&result.error)||'请求失败（'+resp.status+'）');
+  return result||{};
 }
 
 /* ====================================================================
@@ -2928,6 +2936,24 @@ function resetAuthMode(){
   renderAuthMode();
 }
 
+function localUsers(){
+  try{return JSON.parse(localStorage.getItem('mbti_users')||'{}');}catch(e){return {};}
+}
+
+async function importLocalHistory(email){
+  const local=localUsers()[email];
+  const history=(local&&Array.isArray(local.history))?local.history.slice(0,20):[];
+  for(const h of history){
+    try{
+      await apiCall('/api/results','POST',{
+        typeCode:h.type,
+        mode:h.mode||'detailed',
+        answers:h.answers||[]
+      });
+    }catch(e){}
+  }
+}
+
 async function handleAuth(e){
   e.preventDefault();
   const email=document.getElementById('authEmail').value.trim();
@@ -2959,10 +2985,31 @@ async function handleAuth(e){
     if(appState.apiAvailable){
       // ===== 后端API模式 =====
       const path=appState.isLoginMode?'/api/login':'/api/register';
-      const result=await apiCall(path,'POST',{email,password:pwd});
+      let result=null;
+      let migrated=false;
+      try{
+        result=await apiCall(path,'POST',{email,password:pwd});
+      }catch(err){
+        const users=localUsers();
+        const old=users[email];
+        const oldHash=btoa(pwd.split('').reverse().join('')+'_salt');
+        if(path==='/api/login'&&err.message==='邮箱或密码错误'&&old&&(old.password===oldHash||old.password===pwd)){
+          result=await apiCall('/api/register','POST',{email,password:pwd});
+          migrated=true;
+        }else{
+          throw err;
+        }
+      }
       localStorage.setItem('mbti_token',result.token);
       appState.currentUser={email:result.user.email,id:result.user.id,history:[]};
-      toast(appState.isLoginMode?'登录成功，欢迎回来！':'注册成功，已自动登录！');
+      applyServerQuota(result.quota);
+      if(migrated){
+        await importLocalHistory(email);
+        toast('旧版账号已迁移到云端，历史记录已导入');
+      }else{
+        if(!appState.isLoginMode)await importLocalHistory(email);
+        toast(appState.isLoginMode?'登录成功，欢迎回来！':'注册成功，已自动登录！');
+      }
       go('home');
       updateNav();
       // 异步加载历史
@@ -3018,8 +3065,10 @@ async function logout(){
     localStorage.removeItem('mbti_session');
   }
   appState.currentUser=null;
+  appState.serverQuota=null;
   toast('已退出登录');
   go('home');
+  await refreshQuota();
   updateNav();
 }
 
@@ -3032,11 +3081,16 @@ async function restoreSession(){
       try{
         const result=await apiCall('/api/me','GET');
         appState.currentUser={email:result.user.email,id:result.user.id,history:[]};
+        applyServerQuota(result.quota);
         await loadHistoryFromServer();
       }catch(e){
         localStorage.removeItem('mbti_token');
       }
     }
+    if(!appState.currentUser&&localStorage.getItem('mbti_session')&&localUsers()[localStorage.getItem('mbti_session')]){
+      toast('检测到旧版本地账号，请登录一次，系统会自动迁移历史记录');
+    }
+    await refreshQuota();
   }else{
     // localStorage模式
     const email=localStorage.getItem('mbti_session');
@@ -4031,6 +4085,7 @@ const AI_PROXY_URL='https://xueren-mbti.pages.dev/';
 
 function aiProxyUrl(){
   if(typeof window!=='undefined'&&window.MBTI_AI_PROXY)return window.MBTI_AI_PROXY;
+  if(appState&&appState.apiBase)return appState.apiBase.replace(/\/$/,'')+'/';
   return AI_PROXY_URL;
 }
 function aiConfigured(){
@@ -4093,6 +4148,7 @@ function openPaywall(type,source){
 }
 
 function freeReportRemaining(){
+  if(appState.serverQuota&&appState.serverQuota.month===monthKey())return Math.max(0,Number(appState.serverQuota.freeLeft)||0);
   const m=monthKey();
   try{
     const o=JSON.parse(localStorage.getItem(REPORT_QUOTA_KEY)||'null');
@@ -4109,6 +4165,28 @@ function consumeFreeReport(){
   }catch(e){}
   try{localStorage.setItem(REPORT_QUOTA_KEY,JSON.stringify({month:m,used:used+1}));}catch(e){}
 }
+function applyServerQuota(q){
+  if(!q)return;
+  appState.serverQuota={
+    month:q.month,
+    freeLeft:Math.max(0,Number(q.freeLeft)||0),
+    credits:Math.max(0,Number(q.credits)||0)
+  };
+  try{
+    localStorage.setItem(REPORT_QUOTA_KEY,JSON.stringify({month:q.month,used:FREE_REPORT_LIMIT-appState.serverQuota.freeLeft}));
+    const unlock=readUnlockState();
+    unlock.credits=appState.serverQuota.credits;
+    saveUnlockState(unlock);
+  }catch(e){}
+}
+async function refreshQuota(){
+  if(!appState.apiAvailable)return null;
+  try{
+    const result=await apiCall('/api/quota','GET');
+    applyServerQuota(result.quota);
+    return result.quota;
+  }catch(e){return null;}
+}
 function readUnlockState(){
   let s={credits:0,usedCodes:[]};
   try{
@@ -4124,6 +4202,7 @@ function saveUnlockState(s){
   try{localStorage.setItem(REPORT_UNLOCK_KEY,JSON.stringify(s));}catch(e){}
 }
 function unlockCredits(){
+  if(appState.serverQuota)return Math.max(0,Number(appState.serverQuota.credits)||0);
   return readUnlockState().credits;
 }
 function consumeUnlockCredit(){
@@ -4242,9 +4321,10 @@ function reportFormHtml(type){
   </div>`;
 }
 
-function openReportForm(type){
+async function openReportForm(type){
   if(!aiConfigured()){toast('AI 报告暂未开通');return;}
   appState.reportType=type;
+  await refreshQuota();
   const left=freeReportRemaining();
   const credits=unlockCredits();
   if(left<=0&&credits<=0){showReportPaywall(type);return;}
@@ -4271,7 +4351,7 @@ function paywallHtml(type){
       <button class="btn btn-outline" onclick="redeemUnlockCode()">解锁</button>
     </div>
     <p class="paywall-msg" id="unlockMsg">${credits>0?'已解锁 '+credits+' 次':'付款后自动发码；回来输入即可，即时生成。'}</p>
-    <p class="paywall-note">每月 3 次免费；用完后 9.9 解锁 1 份。生成约 30–60 秒。</p>
+    <p class="paywall-note">同一网络每月 3 次免费；换账号不会重复赠送。用完后 9.9 解锁 1 份。生成约 30–60 秒。</p>
   </div>`;
 }
 
@@ -4282,20 +4362,21 @@ async function redeemUnlockCode(){
   const btn=document.querySelector('.paywall-unlock .btn');
   const code=input?input.value.trim():'';
   if(!code){if(msg)msg.textContent='请先输入解锁码';return;}
-  const normalized=code.toUpperCase().replace(/[^A-Z0-9]/g,'');
-  const state=readUnlockState();
-  if(state.usedCodes.includes(normalized)){
-    if(msg)msg.textContent='这个解锁码已经用过了';
+  const token=localStorage.getItem('mbti_token');
+  if(appState.apiAvailable&&!token){
+    if(msg)msg.textContent='请先注册 / 登录，解锁额度会绑定到账号';
     return;
   }
   if(btn){btn.disabled=true;btn.textContent='校验中...';}
   if(msg)msg.textContent='正在校验...';
   let err='';
   try{
-    const resp=await fetch(aiProxyUrl(),{
+    const headers={'Content-Type':'application/json'};
+    if(token)headers['Authorization']='Bearer '+token;
+    const resp=await fetch(aiProxyUrl().replace(/\/$/,'')+'/api/redeem',{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'redeem',code:code})
+      headers,
+      body:JSON.stringify({code:code})
     });
     const raw=await resp.text();
     let data=null;
@@ -4303,9 +4384,7 @@ async function redeemUnlockCode(){
     if(!resp.ok||!data||!data.ok){
       err=(data&&data.error)||'解锁码无效，请检查是否输入完整';
     }else{
-      state.credits+=1;
-      state.usedCodes.push(normalized);
-      saveUnlockState(state);
+      applyServerQuota(data.quota);
       if(msg)msg.textContent='解锁成功，已增加 1 次。';
       track('unlock_success',{type:appState.reportType||''});
       setTimeout(()=>{closeModal('customModal');openReportForm(appState.reportType);},600);
@@ -4487,9 +4566,12 @@ async function requestReport(payload,key,useCredit){
   const controller=new AbortController();
   const timer=setTimeout(()=>controller.abort(),140000);
   try{
+    const token=localStorage.getItem('mbti_token');
+    const headers={'Content-Type':'application/json'};
+    if(token)headers['Authorization']='Bearer '+token;
     const resp=await fetch(aiProxyUrl(),{
       method:'POST',
-      headers:{'Content-Type':'application/json'},
+      headers,
       body:JSON.stringify(payload),
       signal:controller.signal
     });
@@ -4498,10 +4580,12 @@ async function requestReport(payload,key,useCredit){
     try{data=raw?JSON.parse(raw):null;}catch(e){}
     if(!resp.ok){
       lastErr=new Error((data&&data.error)||('AI 服务错误（'+resp.status+'）'));
+      if(data&&data.quota)applyServerQuota(data.quota);
     }else if(!data||!data.content){
       lastErr=new Error('AI 返回内容为空');
     }else{
       content=String(data.content);
+      if(data.quota)applyServerQuota(data.quota);
     }
   }catch(e){
     lastErr=e.name==='AbortError'?new Error('生成超时，请重试'):new Error('无法连接 AI 服务，请检查网络后重试');
@@ -4514,15 +4598,15 @@ async function requestReport(payload,key,useCredit){
     return;
   }
   writeReportCache(key,content);
-  if(useCredit)consumeUnlockCredit();else consumeFreeReport();
   appState.pendingReport=null;
   renderReport(payload,content,{cached:false});
   track('report_success',{type:payload.type,paid:Boolean(useCredit)});
 }
 
-function startReportGeneration(){
+async function startReportGeneration(){
   const type=appState.reportType||(appState.currentResult&&appState.currentResult.type);
   if(!type){toast('请先完成测试');return;}
+  await refreshQuota();
   const get=id=>{const el=document.getElementById(id);return el?el.value.trim():'';};
   const profile={
     name:get('rptName').slice(0,20),
@@ -4673,35 +4757,41 @@ async function saveResult(type,silent){
     date:new Date().toISOString(),
     answers:[...appState.test.answers]
   };
+  const fingerprint=r=>r&&r.type===record.type&&JSON.stringify(r.answers||[])===JSON.stringify(record.answers);
   if(appState.currentUser){
     if(appState.apiAvailable){
       // 后端API保存
       try{
-        await apiCall('/api/results','POST',{
+        const saved=await apiCall('/api/results','POST',{
           typeCode:type,
           mode:appState.test.mode||'detailed',
           answers:appState.test.answers
         });
         await loadHistoryFromServer();
-        toast('结果已保存到云端历史记录');
+        toast(saved&&saved.duplicate?'该结果已在历史记录中':'结果已保存到云端历史记录');
       }catch(e){
         toast('保存失败：'+e.message);
       }
     }else{
-      // localStorage保存
+      // localStorage保存：同一份答案只保留一条
       const users=JSON.parse(localStorage.getItem('mbti_users')||'{}');
       if(!users[appState.currentUser.email])users[appState.currentUser.email]={history:[]};
       if(!users[appState.currentUser.email].history)users[appState.currentUser.email].history=[];
-      users[appState.currentUser.email].history.unshift(record);
-      if(users[appState.currentUser.email].history.length>20)users[appState.currentUser.email].history=users[appState.currentUser.email].history.slice(0,20);
+      const history=users[appState.currentUser.email].history;
+      if(history.some(fingerprint)){
+        toast('该结果已在历史记录中');
+        return;
+      }
+      history.unshift(record);
+      if(history.length>20)users[appState.currentUser.email].history=history.slice(0,20);
       localStorage.setItem('mbti_users',JSON.stringify(users));
       appState.currentUser.history=users[appState.currentUser.email].history;
       toast('结果已保存到历史记录');
     }
   }else{
-    // 未登录，存到本地临时；与最新一条完全相同则不重复入库(防止自动保存+手动保存重复)
+    // 未登录，存到本地临时；同一份答案只保留一条
     let temp=JSON.parse(localStorage.getItem('mbti_temp_history')||'[]');
-    const isDup=temp[0]&&temp[0].type===record.type&&JSON.stringify(temp[0].answers)===JSON.stringify(record.answers);
+    const isDup=temp.some(fingerprint);
     if(!isDup){
       temp.unshift(record);
       if(temp.length>5)temp=temp.slice(0,5);
@@ -4710,10 +4800,12 @@ async function saveResult(type,silent){
     if(silent){
       // 自动保存：静默存入本地临时，不弹窗、不跳转
       if(!isDup)toast('已保存到本地临时记录（建议登录后永久保存）');
+    }else if(isDup){
+      toast('该结果已在临时记录中');
     }else if(confirm('你还没有登录，刷新页面后数据会丢失。\n\n是否现在登录/注册以永久保存测试记录？')){
       go('auth');
     }else{
-      toast(isDup?'该结果已在临时记录中':'已临时保存（刷新后丢失），建议登录后保存');
+      toast('已临时保存（刷新后丢失），建议登录后保存');
     }
   }
 }
