@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080, initial-scale=1">
+<title>MBTI 职业指南 · 分享海报</title>
+<style>
+  :root{
+    --paper:#fff8f2;
+    --card:#fffdfb;
+    --ink:#2f2623;
+    --soft:#5f514b;
+    --muted:#6f625b;
+    --line:#f0ddd2;
+    --coral:#c94a3d;
+    --coral-dark:#b23d31;
+    --analyst-bg:#f5efff;--analyst-ink:#60489e;
+    --diplomat-bg:#e8f8ef;--diplomat-ink:#2f6f5b;
+    --sentinel-bg:#eaf2ff;--sentinel-ink:#345a9a;
+    --explorer-bg:#fff0e4;--explorer-ink:#99512f;
+    --sans:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+    --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;width:1080px;height:1440px;overflow:hidden;background:var(--paper)}
+  body{
+    color:var(--ink);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;position:relative;
+  }
+  body::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:
+      radial-gradient(640px 420px at 92% -6%, #ffe0d0 0%, rgba(255,224,208,0) 64%),
+      radial-gradient(520px 420px at -6% 32%, #f1e8ff 0%, rgba(241,232,255,0) 62%),
+      radial-gradient(420px 360px at 78% 96%, #ffe4d7 0%, rgba(255,228,215,0) 60%);
+  }
+  .canvas{position:relative;width:1080px;height:1440px;padding:54px 64px 0}
+
+  .top{display:flex;align-items:flex-start;justify-content:space-between}
+  .brand{display:flex;align-items:center;gap:16px}
+  .mark{
+    width:56px;height:56px;border-radius:17px;background:var(--coral);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:27px;font-weight:800;line-height:1;
+    box-shadow:0 10px 24px rgba(201,74,61,.22);
+  }
+  .brand-cn{font-size:28px;font-weight:800;letter-spacing:-.03em;line-height:1.15}
+  .brand-en{font-size:13px;font-weight:500;color:var(--muted);margin-top:5px}
+  .top-right{text-align:right;font-family:var(--mono);font-size:12px;line-height:1.9;letter-spacing:.06em;color:var(--muted)}
+  .top-right b{display:block;color:var(--coral-dark);font-weight:700}
+
+  .hero{position:relative;padding-top:46px}
+  .pill{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:8px 15px;border-radius:999px;background:#ffe7dc;color:var(--coral-dark);
+    font-size:15px;font-weight:700;letter-spacing:.01em;
+  }
+  .pill::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--coral)}
+  h1{font-size:91px;line-height:1.08;letter-spacing:-.06em;margin:20px 0 0;font-weight:800}
+  h1 .hl{position:relative;display:inline-block;z-index:1}
+  h1 .hl::after{
+    content:"";position:absolute;left:-8px;right:-10px;bottom:8px;height:30px;
+    background:#ffd9cc;border-radius:12px;z-index:-1;transform:rotate(-1deg);
+  }
+  .hero-copy{font-size:22px;line-height:1.7;color:var(--soft);margin:20px 0 0;font-weight:500}
+  .hero-copy b{color:var(--ink);font-weight:800}
+
+  .album{
+    position:absolute;left:64px;right:64px;top:384px;
+    background:var(--card);border:1px solid var(--line);border-radius:38px;
+    padding:28px 32px 26px;
+    box-shadow:0 26px 60px rgba(91,61,48,.09);
+  }
+  .album-head{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:16px}
+  .album-head h2{font-size:31px;line-height:1.2;letter-spacing:-.04em;margin:0;font-weight:800}
+  .album-head p{margin:6px 0 0;font-size:13.5px;color:var(--muted);font-weight:500}
+  .album-legend{display:flex;gap:13px;font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;padding-bottom:3px}
+  .album-legend span{display:flex;align-items:center;gap:5px}
+  .album-legend i{width:8px;height:8px;border-radius:3px;display:inline-block}
+  .type-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .mini{
+    height:90px;border-radius:16px;padding:12px 14px;
+    display:flex;flex-direction:column;justify-content:center;
+    border:1px solid rgba(255,255,255,.7);
+  }
+  .mini b{display:block;font-size:28px;line-height:1.05;letter-spacing:-.02em;font-weight:800}
+  .mini span{display:block;font-size:12px;line-height:1.4;margin-top:3px;font-weight:600;opacity:1}
+  .mini.analyst{background:var(--analyst-bg);color:var(--analyst-ink)}
+  .mini.diplomat{background:var(--diplomat-bg);color:var(--diplomat-ink)}
+  .mini.sentinel{background:var(--sentinel-bg);color:var(--sentinel-ink)}
+  .mini.explorer{background:var(--explorer-bg);color:var(--explorer-ink)}
+  .mini.hot{
+    background:#fff;border:2px solid var(--coral);color:var(--coral-dark);
+    box-shadow:0 10px 24px rgba(201,74,61,.16);
+  }
+  .mini.hot span{opacity:.9}
+  .mini.hot b{font-size:29px}
+
+  .cta{
+    position:absolute;left:64px;right:64px;top:948px;height:342px;
+    background:var(--coral);border-radius:38px;color:#fff;
+    padding:36px 36px 32px 38px;display:flex;align-items:center;justify-content:space-between;gap:28px;
+    box-shadow:0 26px 56px rgba(201,74,61,.2);
+    overflow:hidden;
+  }
+  .cta::before{
+    content:"";position:absolute;right:-70px;bottom:-120px;
+    width:330px;height:330px;border-radius:50%;background:rgba(255,255,255,.09);
+  }
+  .cta-main{position:relative;z-index:1;max-width:610px}
+  .cta h2{font-size:50px;line-height:1.16;letter-spacing:-.05em;margin:0;font-weight:800}
+  .cta-meta{font-size:17px;line-height:1.75;color:#fff;margin:13px 0 0;font-weight:600}
+  .price-row{display:flex;align-items:center;gap:10px;margin-top:15px}
+  .price{font-size:25px;font-weight:800;letter-spacing:-.03em}
+  .price small{display:inline-block;font-size:12.5px;font-weight:600;color:#fff;margin-left:12px;vertical-align:2px}
+  .price-note{font-size:12px;font-weight:600;color:#fff;padding:5px 9px;border:1px solid rgba(255,255,255,.45);border-radius:999px;white-space:nowrap}
+  .qr-wrap{position:relative;z-index:1;width:204px;flex:none;display:flex;flex-direction:column;align-items:center}
+  .qr-card{width:198px;height:198px;background:#fff;border-radius:24px;padding:14px;display:flex;align-items:center;justify-content:center}
+  .qr-card img{display:block;width:170px;height:170px}
+  .qr-text{font-size:15px;font-weight:700;color:#fff;margin-top:9px;white-space:nowrap}
+  .qr-url{font-family:var(--mono);font-size:12px;color:#fff;margin-top:4px;white-space:nowrap}
+
+  .footer{
+    position:absolute;left:64px;right:64px;bottom:38px;
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:12px;font-weight:500;color:var(--muted);
+  }
+</style>
+</head>
+<body>
+<div class="canvas">
+  <header class="top">
+    <div class="brand">
+      <div class="mark">M</div>
+      <div>
+        <div class="brand-cn">MBTI 职业指南</div>
+        <div class="brand-en">16 型人格 · 职业方向卡片</div>
+      </div>
+    </div>
+    <div class="top-right">
+      <b>PERSONALITY CARD / NO. 16</b>
+      16 种人格，16 条路线
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="pill">28 道情境题 · 约 5 分钟</div>
+    <h1>你是<span class="hl">哪一型</span>？</h1>
+    <p class="hero-copy">16 种人格，<b>3 个职业方向</b>，一份能落地的报告。</p>
+  </section>
+
+  <section class="album">
+    <div class="album-head">
+      <div>
+        <h2>16 型人格图鉴</h2>
+        <p>先找到你的那张卡，再看它适合往哪走。</p>
+      </div>
+      <div class="album-legend">
+        <span><i style="background:#d8c7ff"></i>分析家</span>
+        <span><i style="background:#b7e6cf"></i>外交官</span>
+        <span><i style="background:#c7dcff"></i>守护者</span>
+        <span><i style="background:#ffd0b3"></i>探险家</span>
+      </div>
+    </div>
+    <div class="type-grid">
+      <div class="mini analyst hot"><b>INTJ</b><span>建筑师</span></div>
+      <div class="mini analyst"><b>INTP</b><span>逻辑学家</span></div>
+      <div class="mini analyst"><b>ENTJ</b><span>指挥官</span></div>
+      <div class="mini analyst"><b>ENTP</b><span>辩论家</span></div>
+      <div class="mini diplomat"><b>INFJ</b><span>提倡者</span></div>
+      <div class="mini diplomat"><b>INFP</b><span>调停者</span></div>
+      <div class="mini diplomat"><b>ENFJ</b><span>主人公</span></div>
+      <div class="mini diplomat"><b>ENFP</b><span>竞选者</span></div>
+      <div class="mini sentinel"><b>ISTJ</b><span>物流师</span></div>
+      <div class="mini sentinel"><b>ISFJ</b><span>守卫者</span></div>
+      <div class="mini sentinel"><b>ESTJ</b><span>总经理</span></div>
+      <div class="mini sentinel"><b>ESFJ</b><span>执政官</span></div>
+      <div class="mini explorer"><b>ISTP</b><span>鉴赏家</span></div>
+      <div class="mini explorer"><b>ISFP</b><span>探险家</span></div>
+      <div class="mini explorer"><b>ESTP</b><span>企业家</span></div>
+      <div class="mini explorer"><b>ESFP</b><span>表演者</span></div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-main">
+      <h2>先测一测，<br>再决定下一步。</h2>
+      <p class="cta-meta">免费看 3 个职业方向。完整 4 页报告，再决定要不要解锁。</p>
+      <div class="price-row">
+        <div class="price">¥9.9 起<small>完整 4 页报告</small></div>
+        <div class="price-note">前 50 份 ¥9.9</div>
+      </div>
+    </div>
+    <div class="qr-wrap">
+      <div class="qr-card"><img src="qr-poster.png" alt="扫码开始测试"></div>
+      <div class="qr-text">扫码测你的类型</div>
+      <div class="qr-url">xueren-ctrl.github.io/mbti-test</div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>结果仅用于自我探索，不构成职业建议</span>
+    <span>MBTI 职业指南 · 16 型卡片</span>
+  </footer>
+</div>
+</body>
+</html>
