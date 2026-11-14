@@ -2939,9 +2939,229 @@ p{color:var(--text-soft)}
   .footer-meta{font-size:10px}
 }
 
+/* ====================================================================
+   职业报告 — 与 D+E 柔和卡牌同一套语言
+   ==================================================================== */
+.report-container{max-width:900px;padding:0 20px 80px}
+.rpt-toolbar{
+  position:sticky;top:88px;z-index:30;display:flex;align-items:center;justify-content:space-between;
+  gap:14px 18px;flex-wrap:wrap;padding:12px 16px;margin:20px 0 24px;
+  background:rgba(255,253,251,.94);border:1px solid var(--border);border-radius:22px;
+  box-shadow:0 10px 30px rgba(84,54,38,.06);backdrop-filter:blur(14px);
+}
+.rpt-toolbar-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0}
+.rpt-toolbar-title strong{
+  font-family:var(--font-body);font-size:18px;font-weight:800;letter-spacing:-.02em;color:var(--text);
+}
+.rpt-toolbar-tag{
+  flex:none;font-size:12px;font-weight:600;line-height:1;color:var(--accent-ink);
+  background:var(--marker);border-radius:999px;padding:6px 10px;
+}
+.rpt-toolbar-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.rpt-toolbar-actions .btn{padding:9px 13px;font-size:12px}
+.rpt-doc{display:flex;flex-direction:column;align-items:center;gap:22px}
+.rpt-page{
+  width:210mm;min-height:0;padding:16mm 18mm 15mm;
+  background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:26px;
+  box-shadow:0 18px 50px rgba(84,54,38,.10),0 2px 0 rgba(84,54,38,.03);
+  display:flex;flex-direction:column;
+  font-family:var(--font-body);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  overflow:hidden;
+}
+.rpt-page *{box-sizing:border-box}
+.rpt-head,.rpt-foot{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  font-family:var(--font-body);font-size:11px;letter-spacing:0;text-transform:none;color:var(--text-mute);
+}
+.rpt-head{padding-bottom:12px;border-bottom:1px solid var(--border)}
+.rpt-brand{display:inline-flex;align-items:center;gap:8px;font-weight:700;color:var(--text-soft)}
+.rpt-mark{
+  width:22px;height:22px;border-radius:7px;background:var(--primary);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:800;line-height:1;letter-spacing:-.02em;
+}
+.rpt-foot{margin-top:30px;padding-top:12px;border-top:1px solid var(--border);font-size:10px}
+.rpt-foot span:last-child{
+  flex:none;color:var(--accent-ink);font-weight:700;background:var(--marker);
+  border-radius:999px;padding:3px 8px;line-height:1.2;
+}
+.rpt-cover{padding:26px 0 0}
+.rpt-cover h1{
+  font-family:var(--font-body);font-size:38px;font-weight:800;line-height:1.14;
+  letter-spacing:-.04em;margin:0 0 12px;max-width:150mm;color:var(--text);text-wrap:balance;
+}
+.rpt-cover-sub{font-size:13.5px;line-height:1.85;color:var(--text-soft);margin:0 0 22px;max-width:145mm}
+.rpt-type-card{
+  display:flex;align-items:center;gap:18px;position:relative;overflow:hidden;
+  background:var(--rpt-tint,#f4edff);border-radius:22px;padding:20px 22px;margin:0 0 16px;
+}
+.rpt-type-card::after{
+  content:"";position:absolute;right:-34px;bottom:-56px;width:170px;height:170px;
+  border-radius:50%;background:rgba(255,255,255,.5);pointer-events:none;
+}
+.rpt-type-code{
+  position:relative;z-index:1;font-family:var(--font-body);font-size:64px;font-weight:800;
+  line-height:.9;letter-spacing:-.055em;color:var(--rpt-ink,#60489e);
+}
+.rpt-type-body{position:relative;z-index:1;display:flex;flex-direction:column;gap:5px;min-width:0}
+.rpt-type-name{font-size:18px;font-weight:700;color:var(--text);line-height:1.2}
+.rpt-group-chip{
+  align-self:flex-start;font-size:12px;font-weight:600;line-height:1;
+  color:var(--rpt-ink,#60489e);background:rgba(255,255,255,.72);border-radius:999px;padding:5px 9px;
+}
+.rpt-type-date{margin-left:auto;position:relative;z-index:1;font-size:12px;color:var(--text-mute);white-space:nowrap}
+.rpt-analyst{--rpt-tint:#f4edff;--rpt-ink:#60489e}
+.rpt-diplomat{--rpt-tint:#e8f8ef;--rpt-ink:#2f6f5b}
+.rpt-sentinel{--rpt-tint:#eaf2ff;--rpt-ink:#345a9a}
+.rpt-explorer{--rpt-tint:#fff0e4;--rpt-ink:#99512f}
+.rpt-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px;margin-bottom:28px}
+.rpt-meta-item{padding:12px 14px;border:0;border-radius:14px;background:#fbf1e9}
+.rpt-meta-label{
+  display:block;font-family:var(--font-body);font-size:11px;font-weight:500;letter-spacing:0;
+  text-transform:none;color:var(--text-mute);margin-bottom:3px;
+}
+.rpt-meta-value{font-size:13.5px;font-weight:600;line-height:1.55;color:var(--text)}
+.rpt-page-title{
+  font-family:var(--font-body);font-size:26px;font-weight:800;line-height:1.2;
+  letter-spacing:-.03em;margin:10px 0 14px;color:var(--text);
+}
+.rpt-cover + .rpt-page-title{margin-top:28px}
+.rpt-body{flex:1;font-size:13.5px;line-height:1.9;color:var(--text-soft);max-width:170mm}
+.rpt-body h2{
+  font-family:var(--font-body);font-size:22px;font-weight:800;line-height:1.3;
+  letter-spacing:-.02em;margin:0 0 10px;color:var(--text);
+}
+.rpt-body h3{
+  font-family:var(--font-body);font-size:17px;font-weight:700;line-height:1.45;
+  margin:20px 0 8px;padding-top:0;border:0;color:var(--text);
+  display:flex;align-items:baseline;gap:8px;
+}
+.rpt-body h3::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--primary);flex:none;transform:translateY(-2px)}
+.rpt-body h3:first-child{margin-top:0;padding-top:0;border-top:0}
+.rpt-body p{margin:0 0 10px}
+.rpt-body ul,.rpt-body ol{margin:0 0 11px;padding-left:20px}
+.rpt-body li{margin:0 0 5px;padding-left:2px}
+.rpt-body li::marker{color:var(--primary);font-weight:700}
+.rpt-body strong{font-weight:700;color:var(--text)}
+.rpt-body em{font-style:normal;font-weight:600;color:var(--accent-ink)}
+.rpt-body blockquote{
+  margin:14px 0;padding:13px 16px;border:0;border-radius:14px;
+  background:#fff1e8;color:var(--text-soft);font-weight:500;
+}
+.rpt-body code{font-family:var(--font-mono);font-size:.92em;background:#fbf1e9;border-radius:5px;padding:1px 4px;color:var(--accent-ink)}
+.rpt-body table{
+  width:100%;border-collapse:separate;border-spacing:0;margin:12px 0 14px;
+  font-size:12.5px;border:1px solid var(--border);border-radius:12px;overflow:hidden;
+}
+.rpt-body th,.rpt-body td{border:0;border-bottom:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top}
+.rpt-body th{background:#fbf1e9;font-weight:700;color:var(--text)}
+.rpt-body tr:last-child td{border-bottom:0}
+.rpt-career{border-top:1px solid var(--border);padding:16px 0 4px;margin-top:16px}
+.rpt-career:first-child{border-top:0;padding-top:0;margin-top:0}
+.rpt-career h3{font-size:18px;margin:0 0 8px}
+.rpt-empty{padding:28px;border-radius:14px;background:#fff1e8;color:var(--text-soft);font-size:13px}
+.rpt-disclaimer{margin-top:18px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;line-height:1.7;color:var(--text-mute)}
+.rpt-preview-cta{
+  display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  margin-top:26px;padding:20px 22px;border:0;border-radius:20px;background:#fff1e8;
+}
+.rpt-preview-cta h3{font-family:var(--font-body);font-size:19px;font-weight:800;line-height:1.35;margin:0 0 5px;color:var(--text)}
+.rpt-preview-cta p{font-size:12.5px;line-height:1.7;color:var(--text-soft);margin:0;max-width:105mm}
+.rpt-preview-cta .btn{flex:none}
+.rpt-loading{
+  position:relative;overflow:hidden;min-height:58vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:18px;padding:44px 28px;text-align:center;
+  background:var(--card);border:1px solid var(--border);border-radius:30px;
+  box-shadow:0 18px 50px rgba(84,54,38,.08);
+}
+.rpt-loading::before{
+  content:"";position:absolute;width:280px;height:280px;border-radius:50%;
+  top:-180px;right:-100px;background:#ffe7dc;pointer-events:none;
+}
+.rpt-loading>*{position:relative;z-index:1}
+.rpt-loading h2{font-family:var(--font-body);font-size:26px;font-weight:800;letter-spacing:-.03em;margin:0;color:var(--text)}
+.rpt-loading p{font-size:13.5px;line-height:1.8;color:var(--text-soft);margin:0;max-width:420px}
+.rpt-error{
+  display:grid;gap:14px;justify-items:start;padding:30px;border:1px solid var(--border);
+  border-radius:26px;background:var(--card);box-shadow:0 18px 50px rgba(84,54,38,.08);
+}
+.rpt-error h2{font-family:var(--font-body);font-size:24px;font-weight:800;letter-spacing:-.03em;margin:0;color:var(--text)}
+.rpt-error p{font-size:13.5px;line-height:1.8;color:var(--text-soft);margin:0}
+.rpt-error .rpt-error-note{font-size:12px;color:var(--text-mute)}
+.rpt-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
+
+@media(max-width:680px){
+  .report-container{padding:0 14px 56px}
+  .rpt-toolbar{position:static;padding:12px 14px;margin:16px 0 18px;border-radius:18px}
+  .rpt-toolbar-title strong{font-size:16px}
+  .rpt-toolbar-actions{width:100%;gap:8px}
+  .rpt-toolbar-actions .btn{flex:1 1 0;min-width:0;white-space:nowrap;padding:9px 4px;font-size:11px}
+  .rpt-doc{gap:16px}
+  .rpt-page{width:100%;padding:24px 18px 22px;border-radius:22px}
+  .rpt-cover{padding-top:22px}
+  .rpt-cover h1{font-size:30px;max-width:none}
+  .rpt-cover-sub{font-size:13px;max-width:none}
+  .rpt-type-card{gap:12px;padding:16px;border-radius:18px}
+  .rpt-type-code{font-size:48px}
+  .rpt-type-name{font-size:16px}
+  .rpt-type-date{display:none}
+  .rpt-meta{grid-template-columns:1fr;margin-bottom:24px}
+  .rpt-page-title{font-size:23px}
+  .rpt-body{font-size:13px;line-height:1.85;max-width:none}
+  .rpt-body h3{font-size:16px}
+  .rpt-preview-cta{flex-direction:column;align-items:flex-start;padding:18px}
+  .rpt-preview-cta p{max-width:none}
+  .rpt-preview-cta .btn{width:100%}
+  .rpt-head,.rpt-foot{font-size:9.5px;gap:10px}
+  .rpt-foot span:last-child{padding:3px 7px}
+}
 @media(prefers-reduced-motion:reduce){
   .type-card,.deck-sticker,.gallery-card,.btn,.option{transition:none!important}
   .gallery-card:hover,.feature-card:hover,.home-cta .btn:hover{transform:none}
+}
+@media print{
+  @page{size:A4;margin:12mm}
+  html,body{background:#fff!important}
+  .report-container{max-width:none;padding:0}
+  .rpt-doc{gap:0}
+  .rpt-page{
+    width:auto;min-height:268mm;margin:0;padding:0;border:0;border-radius:0;box-shadow:none;
+    background:#fff;color:#211a17;page-break-after:always;break-after:page;overflow:visible;
+    display:flex;flex-direction:column;
+  }
+  .rpt-page:last-child{page-break-after:auto;break-after:auto}
+  .rpt-head{padding-bottom:8px;border-bottom-color:#eadbd1}
+  .rpt-foot{margin-top:auto;padding-top:8px;border-top-color:#eadbd1}
+  .rpt-cover{padding-top:14px}
+  .rpt-cover h1{font-size:30px;margin-bottom:8px}
+  .rpt-cover-sub{font-size:10.5px;line-height:1.65;margin-bottom:14px}
+  .rpt-type-card{padding:13px 15px;border-radius:16px;margin-bottom:12px}
+  .rpt-type-code{font-size:46px}
+  .rpt-type-name{font-size:15px}
+  .rpt-group-chip{font-size:10px;padding:4px 7px}
+  .rpt-meta{gap:7px 9px;margin-bottom:16px}
+  .rpt-meta-item{padding:8px 10px;border-radius:10px}
+  .rpt-meta-label{font-size:9px}
+  .rpt-meta-value{font-size:11px}
+  .rpt-page-title{font-size:19px;margin:6px 0 8px}
+  .rpt-cover + .rpt-page-title{margin-top:18px}
+  .rpt-body{max-width:none;font-size:10.8px;line-height:1.65}
+  .rpt-page.rpt-dense .rpt-body{font-size:10.2px;line-height:1.58}
+  .rpt-body h2{font-size:17px;margin-bottom:6px}
+  .rpt-body h3{font-size:13px;margin:10px 0 4px}
+  .rpt-body p{margin-bottom:5px}
+  .rpt-body li{margin-bottom:2px}
+  .rpt-body ul,.rpt-body ol{margin-bottom:6px}
+  .rpt-body blockquote{margin:8px 0;padding:9px 11px;border-radius:9px}
+  .rpt-body table{font-size:10px;margin:8px 0 10px}
+  .rpt-body th,.rpt-body td{padding:4px 6px}
+  .rpt-career{padding-top:10px;margin-top:10px}
+  .rpt-career h3{font-size:14px;margin-bottom:5px}
+  .rpt-preview-cta{margin-top:16px;padding:13px 15px;border-radius:12px}
+  .rpt-preview-cta h3{font-size:15px}
+  .rpt-preview-cta p{font-size:9.5px}
+  .rpt-disclaimer{font-size:8px;margin-top:10px;padding-top:7px}
 }
 @media print{
   body{background:#fff!important}
@@ -5721,7 +5941,7 @@ function reportFormHtml(type){
       <p class="report-form-note">生成后可直接打印或保存 PDF；结果即时生成，也不会发邮箱。本次会消耗 1 次已解锁额度。</p>
     </div>
     <div class="report-form-actions">
-      <button class="btn btn-primary btn-lg" onclick="startReportGeneration()">生成完整报告（消耗 1 次已解锁额度）</button>
+      <button class="btn btn-primary btn-lg" onclick="startReportGeneration()">生成完整报告</button>
     </div>
   </div>`;
 }
@@ -5778,7 +5998,7 @@ function paywallHtml(type){
       <button class="btn btn-primary btn-lg" onclick="openPaywall('${type}','report_quota')">去支付</button>
     </div>
     <div class="paywall-unlock">
-      <input id="unlockCodeInput" autocomplete="off" placeholder="输入解锁码 MBTI-XXXXXX-XXXXXXXXXX">
+      <input id="unlockCodeInput" autocomplete="off" placeholder="输入解锁码 MBTI-…">
       <button class="btn btn-outline" onclick="redeemUnlockCode()">解锁</button>
     </div>
     <p class="paywall-msg" id="unlockMsg">${credits>0?'已解锁 '+credits+' 次':'付款后自动发码；回来输入即可，即时生成。'}</p>
@@ -5937,37 +6157,46 @@ function renderReport(payload,content,opts){
   content=stripReportAiWording(content);
   const t=TYPES[payload.type]||{name:payload.type||''};
   const p=payload.profile||{};
+  const groupClass={'分析家':'rpt-analyst','外交官':'rpt-diplomat','守护者':'rpt-sentinel','探险家':'rpt-explorer'}[t.group]||'rpt-analyst';
   const pages=splitReportPages(content);
   const byN={};
   pages.forEach(x=>{if(!byN[x.n])byN[x.n]=x.text;});
   if(pages.length===0)byN[1]=String(content||'');
   const titles=['类型内核','三个方向','简历、面试与转行','90 天计划'];
-  const date=new Date().toLocaleDateString('zh-CN');
+  const now=new Date();
+  const date=`${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
+  const type=escapeHtml(payload.type||'');
   let body='';
   for(let n=1;n<=4;n++){
     const text=byN[n]||'';
     let inner='';
     if(n===1){
-      inner=`<div class="rpt-cover">
-        <div class="rpt-cover-kicker">CAREER DOSSIER · 4 PAGES</div>
-        <h1>${escapeHtml(p.name?p.name+' 的':'你的')}职业方向报告</h1>
+      inner=`<div class="rpt-cover ${groupClass}">
+        <h1>${escapeHtml(p.name?p.name+'的职业方向报告':'你的职业方向报告')}</h1>
         <p class="rpt-cover-sub">这份报告基于你的 MBTI 结果和生成前填写的现状。它不是标准答案，而是一份可以拿去试错的路线图。</p>
-        <div class="rpt-type-line"><span class="rpt-type-code">${escapeHtml(payload.type||'')}</span><span class="rpt-type-name">${escapeHtml(t.name||'')}</span><span class="rpt-type-note">PERSONALIZED · ${escapeHtml(date)}</span></div>
+        <div class="rpt-type-card">
+          <span class="rpt-type-code">${type}</span>
+          <div class="rpt-type-body">
+            <strong class="rpt-type-name">${escapeHtml(t.name||'')}</strong>
+            <span class="rpt-group-chip">${escapeHtml(t.group||'')}</span>
+          </div>
+          <span class="rpt-type-date">${date}</span>
+        </div>
         ${reportMetaHtml(payload)}
       </div>`;
     }
-    inner+=`<div class="rpt-page-kicker">0${n} · ${titles[n-1]}</div><div class="rpt-body">${text?(n===2?renderCareerPage(text):markdownToHtml(text)):'<div class="rpt-empty">这一页没有生成内容，请返回重试。</div>'}</div>`;
+    inner+=`<h2 class="rpt-page-title">${titles[n-1]}</h2><div class="rpt-body">${text?(n===2?renderCareerPage(text):markdownToHtml(text)):'<div class="rpt-empty">这一页没有生成内容，请返回重试。</div>'}</div>`;
     if(n===4&&!String(text).includes('免责声明')&&!String(text).includes('不构成心理诊断')){
-      inner+='<div class="rpt-body" style="flex:none;padding-top:10px"><p style="font-size:10px;line-height:1.7;color:#71675a;border-top:1px solid #d9d0c1;padding-top:8px">本报告基于 MBTI 框架与用户提供的信息生成，仅供自我探索与职业方向参考，不构成心理诊断、医疗、法律或职业建议，也不承诺录用或薪资。</p></div>';
+      inner+='<div class="rpt-disclaimer">本报告基于 MBTI 框架与用户提供的信息生成，仅供自我探索与职业方向参考，不构成心理诊断、医疗、法律或职业建议，也不承诺录用或薪资。</div>';
     }
-    body+=`<section class="rpt-page${text&&text.length>1000?' rpt-dense':''}">
-      <header class="rpt-head"><span>THE PERSONALITY ARCHIVE</span><span>PRIVATE CAREER DOSSIER</span></header>
+    body+=`<section class="rpt-page${text&&text.length>1000?' rpt-dense':''} ${groupClass}">
+      <header class="rpt-head"><span class="rpt-brand"><span class="rpt-mark">M</span>MBTI 职业指南</span><span>职业方向报告</span></header>
       ${inner}
-      <footer class="rpt-foot"><span>${escapeHtml(payload.type||'')} · ${escapeHtml(t.name||'')}</span><span>${n} / 04</span></footer>
+      <footer class="rpt-foot"><span>MBTI 职业指南 · ${type} ${escapeHtml(t.name||'')}</span><span>${n} / 4</span></footer>
     </section>`;
   }
   const toolbar=`<div class="rpt-toolbar">
-    <div><span class="rpt-toolbar-kicker">完整职业报告${opts&&opts.cached?' · 已缓存':''}</span><strong>${escapeHtml(payload.type||'')} · ${escapeHtml(t.name||'')}</strong></div>
+    <div class="rpt-toolbar-title"><strong>${type} · ${escapeHtml(t.name||'')}</strong><span class="rpt-toolbar-tag">完整 4 页${opts&&opts.cached?' · 已缓存':''}</span></div>
     <div class="rpt-toolbar-actions">
       <button class="btn btn-ghost" onclick="go('result')">返回结果</button>
       <button class="btn btn-outline" onclick="window.print()">打印 / 保存 PDF</button>
@@ -5977,7 +6206,7 @@ function renderReport(payload,content,opts){
   const c=document.getElementById('reportContainer');
   if(c)c.innerHTML=toolbar+'<div class="rpt-doc">'+body+'</div>';
   try{localStorage.setItem(REPORT_LAST_KEY,JSON.stringify({payload:payload,content:content,ts:Date.now()}));}catch(e){}
-  document.title=(p.name?p.name+' 的':'')+'职业报告 · '+(payload.type||'');
+  document.title=(p.name?p.name+'的':'')+'职业报告 · '+(payload.type||'');
   go('report');
   track('report_view',{type:payload.type,cached:Boolean(opts&&opts.cached)});
 }
@@ -5985,26 +6214,34 @@ function renderReport(payload,content,opts){
 function renderPreview(payload,content){
   content=stripReportAiWording(content);
   const t=TYPES[payload.type]||{name:payload.type||''};
+  const groupClass={'分析家':'rpt-analyst','外交官':'rpt-diplomat','守护者':'rpt-sentinel','探险家':'rpt-explorer'}[t.group]||'rpt-analyst';
   const text=String(content||'').replace(/^\s*##\s*第\s*1\s*页[^\n]*\n?/,'').trim();
-  const date=new Date().toLocaleDateString('zh-CN');
+  const now=new Date();
+  const date=`${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
   const type=escapeHtml(payload.type||'');
   const c=document.getElementById('reportContainer');
   const toolbar=`<div class="rpt-toolbar">
-    <div><span class="rpt-toolbar-kicker">职业方向预览 · 1 页</span><strong>${type} · ${escapeHtml(t.name||'')}</strong></div>
+    <div class="rpt-toolbar-title"><strong>${type} · ${escapeHtml(t.name||'')}</strong><span class="rpt-toolbar-tag">1 页预览</span></div>
     <div class="rpt-toolbar-actions">
       <button class="btn btn-ghost" onclick="go('result')">返回结果</button>
       <button class="btn btn-primary" onclick="openReportForm('${type}')">解锁完整 4 页</button>
     </div>
   </div>`;
-  if(c)c.innerHTML=toolbar+`<div class="rpt-doc"><section class="rpt-page">
-    <header class="rpt-head"><span>THE PERSONALITY ARCHIVE</span><span>FREE CAREER PREVIEW</span></header>
-    <div class="rpt-cover" style="padding-top:8px">
-      <div class="rpt-cover-kicker">CAREER PREVIEW · 1 PAGE</div>
+  if(c)c.innerHTML=toolbar+`<div class="rpt-doc"><section class="rpt-page ${groupClass}">
+    <header class="rpt-head"><span class="rpt-brand"><span class="rpt-mark">M</span>MBTI 职业指南</span><span>职业方向预览</span></header>
+    <div class="rpt-cover ${groupClass}">
       <h1>你的职业方向预览</h1>
       <p class="rpt-cover-sub">先看 3 个可能适合你的方向。完整 4 页报告还会给出简历改法、面试回答、转行路径和 90 天计划。</p>
-      <div class="rpt-type-line"><span class="rpt-type-code">${type}</span><span class="rpt-type-name">${escapeHtml(t.name||'')}</span><span class="rpt-type-note">PREVIEW · ${escapeHtml(date)}</span></div>
+      <div class="rpt-type-card">
+        <span class="rpt-type-code">${type}</span>
+        <div class="rpt-type-body">
+          <strong class="rpt-type-name">${escapeHtml(t.name||'')}</strong>
+          <span class="rpt-group-chip">${escapeHtml(t.group||'')}</span>
+        </div>
+        <span class="rpt-type-date">${date}</span>
+      </div>
     </div>
-    <div class="rpt-page-kicker">PREVIEW · 职业方向</div>
+    <h2 class="rpt-page-title">3 个方向</h2>
     <div class="rpt-body">${markdownToHtml(text)}</div>
     <div class="rpt-preview-cta">
       <div>
@@ -6013,7 +6250,7 @@ function renderPreview(payload,content){
       </div>
       <button class="btn btn-primary btn-lg" onclick="openReportForm('${type}')">解锁完整 4 页 · ¥9.9</button>
     </div>
-    <footer class="rpt-foot"><span>${type} · ${escapeHtml(t.name||'')}</span><span>PREVIEW · 1 / 1</span></footer>
+    <footer class="rpt-foot"><span>MBTI 职业指南 · ${type} ${escapeHtml(t.name||'')}</span><span>预览 1 / 1</span></footer>
   </section></div>`;
   document.title='职业方向预览 · '+(payload.type||'');
   go('report');
@@ -6024,15 +6261,16 @@ function renderReportLoading(payload){
   const preview=payload&&payload.tier==='preview';
   const t=TYPES[payload.type]||{name:payload.type||''};
   const c=document.getElementById('reportContainer');
-  if(c)c.innerHTML=`<div class="rpt-toolbar"><div><span class="rpt-toolbar-kicker">${preview?'职业方向预览':'完整职业报告'}</span><strong>${escapeHtml(payload.type||'')} · ${escapeHtml(t.name||'')}</strong></div><div class="rpt-toolbar-actions"><button class="btn btn-ghost" onclick="go('result')">返回结果</button></div></div>
+  if(c)c.innerHTML=`<div class="rpt-toolbar"><div class="rpt-toolbar-title"><strong>${escapeHtml(payload.type||'')} · ${escapeHtml(t.name||'')}</strong><span class="rpt-toolbar-tag">${preview?'1 页预览':'完整 4 页'}</span></div><div class="rpt-toolbar-actions"><button class="btn btn-ghost" onclick="go('result')">返回结果</button></div></div>
     <div class="rpt-loading"><div class="spinner"></div><h2>${preview?'正在整理你的 3 个方向':'正在写你的 4 页报告'}</h2><p>${preview?'预览会给出 3 个方向、匹配原因和现在能补的能力。大约 20–40 秒，请不要关闭页面。':'报告会结合你填的现状，生成 3 个方向、简历 / 面试重点和 90 天计划。大约 30–60 秒，请不要关闭页面。'}</p></div>`;
   go('report');
 }
 
 function renderReportError(payload,key,useCredit,message){
+  const t=TYPES[payload.type]||{name:payload.type||''};
   const c=document.getElementById('reportContainer');
-  if(c)c.innerHTML=`<div class="rpt-toolbar"><div><span class="rpt-toolbar-kicker">完整职业报告</span><strong>生成未完成</strong></div><div class="rpt-toolbar-actions"><button class="btn btn-ghost" onclick="go('result')">返回结果</button></div></div>
-    <div class="rpt-error"><p>${escapeHtml(message||'生成失败，请稍后重试')}</p><p style="font-size:11px;color:var(--text-mute)">本次没有扣除预览次数或已解锁额度。</p><div class="rpt-actions"><button class="btn btn-primary" onclick="retryReport()">重试</button><button class="btn btn-ghost" onclick="go('result')">返回结果</button></div></div>`;
+  if(c)c.innerHTML=`<div class="rpt-toolbar"><div class="rpt-toolbar-title"><strong>${escapeHtml(payload.type||'')} · ${escapeHtml(t.name||'')}</strong><span class="rpt-toolbar-tag">生成未完成</span></div><div class="rpt-toolbar-actions"><button class="btn btn-ghost" onclick="go('result')">返回结果</button></div></div>
+    <div class="rpt-error"><h2>这次没有生成成功</h2><p>${escapeHtml(message||'生成失败，请稍后重试')}</p><p class="rpt-error-note">本次没有扣除预览次数或已解锁额度。</p><div class="rpt-actions"><button class="btn btn-primary" onclick="retryReport()">重试</button><button class="btn btn-ghost" onclick="go('result')">返回结果</button></div></div>`;
   appState.pendingReport={payload:payload,key:key,useCredit:useCredit};
   go('report');
 }
